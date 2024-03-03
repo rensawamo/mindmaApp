@@ -28,7 +28,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter_flavorizr:
+  firebase_core: ^2.25.4
+  another_flushbar: ^1.12.30
+  fluttertoast: ^8.2.4
+  flutter_flavorizr: ^2.2.1
   graphview: ^1.2.0
   sqflite:
   path:
@@ -77,6 +80,8 @@ flavorizr:
         name: "Development"
       android:
         applicationId: "com.rensawamo.mindmapApp.flavor.dev"
+        firebase:
+          config: "/android/app/src/development/google-services.json"
       ios:
         bundleId: "com.rensawamo.mindmapApp.dev"
 

@@ -73,7 +73,11 @@ unlinked_spec.ds
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/keystore.properties
-**/android/app/google-services.json
+/android/app/src/development/google-services.json
+/android/app/src/staging/google-services.json
+/android/app/src/production/google-services.json
+**/android/app/src/development/google-services.json
+
 app/google-services.*
 
 *.jks
