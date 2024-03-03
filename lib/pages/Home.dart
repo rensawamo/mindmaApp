@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../components/Nodulo.dart';
 
-class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<HomePage> {
   var isActive = false;
   var numNodulos = 1;
 

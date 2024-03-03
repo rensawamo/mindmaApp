@@ -9,16 +9,16 @@ import 'dart:convert' as convert;
 import '../model/EdgeModel.dart';
 import '../model/NodeModel.dart';
 
-class TreeViewPage extends ConsumerStatefulWidget {
-  const TreeViewPage({super.key});
+class Phylogenetic_tree_page extends ConsumerStatefulWidget {
+  const Phylogenetic_tree_page({super.key});
 
   @override
-  ConsumerState<TreeViewPage> createState() {
+  ConsumerState<Phylogenetic_tree_page> createState() {
     return _TreeViewPageState();
   }
 }
 
-class _TreeViewPageState extends ConsumerState<TreeViewPage> {
+class _TreeViewPageState extends ConsumerState<Phylogenetic_tree_page> {
   var title = "title";
   var json;
   var selectedNode = ValueNotifier<int>(0);
@@ -50,7 +50,7 @@ class _TreeViewPageState extends ConsumerState<TreeViewPage> {
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
-    //roda até a linha acima
+
     json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
     setState(() {});
     addEdge(previousConnection, newId);
