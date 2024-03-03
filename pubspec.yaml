@@ -81,7 +81,7 @@ flavorizr:
       android:
         applicationId: "com.rensawamo.mindmapApp.flavor.dev"
         firebase:
-          config: "/android/app/src/development/google-services.json"
+          config: "./android/app/src/development/google-services.json"
       ios:
         bundleId: "com.rensawamo.mindmapApp.dev"
 
@@ -90,6 +90,8 @@ flavorizr:
         name: "Staging"
       android:
         applicationId: "com.rensawamo.mindmapApp.flavor.staging"
+        firebase:
+          config: "./android/app/src/staging/google-services.json"
       ios:
         bundleId: "com.rensawamo.mindmapApp.staging"
 
@@ -98,5 +100,7 @@ flavorizr:
         name: "Production"
       android:
         applicationId: "com.rensawamo.mindmapApp.flavor.prod"
+        firebase:
+          config: "./android/app/src/production/google-services.json"
       ios:
         bundleId: "com.rensawmao.mindmapApp.prod"
