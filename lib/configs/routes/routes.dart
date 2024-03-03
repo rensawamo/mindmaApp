@@ -24,7 +24,7 @@ class Routes {
         return MaterialPageRoute(builder: (_){
           return const Scaffold(
             body: Center(
-              child: Text('No route defined'),
+              child: Text('No route defined.'),
             ),
           );
         });
