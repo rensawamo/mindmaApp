@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import '../components/Nodulo.dart';
+import '../../components/Nodulo.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomePage> {
+class _HomeState extends State<Home> {
   var isActive = false;
   var numNodulos = 1;
 
@@ -39,29 +39,29 @@ class _HomeState extends State<HomePage> {
           children: <Widget>[
             isActive == true
                 ? FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        numNodulos++;
-                      });
-                    },
-                    backgroundColor: Colors.lightBlueAccent.shade100,
-                    child: Transform.rotate(
-                        angle: 0,
-                        child: Icon(Icons.control_point_duplicate_rounded)),
-                  )
+              onPressed: () {
+                setState(() {
+                  numNodulos++;
+                });
+              },
+              backgroundColor: Colors.lightBlueAccent.shade100,
+              child: Transform.rotate(
+                  angle: 0,
+                  child: Icon(Icons.control_point_duplicate_rounded)),
+            )
                 : Text(''),
             isActive == true
                 ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: FloatingActionButton(
-                      onPressed: null,
-                      backgroundColor: Colors.lightBlueAccent.shade100,
-                      child: Transform.rotate(
-                        child: Icon(Icons.alt_route_rounded),
-                        angle: pi / 2,
-                      ),
-                    ),
-                  )
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: FloatingActionButton(
+                onPressed: null,
+                backgroundColor: Colors.lightBlueAccent.shade100,
+                child: Transform.rotate(
+                  child: Icon(Icons.alt_route_rounded),
+                  angle: pi / 2,
+                ),
+              ),
+            )
                 : Text(''),
             FloatingActionButton(
               onPressed: () {

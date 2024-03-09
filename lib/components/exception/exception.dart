@@ -13,7 +13,6 @@ class AppException implements Exception {
   String toString(){
     return '$_message$_prefix' ;
   }
-
 }
 
 
