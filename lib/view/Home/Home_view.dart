@@ -1,84 +1,55 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import '../../components/Nodulo.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
+
+import '../../Navbar.dart';
+import 'User/User.dart';
+
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
-
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _MyAppState();
 }
 
-class _HomeState extends State<Home> {
-  var isActive = false;
-  var numNodulos = 1;
+class _MyAppState extends State<Home> {
+  int currentIndex = 0;
+  final pages = [PhylogeneticTreeView(), UserView()];
 
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: Colors.greenAccent,
-          child: InteractiveViewer(
-            constrained: false,
-            scaleEnabled: true,
-            minScale: 0.01,
-            maxScale: 1.5,
-            boundaryMargin: EdgeInsets.all(1500),
-            child: Container(
-              child: Row(
-                children: [], //List.generate(numNodulos, (index) => null),
-              ),
-            ),
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[200],
+        primaryColor: Colors.greenAccent,
+      ),
+      home: Scaffold(
+        drawer: Navbar(),
+        appBar: AppBar(
+          title: Text('Teste'),
+          backgroundColor: Colors.greenAccent,
         ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            isActive == true
-                ? FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  numNodulos++;
-                });
-              },
-              backgroundColor: Colors.lightBlueAccent.shade100,
-              child: Transform.rotate(
-                  angle: 0,
-                  child: Icon(Icons.control_point_duplicate_rounded)),
-            )
-                : Text(''),
-            isActive == true
-                ? Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: FloatingActionButton(
-                onPressed: null,
-                backgroundColor: Colors.lightBlueAccent.shade100,
-                child: Transform.rotate(
-                  child: Icon(Icons.alt_route_rounded),
-                  angle: pi / 2,
-                ),
+        body: pages[currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentIndex,
+            unselectedItemColor: Colors.greenAccent.shade700,
+            selectedItemColor: Colors.white,
+            backgroundColor: Colors.greenAccent,
+            items: [
+
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search', // Correct property is 'label', not 'itle'
               ),
-            )
-                : Text(''),
-            FloatingActionButton(
-              onPressed: () {
-                if (isActive)
-                  setState(() {
-                    isActive = false;
-                  });
-                else
-                  setState(() {
-                    isActive = true;
-                  });
-              },
-              backgroundColor: Colors.blueAccent,
-              child: Icon(Icons.add),
-            ),
-          ],
-        ));
-    ;
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle_rounded),
+                label: 'User', // Use 'label' instead of 'title'
+              ),
+            ],
+            onTap: (index) => {
+              setState(() {
+                currentIndex = index;
+              })
+            }),
+      ),
+    );
   }
 }

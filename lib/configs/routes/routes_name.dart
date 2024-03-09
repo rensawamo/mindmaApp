@@ -1,7 +1,7 @@
 
 
 class RoutesName {
-  static const String tree = 'phylogenetic_tree_screen' ;
+
 
   //accounts routes name
   static const String login = 'login_screen' ;

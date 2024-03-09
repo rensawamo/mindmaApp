@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../model/user_model.dart';
+import '../../../model/user_model/user_model.dart';
 import '../strage/strage.dart';
 
 //singleton class
