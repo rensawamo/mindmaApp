@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
+import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
 
 import '../../Navbar.dart';
 import 'User/User.dart';
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _MyAppState extends State<Home> {
   int currentIndex = 0;
-  final pages = [PhylogeneticTreeView(), UserView()];
+  final pages = [TitleListView(), PhylogeneticTreeView(), UserView()];
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,10 +35,13 @@ class _MyAppState extends State<Home> {
             selectedItemColor: Colors.white,
             backgroundColor: Colors.greenAccent,
             items: [
-
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'リスト', // Correct property is 'label', not 'itle'
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: 'Search', // Correct property is 'label', not 'itle'
+                label: '', // Correct property is 'label', not 'itle'
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_rounded),

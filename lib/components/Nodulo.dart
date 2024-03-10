@@ -60,7 +60,7 @@ class _NoduloState extends State<Nodulo> {
           return Column(children: [
             isFirst
                 ? StartingNode(isSelected, selectedNode, setSelectedNode,
-                    nodeId, myFocusNode)
+                nodeId, myFocusNode)
                 : CommonNode(isSelected, selectedNode, setSelectedNode, nodeId,
                     myFocusNode),
             isSelected

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/view_model/Home/Phylogenetic_view_model.dart';
+import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/view_model/launch/launch_view_model.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
 import 'package:provider/provider.dart';

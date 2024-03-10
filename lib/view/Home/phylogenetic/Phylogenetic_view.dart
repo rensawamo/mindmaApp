@@ -2,14 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-
-import 'dart:convert' as convert;
-
-import '../../../components/Nodulo.dart';
-import '../../../view_model/Home/EdgeModel.dart';
-import '../../../view_model/Home/NodeModel.dart';
-import '../../../view_model/Home/Phylogenetic_view_model.dart';
-
+import '../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
@@ -23,7 +16,6 @@ class PhylogeneticTreeView extends ConsumerStatefulWidget {
 
 class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
-  PhylogeneticViewModel phy =  PhylogeneticViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +29,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
         child: GraphView(
           graph: ref.watch(viewModel).graph,
           algorithm:
-          BuchheimWalkerAlgorithm(ref.watch(viewModel).builder, TreeEdgeRenderer(ref.watch(viewModel).builder)),
+          BuchheimWalkerAlgorithm(ref.watch(viewModel).builder,
+              TreeEdgeRenderer(ref.watch(viewModel).builder)),
           paint: Paint()
             ..color = Colors.greenAccent
             ..strokeWidth = 3

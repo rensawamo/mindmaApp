@@ -39,7 +39,7 @@ dependencies:
   sqflite:
   path:
   uuid:
-  flutter_riverpod:
+  flutter_riverpod: ^2.4.10
   path_provider:
   build_runner: ^2.4.8
   freezed: ^2.4.7

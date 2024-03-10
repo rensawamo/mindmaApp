@@ -3,15 +3,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
-import '../../components/Nodulo.dart';
-import 'EdgeModel.dart';
-import 'NodeModel.dart';
+import '../../../components/Nodulo.dart';
+import '../../local_strage/sqlite/edge_db.dart';
+import '../../local_strage/sqlite/node_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
 
-  var title = "title";
+  var startTitle = "title";
+  int currentSelectId = 1;
 
+  //  -----------    widget          ---------------
+  // ページタイトルの更新
+  setStartTitle(String text) {
+    startTitle = text;
+    notifyListeners();
+  }
+
+  // 選択しているNodeの更新
+  setSelectedNode(newNodeId) {
+    selectedNode.value = newNodeId;
+    notifyListeners();
+  }
+
+  //  -----------    widget          ---------------
+
+
+  //   ----------    phylogenetic     ---------------
   var selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
   Widget rectangleWidget(int? id, String? title) {
@@ -50,24 +68,21 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  setSelectedNode(newNodeId) {
-    selectedNode.value = newNodeId;
-  }
 
   initializeGraph() async {
-    var nodes = await NodeData.loadNodes(title);
-    var edges = await EdgeData.loadEdgeds(title);
+    var nodes = await NodeData.loadNodes(startTitle);
+    var edges = await EdgeData.loadEdgeds(startTitle);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph({"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
-    NodeData.addNode(1,title,'Início');
+    NodeData.addNode(1,startTitle,'Início');
   }
 
   addNode() {
     int newId = json["nodes"].length + 1;
     json['nodes'].add({"id": newId, "label": 'NEW NODE'});
-    NodeData.addNode(newId,title,'NEW NODE');
+    NodeData.addNode(newId,startTitle,'NEW NODE');
     return newId;
   }
 
@@ -76,7 +91,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     json['edges'].add({"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
     notifyListeners();
-    EdgeData.addEdge(selectedNode.value,title,newId);
+    EdgeData.addEdge(selectedNode.value,startTitle,newId);
   }
 
   void createBro() {
@@ -89,7 +104,7 @@ class PhylogeneticViewModel with ChangeNotifier {
 
     addEdge(previousConnection, newId);
     notifyListeners();
-    EdgeData.addEdge(previousConnection,title,newId);
+    EdgeData.addEdge(previousConnection,startTitle,newId);
   }
 
   void deleteNode() {
@@ -127,5 +142,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     });
       notifyListeners();
   }
+
+//   ----------    phylogenetic     ---------------
 
 }
