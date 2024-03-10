@@ -6,8 +6,8 @@ import 'package:graphview/GraphView.dart';
 import 'dart:convert' as convert;
 
 import '../../../components/Nodulo.dart';
-import '../../../model/phylogenetic_model/EdgeModel.dart';
-import '../../../model/phylogenetic_model/NodeModel.dart';
+import '../../../view_model/Home/EdgeModel.dart';
+import '../../../view_model/Home/NodeModel.dart';
 import '../../../view_model/Home/Phylogenetic_view_model.dart';
 
 
@@ -56,10 +56,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
 
   @override
   void dispose() {
-    phy.dis();
     super.dispose();
   }
-
 
   @override
   void initState() {

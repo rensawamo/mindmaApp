@@ -38,8 +38,8 @@ Future<Database> _getNodeDatabase() async {
 
 class NodeData {
 
+  // 画面描写でデータ取得
   static Future<List<Map<String, dynamic>>?> loadNodes(String title) async {
-    // ロードマップの最初のedgeのタイトルでテーブル検索
     List<Map<String, dynamic>>? json = [];
     final db = await _getNodeDatabase();
     final datas = await db.query('node', where: 'title = ?', whereArgs: [title], orderBy: 'id ASC');
@@ -51,20 +51,24 @@ class NodeData {
     return json;
   }
 
-  // 新しい jsonへ切り替え
-  static addNodes(String title, List<Map<String, dynamic>> nodes) async {
+  // node追加処理
+  static addNode(int id, String title, String label) async {
     final db = await _getNodeDatabase();
-    await db.delete(
+    var existingNode = await db.query(
       'node',
-      where: 'title = ?',
-      whereArgs: [title],
+      where: 'id = ?',
+      whereArgs: [id],
     );
-    for (var node in nodes) {
-      db.insert('node', {
-        'id': node['id'],
-        'title': title,
-        'label': node['label'],
-      });
+    // 最初にデフォルトのノードを登録する
+    if (existingNode.isNotEmpty) {
+      print('ID $id is already in the database.');
+      return;
     }
+    await db.insert('node', {
+      'id': id,
+      'title': title,
+      'label': label,
+    });
+    print('Node with ID $id added.');
   }
 }

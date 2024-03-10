@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:uuid/uuid.dart';
 import 'dart:convert' as convert;
 
-
 Future<Database> _getEdgeDatabase() async {
   final dbPath = await sql.getDatabasesPath();
   final db = await sql.openDatabase(
@@ -23,11 +22,12 @@ Future<Database> _getEdgeDatabase() async {
 }
 
 class EdgeData {
+  // 画面描写時に取得
   static Future<List<Map<String, int>>?> loadEdgeds(String title) async {
-    // ロードマップの最初のedgeのタイトルでテーブル検索
     List<Map<String, int>>? json = [];
     final db = await _getEdgeDatabase();
-    final datas = await db.query('edge', where: 'title = ?', whereArgs: [title]);
+    final datas =
+        await db.query('edge', where: 'title = ?', whereArgs: [title]);
     print(datas);
     print("datas");
     if (datas.isNotEmpty) {
@@ -38,21 +38,12 @@ class EdgeData {
     return json;
   }
 
-  // 新しい jsonへ切り替え
-  static addEdge(String title, List<dynamic> edges) async {
-    print(edges);
+  static addEdge(int fromId, String title, int toId) async {
     final db = await _getEdgeDatabase();
-    await db.delete(
-      'edge',
-      where: 'title = ?',
-      whereArgs: [title],
-    );
-    for (var edge in edges) {
-      db.insert('edge', {
-        'fromId': edge['from'],
-        'title': title,
-        'toId': edge['to'],
-      });
-    }
+    db.insert('edge', {
+      'fromId': fromId,
+      'title': title,
+      'toId': toId,
+    });
   }
 }
