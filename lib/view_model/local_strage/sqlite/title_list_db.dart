@@ -11,7 +11,7 @@ Future<Database> _getTitleListDatabase() async {
     path.join(dbPath, 'titleList.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE titleList(id INTEGER PRIMARY KEY AUTOINCREMENT,sortId INTEGER, title TEXT)',
+        'CREATE TABLE titleList(id INTEGER PRIMARY KEY AUTOINCREMENT,sortId INTEGER, title TEXT )',
       );
     },
     version: 1,
@@ -32,14 +32,8 @@ class TitleListData {
         titles.add(data["title"] as String);
       }
     }
+    print(titles);
     return titles;
-  }
-
-  static Future<int> getId(String title) async {
-    // マインドマップのタイトル
-    final db = await _getTitleListDatabase();
-    final datas = await db.query('titleList', where: 'title = ?', whereArgs: [title]);
-    return datas[0]["id"] as int;
   }
 
   // タップされたリストの titleを取得 (系統樹の最初)
@@ -48,8 +42,6 @@ class TitleListData {
     final data = await db.query('titleList', where: 'id = ?', whereArgs: [id]);
     return data[0]['title'] as String;
   }
-
-  //
 
   // DB追加処理
   static addTitle(String title,int sortId) async {
@@ -70,19 +62,24 @@ class TitleListData {
     });
   }
 
-  static sortChange(List<String> titleLists) async {
+  static Future<void> sortChange(List<int> sortIndexes) async {
     final db = await _getTitleListDatabase();
-    // sortNum
-    for (int i = 1; i < titleLists.length; i++){
-      await db.update(
-        'titleList',
-        {
-          'title': titleLists[i - 1],
-          'id': getId(titleLists[i - 1])
-        },
-        where: 'sortId = ?',
-        whereArgs: [i],
-      );
-    }
+    // 既存のレコードを sortId の昇順で取得
+    final datas = await db.query('titleList', orderBy: 'sortId ASC');
+
+    // トランザクションを開始
+    await db.transaction((txn) async {
+      for (int i = 0; i < datas.length; i++) {
+        var data = datas[i];
+        var newSortId = sortIndexes[i];
+        // データベースを更新
+        await txn.update(
+          'titleList',
+          {'sortId': newSortId},
+          where: 'id = ?',
+          whereArgs: [data['id']],
+        );
+      }
+    });
   }
 }

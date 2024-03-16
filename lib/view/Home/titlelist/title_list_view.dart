@@ -18,15 +18,30 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   // マインドマップのタイトル
     List<String> myTiles = [];
 
+    // listの変化量を追跡する
+  List<int> createIndexMapping(List<String> before, List<String> after) {
+    List<int> indexMapping = [];
+
+    // 各要素の変更後のインデックスを追跡
+    for (var item in before) {
+      int newIndex = after.indexOf(item);
+      indexMapping.add(newIndex);
+    }
+
+    return indexMapping;
+  }
+
   // list darg dropはriver pod の適応？
   void updateMyTiles(int oldIndex, int newIndex) {
     setState(() {
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
+      var preTitles = List<String>.from(myTiles);
       final String tile = myTiles.removeAt(oldIndex);
       myTiles.insert(newIndex, tile);
-      TitleListData.sortChange(myTiles);
+      List<int> indexMapping = createIndexMapping(preTitles, myTiles);
+      TitleListData.sortChange(indexMapping);
     });
   }
 
@@ -86,7 +101,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                   TextButton(
                     child: const Text("OK"),
                     onPressed: () {
-                      TitleListData.addTitle(_controller.text, myTiles.length + 1);
+                      TitleListData.addTitle(_controller.text, myTiles.length);
                       myTiles.add(_controller.text);
                       setState(() {});
                       Navigator.pop(context);
