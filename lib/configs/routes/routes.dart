@@ -13,10 +13,10 @@ class Routes {
     switch(settings.name){
 
       case RoutesName.home:
-        return MaterialPageRoute(builder: (BuildContext context) => Home());
+        return MaterialPageRoute(builder: (BuildContext context) => HomeView());
 
       case RoutesName.login:
-        return MaterialPageRoute(builder: (BuildContext context) => const LoginView());
+      return MaterialPageRoute(builder: (BuildContext context) => const LoginView());
 
       //    launch screen
       case RoutesName.launch:

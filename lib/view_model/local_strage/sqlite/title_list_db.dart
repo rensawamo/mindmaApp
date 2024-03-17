@@ -20,6 +20,8 @@ Future<Database> _getTitleListDatabase() async {
 }
 
 
+
+
 class TitleListData {
   // 画面描写でデータ取得
   static Future<List<String>> loadTitles() async {
@@ -34,6 +36,12 @@ class TitleListData {
     }
     print(titles);
     return titles;
+  }
+
+  static Future<int> selectedTitleId(String title) async {
+    final db = await _getTitleListDatabase();
+    final data = await db.query('titleList', where: 'title = ?', whereArgs: [title]);
+    return data[0]['id'] as int;
   }
 
   // タップされたリストの titleを取得 (系統樹の最初)

@@ -4,6 +4,7 @@ import 'package:mindmapapp/configs/design/view+extention.dart';
 
 import '../../../view_model/home/titlelist/title_list_view_model.dart';
 import '../../../view_model/local_strage/sqlite/title_list_db.dart';
+import '../phylogenetic/Phylogenetic_view.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
   const TitleListView({super.key});
@@ -13,12 +14,12 @@ class TitleListView extends ConsumerStatefulWidget {
 }
 
 class _TitleListViewState extends ConsumerState<TitleListView> {
-
   final TextEditingController _controller = TextEditingController();
-  // マインドマップのタイトル
-    List<String> myTiles = [];
 
-    // listの変化量を追跡する
+  // マインドマップのタイトル
+  List<String> myTiles = [];
+
+  // listの変化量を追跡する
   List<int> createIndexMapping(List<String> before, List<String> after) {
     List<int> indexMapping = [];
 
@@ -47,16 +48,12 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
 
   @override
   Widget build(BuildContext context) {
-    @override
-    void dispose() {
-      _controller.dispose();
-      super.dispose();
-    }
 
     return Scaffold(
       appBar: AppBar(title: const Text("Re-Orderable ListView")),
       body: ReorderableListView(
         padding: const EdgeInsets.all(10),
+        onReorder: updateMyTiles,
         children: [
           for (final tile in myTiles)
             Padding(
@@ -66,11 +63,19 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                 color: Colors.grey[200],
                 child: ListTile(
                   title: Text(tile),
+                  onTap: () {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            PhylogeneticTreeView(title: tile),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
         ],
-        onReorder: updateMyTiles,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -125,5 +130,4 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       setState(() {});
     });
   }
-
 }

@@ -4,14 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 import '../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
-
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
-  const PhylogeneticTreeView({super.key});
+  final String title; // 受け取る文字列パラメータ
+
+  const PhylogeneticTreeView({super.key, required this.title});
 
   @override
-  ConsumerState<PhylogeneticTreeView> createState() {
-    return _TreeViewPageState();
-  }
+  ConsumerState<PhylogeneticTreeView> createState() => _TreeViewPageState();
 }
 
 class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
@@ -19,28 +18,42 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InteractiveViewer(
-        transformationController: ref.watch(viewModel).controller,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: InteractiveViewer(
+        transformationController: ref
+            .watch(viewModel)
+            .controller,
         constrained: false,
         boundaryMargin: EdgeInsets.all(1000),
         minScale: 0.01,
         maxScale: 2,
         child: GraphView(
-          graph: ref.watch(viewModel).graph,
-          algorithm:
-          BuchheimWalkerAlgorithm(ref.watch(viewModel).builder,
-              TreeEdgeRenderer(ref.watch(viewModel).builder)),
+          graph: ref
+              .watch(viewModel)
+              .graph,
+          algorithm: BuchheimWalkerAlgorithm(
+            ref
+                .watch(viewModel)
+                .builder,
+            TreeEdgeRenderer(ref
+                .watch(viewModel)
+                .builder),
+          ),
           paint: Paint()
             ..color = Colors.greenAccent
             ..strokeWidth = 3
             ..style = PaintingStyle.stroke,
           builder: (Node node) {
-            // I can decide what widget should be shown here based on the id
             var a = node.key!.value as int?;
-            var nodes = ref.watch(viewModel).json['nodes']!;
+            var nodes = ref
+                .watch(viewModel)
+                .json['nodes']!;
             var nodeValue = nodes.firstWhere((element) => element['id'] == a);
-            return ref.watch(viewModel).rectangleWidget(nodeValue['id'], nodeValue['label']);
+            return ref.watch(viewModel).rectangleWidget(
+                nodeValue['id'], nodeValue['label']);
           },
         ),
       ),
@@ -54,7 +67,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
 
   @override
   void initState() {
+    super.initState();
     ref.read(viewModel).init();
-    ref.read(viewModel).initializeGraph();
+    ref.read(viewModel).initializeGraph(widget.title);
   }
 }
