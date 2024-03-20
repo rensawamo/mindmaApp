@@ -1,24 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../../../components/Nodulo.dart';
 import '../../local_strage/sqlite/edge_db.dart';
 import '../../local_strage/sqlite/node_db.dart';
+import '../../local_strage/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
-
-  var startTitle = "title";
-  int currentSelectId = 1;
-
-  //  -----------    widget          ---------------
-  // ページタイトルの更新
-  setStartTitle(String text) {
-    startTitle = text;
-    notifyListeners();
-  }
+  int titleID = -1; // list tiletの id
+  String title = ""; // start nodeのタイトル
+  Graph graph = Graph()..isTree = true;
+  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
+  List<Map<String, dynamic>>? nodes;
+  List<Map<String, int>>? edges;
 
   // 選択しているNodeの更新
   setSelectedNode(newNodeId) {
@@ -26,20 +22,15 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  //  -----------    widget          ---------------
-
-
   //   ----------    phylogenetic     ---------------
   var selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
-  Widget rectangleWidget(int? id, String? title) {
-    return Nodulo(id, title, selectedNode, setSelectedNode, createSon,
-        createBro, controller);
+
+  //  Nodeの最小単位 スタートとchildで兼用
+  Widget rectangleWidget(int id, String title) {
+    return Nodulo(id, title, selectedNode, setSelectedNode,
+        createSon, createBro, controller, titleID);
   }
-
-  Graph graph = Graph()..isTree = true;
-  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
-
 
   void addEdge(from, to) {
     graph.addEdge(Node.Id(from), Node.Id(to));
@@ -51,10 +42,12 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void init() {
+  void init(String title) {
+    titleID = -1;
+    title = title;
     json = {
       "nodes": [
-        {"id": 1, "label": 'Início'}
+        {"id": 1, "label": title}
       ],
       "edges": []
     };
@@ -68,21 +61,23 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-
-  initializeGraph() async {
-    var nodes = await NodeData.loadNodes(startTitle);
-    var edges = await EdgeData.loadEdgeds(startTitle);
+  initializeGraph(String title) async {
+    titleID = await TitleListData.selectedTitleId(title);
+    nodes = await NodeData.loadNodes(titleID);
+    edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph({"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
-    NodeData.addNode(1,startTitle,'Início');
+    NodeData.addNode(1, titleID, title);
+    notifyListeners();
+    print(nodes);
   }
 
   addNode() {
     int newId = json["nodes"].length + 1;
-    json['nodes'].add({"id": newId, "label": 'NEW NODE'});
-    NodeData.addNode(newId,startTitle,'NEW NODE');
+    json['nodes'].add({"id": newId, "label": title});
+    NodeData.addNode(newId, titleID, title);
     return newId;
   }
 
@@ -91,20 +86,35 @@ class PhylogeneticViewModel with ChangeNotifier {
     json['edges'].add({"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
     notifyListeners();
-    EdgeData.addEdge(selectedNode.value,startTitle,newId);
+    EdgeData.addEdge(selectedNode.value, titleID, newId);
   }
 
+  Future<String> getNodeText(String title, int  nodeId) async {
+    print("ssss");
+    print(title);
+    print(nodeId);
+    titleID = await TitleListData.selectedTitleId("ささ");
+    var nodes =  await NodeData.loadNodes(titleID);
+    print(nodes);
+    if (nodes != null) {
+      var nodeText = nodes!.firstWhere(
+              (element) => element["id"] == nodeId,
+          orElse: () => {"label": ""}
+      )["label"];
+      return  nodeText;
+    } else {
+      return "NODATA";
+    }
+  }
   void createBro() {
     int newId = addNode();
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
-
     json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
-
     addEdge(previousConnection, newId);
     notifyListeners();
-    EdgeData.addEdge(previousConnection,startTitle,newId);
+    EdgeData.addEdge(previousConnection, titleID, newId);
   }
 
   void deleteNode() {
@@ -122,27 +132,24 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-      nodeIdArray.forEach((element) {
-        json['nodes'].removeWhere((node) => node['id'] == element);
-        json['edges'].removeWhere(
-                (node) => node['from'] == element || node['to'] == element);
-      });
-      graph.removeNode(Node.Id(nodeIdArray[0]));
+    nodeIdArray.forEach((element) {
+      json['nodes'].removeWhere((node) => node['id'] == element);
+      json['edges'].removeWhere(
+          (node) => node['from'] == element || node['to'] == element);
+    });
+    graph.removeNode(Node.Id(nodeIdArray[0]));
     notifyListeners();
-    print(json);
   }
 
   updateGraph(newJson) {
-      json = newJson;
+    json = newJson;
     var edges = json['edges']!;
     edges.forEach((element) {
       var fromNodeId = element['from'];
       var toNodeId = element['to'];
       graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
     });
-      notifyListeners();
+    notifyListeners();
   }
-
 //   ----------    phylogenetic     ---------------
-
 }

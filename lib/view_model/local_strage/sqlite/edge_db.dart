@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:mindmapapp/view_model/local_strage/sqlite/title_list_db.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -13,7 +14,7 @@ Future<Database> _getEdgeDatabase() async {
     path.join(dbPath, 'edge.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE edge(fromId INTEGER, title TEXT, toId INTEGER)',
+        'CREATE TABLE edge(fromId INTEGER, titleID INTEGER, toId INTEGER)',
       );
     },
     version: 1,
@@ -23,13 +24,11 @@ Future<Database> _getEdgeDatabase() async {
 
 class EdgeData {
   // 画面描写時に取得
-  static Future<List<Map<String, int>>?> loadEdgeds(String title) async {
+  static Future<List<Map<String, int>>?> loadEdgeds(int titleID) async {
     List<Map<String, int>>? json = [];
     final db = await _getEdgeDatabase();
     final datas =
-        await db.query('edge', where: 'title = ?', whereArgs: [title]);
-    print(datas);
-    print("datas");
+        await db.query('edge', where: 'titleID = ?', whereArgs: [titleID]);
     if (datas.isNotEmpty) {
       for (var data in datas) {
         json.add({"from": data["fromId"] as int, "to": data["toId"] as int});
@@ -38,11 +37,11 @@ class EdgeData {
     return json;
   }
 
-  static addEdge(int fromId, String title, int toId) async {
+  static addEdge(int fromId, int titleID, int toId) async {
     final db = await _getEdgeDatabase();
     db.insert('edge', {
       'fromId': fromId,
-      'title': title,
+      'titleID': titleID,
       'toId': toId,
     });
   }

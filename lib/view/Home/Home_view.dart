@@ -6,14 +6,14 @@ import '../../Navbar.dart';
 import 'User/User.dart';
 
 
-class Home extends StatefulWidget {
+class HomeView extends StatefulWidget {
   @override
-  State<Home> createState() => _MyAppState();
+  State<HomeView> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<Home> {
+class _MyAppState extends State<HomeView> {
   int currentIndex = 0;
-  final pages = [TitleListView(), PhylogeneticTreeView(), UserView()];
+  final pages = [TitleListView(), PhylogeneticTreeView(title: "",), UserView()];
 
   Widget build(BuildContext context) {
     return MaterialApp(

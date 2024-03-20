@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CommonNode extends StatelessWidget {
+import '../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import '../view_model/local_strage/sqlite/node_db.dart';
+import '../view_model/local_strage/sqlite/title_list_db.dart';
+
+class CommonNode extends ConsumerStatefulWidget {
   bool isSelected;
   ValueNotifier<int?> selectedNode;
   Function setSelectedNode;
   int? nodeId;
+  int titleId;
+  String title;
   var myFocusNode;
 
   CommonNode(this.isSelected, this.selectedNode, this.setSelectedNode,
-      this.nodeId, this.myFocusNode);
+      this.nodeId, this.myFocusNode, this.titleId,this.title);
+
+  @override
+  _StartingNodeState createState() => _StartingNodeState();
+}
+
+class _StartingNodeState extends ConsumerState<CommonNode> {
+  final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
+  TextEditingController _titleController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final nodeText = await ref.read(viewModel).getNodeText(widget.title,widget.nodeId!);
+      _titleController.text = nodeText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +42,7 @@ class CommonNode extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white.withAlpha(200),
           borderRadius: BorderRadius.circular(10),
-          border: isSelected
+          border: widget.isSelected
               ? Border.all(width: 3, color: Colors.amber)
               : Border.all(width: 2, color: Colors.lightBlue.shade200),
           boxShadow: [
@@ -41,24 +65,24 @@ class CommonNode extends StatelessWidget {
               width: 20,
               height: 20,
               margin: EdgeInsets.only(right: 10),
-              child: Center(
-                child: Text('${this.nodeId}'),
-              ),
             ),
           ),
           Expanded(
             flex: 5,
             child: TextFormField(
-                onChanged: null,
-                focusNode: myFocusNode,
+                controller: _titleController,
+                onChanged: (String value) {
+                  NodeData.updateNodeText(
+                      widget.nodeId!, widget.titleId, value);
+                },
+                focusNode: widget.myFocusNode,
                 onTap: () {
-                  setSelectedNode(nodeId);
+                  widget.setSelectedNode(widget.nodeId);
                 },
                 maxLines: null,
                 decoration: InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
-                  hintText: 'Escreva algo!',
                   border: InputBorder.none,
                 ),
                 style: TextStyle(fontWeight: FontWeight.bold)),

@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:mindmapapp/view_model/local_strage/sqlite/title_list_db.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -7,20 +8,6 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:uuid/uuid.dart';
 import 'dart:convert' as convert;
 
-// {
-// "nodes": [
-// {"id": 1, "label": "Início"},
-// {"id": 2, "label": "NEW NODE"},
-// {"id": 3, "label": "NEW NODE"},
-// {"id": 4, "label": "NEW NODE"}
-// ],
-// "edges": [
-// {"from": 1, "to": 2},
-// {"from": 1, "to": 3}, // Corrected the syntax here
-//     {"from": 2, "to": 4}  // Corrected the syntax here
-// ]
-// }
-
 
 Future<Database> _getNodeDatabase() async {
   final dbPath = await sql.getDatabasesPath();
@@ -28,7 +15,7 @@ Future<Database> _getNodeDatabase() async {
     path.join(dbPath, 'node.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE node(id INTEGER, title TEXT, label TEXT)',
+        'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT)',
       );
     },
     version: 1,
@@ -37,12 +24,11 @@ Future<Database> _getNodeDatabase() async {
 }
 
 class NodeData {
-
   // 画面描写でデータ取得
-  static Future<List<Map<String, dynamic>>?> loadNodes(String title) async {
+  static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
     List<Map<String, dynamic>>? json = [];
     final db = await _getNodeDatabase();
-    final datas = await db.query('node', where: 'title = ?', whereArgs: [title], orderBy: 'id ASC');
+    final datas = await db.query('node', where: 'titleID = ?', whereArgs: [titleID], orderBy: 'id ASC');
     if (datas.isNotEmpty) {
       for (var data in datas) {
         json.add({"id": data["id"], "label": data["label"]});
@@ -52,12 +38,12 @@ class NodeData {
   }
 
   // node追加処理
-  static addNode(int id, String title, String label) async {
+  static addNode(int id, int titleID, String label) async {
     final db = await _getNodeDatabase();
     var existingNode = await db.query(
       'node',
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'id = ? AND titleID = ?',
+      whereArgs: [id,titleID],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {
@@ -66,9 +52,20 @@ class NodeData {
     }
     await db.insert('node', {
       'id': id,
-      'title': title,
+      'titleID': titleID,
       'label': label,
     });
     print('Node with ID $id added.');
+  }
+
+  // Nodeのlabelを更新
+  static updateNodeText(int nodeId, int titleId, String text) async {
+    final db = await _getNodeDatabase();
+    await db.update(
+      'node',
+      {'label': text},
+      where: 'id = ? AND titleID = ?',
+      whereArgs: [nodeId, titleId],
+    );
   }
 }

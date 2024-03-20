@@ -28,6 +28,8 @@ class SessionController {
     sharedPreferenceClass.setValue('isLogin', 'true');
   }
 
+
+
   //getting User Data from shared Preference
   // and assigning it to session controller to used it across the app
   Future<void> getUserFromPreference() async {

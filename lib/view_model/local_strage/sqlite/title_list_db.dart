@@ -19,8 +19,8 @@ Future<Database> _getTitleListDatabase() async {
   return db;
 }
 
-
 class TitleListData {
+
   // 画面描写でデータ取得
   static Future<List<String>> loadTitles() async {
     // マインドマップのタイトル
@@ -32,8 +32,24 @@ class TitleListData {
         titles.add(data["title"] as String);
       }
     }
-    print(titles);
     return titles;
+  }
+
+  // phylognetic viewで 最初のタイトルが変更された場合 DBの更新をおこなう
+  static void updateTitle(String title, int titleId) async {
+    final db = await _getTitleListDatabase();
+    await db.update(
+      'titleList',
+      {'title': title},
+      where: 'id = ?',
+      whereArgs: [titleId],
+    );
+  }
+
+  static Future<int> selectedTitleId(String title) async {
+    final db = await _getTitleListDatabase();
+    final data = await db.query('titleList', where: 'title = ?', whereArgs: [title]);
+    return data[0]['id'] as int;
   }
 
   // タップされたリストの titleを取得 (系統樹の最初)
@@ -48,8 +64,8 @@ class TitleListData {
     final db = await _getTitleListDatabase();
     var existingNode = await db.query(
       'titleList',
-      where: 'sortId = ?',
-      whereArgs: [sortId],
+      where: 'title = ?',
+      whereArgs: [title],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {

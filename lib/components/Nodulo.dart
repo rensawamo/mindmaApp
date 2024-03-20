@@ -5,7 +5,8 @@ import 'CommonNode.dart';
 import 'NodeOptions.dart';
 
 class Nodulo extends StatefulWidget {
-  String? title;
+  final int titleId; // startNodeの id
+  final String title; // startNode の title
   int? nodeId;
   ValueNotifier<int> selectedNode;
   final Function setSelectedNode;
@@ -13,15 +14,25 @@ class Nodulo extends StatefulWidget {
   final createBro;
   final controller;
 
+
   Nodulo(this.nodeId, this.title, this.selectedNode, this.setSelectedNode,
-      this.createSon, this.createBro, this.controller);
+      this.createSon, this.createBro, this.controller, this.titleId);
 
   @override
   State<Nodulo> createState() => _NoduloState(nodeId, title, selectedNode,
-      setSelectedNode, createSon, createBro, controller);
+      setSelectedNode, createSon, createBro, controller,titleId);
 }
 
 class _NoduloState extends State<Nodulo> {
+  final int titleId; // startNodeの id
+  final String title; // startNode の title
+  int? nodeId;
+  ValueNotifier<int> selectedNode;
+  final Function setSelectedNode;
+  final createSon;
+  final createBro;
+  final controller;
+
   var isSelected = false;
   bool isFirst = false;
   late FocusNode myFocusNode = new FocusNode();
@@ -34,16 +45,8 @@ class _NoduloState extends State<Nodulo> {
     }
   }
 
-  int? nodeId;
-  String? title;
-  ValueNotifier<int> selectedNode;
-  final Function setSelectedNode;
-  final createSon;
-  final createBro;
-  final controller;
   _NoduloState(this.nodeId, this.title, this.selectedNode, this.setSelectedNode,
-      this.createSon, this.createBro, this.controller);
-
+      this.createSon, this.createBro, this.controller, this.titleId);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -59,10 +62,10 @@ class _NoduloState extends State<Nodulo> {
           handleFocus(value);
           return Column(children: [
             isFirst
-                ? StartingNode(isSelected, selectedNode, setSelectedNode,
-                nodeId, myFocusNode)
+                ? StartingNode(titleId,title,isSelected, selectedNode, setSelectedNode,
+                nodeId,  myFocusNode)
                 : CommonNode(isSelected, selectedNode, setSelectedNode, nodeId,
-                    myFocusNode),
+                    myFocusNode,titleId,title),
             isSelected
                 ? isFirst
                     ? NodeOptions(createSon, createBro, true)

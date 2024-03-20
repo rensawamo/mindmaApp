@@ -5,6 +5,4 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class TitleListModel with ChangeNotifier {
 
   List myTiles = [];
-
-
 }

@@ -34,7 +34,6 @@ class NetworkApiService implements BaseApiServices {
   @override
   Future getPostApiResponse(String url , dynamic data) async{
 
-
     if (kDebugMode) {
       print(url);
       print(data);
@@ -77,8 +76,6 @@ class NetworkApiService implements BaseApiServices {
         throw UnauthorisedException(response.body.toString());
       default:
         throw FetchDataException('Error occured while communicating with server');
-
     }
   }
-
 }
