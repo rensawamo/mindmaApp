@@ -16,7 +16,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
 
   final Future<String> _calculation = Future<String>.delayed(
     const Duration(seconds: 2),
-        () => 'Data Loaded',
+    () => 'Data Loaded',
   );
 
   @override
@@ -25,13 +25,9 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: FutureBuilder<int>(
-        future: ref.read(viewModel).init(widget.title),
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          List<Widget> children;
-          if (snapshot.hasData) {
-            // 値が存在する場合の処理
-            return InteractiveViewer(
+      body: ref.watch(viewModel).titleID == -1
+          ? Center(child: CircularProgressIndicator())
+          : InteractiveViewer(
               transformationController: ref.watch(viewModel).controller,
               constrained: false,
               boundaryMargin: EdgeInsets.all(1000),
@@ -39,9 +35,10 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
               maxScale: 2,
               child: GraphView(
                 graph: ref.watch(viewModel).graph,
-                algorithm:
-                BuchheimWalkerAlgorithm(ref.watch(viewModel).builder,
-                    TreeEdgeRenderer(ref.watch(viewModel).builder)),
+                algorithm: BuchheimWalkerAlgorithm(
+                  ref.watch(viewModel).builder,
+                  TreeEdgeRenderer(ref.watch(viewModel).builder),
+                ),
                 paint: Paint()
                   ..color = Colors.greenAccent
                   ..strokeWidth = 3
@@ -49,46 +46,21 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                 builder: (Node node) {
                   var a = node.key!.value as int?;
                   var nodes = ref.watch(viewModel).json['nodes']!;
-                  var nodeValue = nodes.firstWhere((element) => element['id'] == a);
-                  return ref.watch(viewModel).rectangleWidget(nodeValue['id'], nodeValue['label']);
+                  var nodeValue =
+                      nodes.firstWhere((element) => element['id'] == a);
+                  return ref
+                      .watch(viewModel)
+                      .rectangleWidget(nodeValue['id'], nodeValue['label']);
                 },
               ),
-            );
-          } else if (snapshot.hasError) {
-            children = <Widget>[
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Text('Error: ${snapshot.error}'),
-              ),
-            ];
-          } else {
-            children = const <Widget>[
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              ),
-            ];
-          }
-
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
             ),
-          );
-        },
-      ),
     );
+  }
+
+  @override
+  void initState() {
+    ref.read(viewModel).init(widget.title);
+    ref.read(viewModel).initializeGraph(widget.title);
   }
 
   @override

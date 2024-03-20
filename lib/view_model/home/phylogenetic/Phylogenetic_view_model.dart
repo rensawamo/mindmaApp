@@ -9,7 +9,8 @@ import '../../local_strage/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
-  var titleID; // list tiletの id
+  var titleID = -1; // list tiletの id
+  var title = ""; // start nodeのタイトル
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
@@ -23,11 +24,10 @@ class PhylogeneticViewModel with ChangeNotifier {
   var selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
 
-
   //  Nodeの最小単位 スタートとchildで兼用
-  Widget rectangleWidget(int? id, String? title)  {
-    return Nodulo(id, title ?? "ERROR", selectedNode, setSelectedNode, createSon,
-        createBro, controller,titleID);
+  Widget rectangleWidget(int? id, String? title) {
+    return Nodulo(id, title ?? "ERROR", selectedNode, setSelectedNode,
+        createSon, createBro, controller, titleID);
   }
 
   void addEdge(from, to) {
@@ -40,37 +40,44 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<int> init(String title) async {
+  void init(String title) {
+    titleID = -1;
+    title = "";
     json = {
       "nodes": [
         {"id": 1, "label": title}
       ],
       "edges": []
     };
-    titleID = await TitleListData.selectedTitleId(title);
-    print(titleID);
+    var nodes = json['nodes']!;
     graph.addNode(Node.Id(1));
     builder
       ..siblingSeparation = (20)
       ..levelSeparation = (40)
       ..subtreeSeparation = (50)
       ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
-    // id でDBからdataを取得する
+    notifyListeners();
+  }
+
+  initializeGraph(String title) async {
+    title = title;
+    titleID = await TitleListData.selectedTitleId(title);
+    print(titleID);
+    print("tilteid");
     var nodes = await NodeData.loadNodes(titleID);
     var edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph({"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
-    NodeData.addNode(1,titleID,title);
+    NodeData.addNode(1, titleID, title);
     notifyListeners();
-    return  titleID;
   }
 
   addNode() {
     int newId = json["nodes"].length + 1;
-    json['nodes'].add({"id": newId, "label": 'NEW NODE'});
-    NodeData.addNode(newId,titleID,'NEW NODE');
+    json['nodes'].add({"id": newId, "label": title});
+    NodeData.addNode(newId, titleID, title);
     return newId;
   }
 
@@ -79,7 +86,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     json['edges'].add({"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
     notifyListeners();
-    EdgeData.addEdge(selectedNode.value,titleID,newId);
+    EdgeData.addEdge(selectedNode.value, titleID, newId);
   }
 
   void createBro() {
@@ -90,7 +97,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
     addEdge(previousConnection, newId);
     notifyListeners();
-    EdgeData.addEdge(previousConnection,titleID,newId);
+    EdgeData.addEdge(previousConnection, titleID, newId);
   }
 
   void deleteNode() {
@@ -108,26 +115,25 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-      nodeIdArray.forEach((element) {
-        json['nodes'].removeWhere((node) => node['id'] == element);
-        json['edges'].removeWhere(
-                (node) => node['from'] == element || node['to'] == element);
-      });
-      graph.removeNode(Node.Id(nodeIdArray[0]));
+    nodeIdArray.forEach((element) {
+      json['nodes'].removeWhere((node) => node['id'] == element);
+      json['edges'].removeWhere(
+          (node) => node['from'] == element || node['to'] == element);
+    });
+    graph.removeNode(Node.Id(nodeIdArray[0]));
     notifyListeners();
   }
 
   updateGraph(newJson) {
-      json = newJson;
+    json = newJson;
     var edges = json['edges']!;
     edges.forEach((element) {
       var fromNodeId = element['from'];
       var toNodeId = element['to'];
       graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
     });
-      notifyListeners();
+    notifyListeners();
   }
 
 //   ----------    phylogenetic     ---------------
-
 }

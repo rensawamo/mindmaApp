@@ -43,8 +43,8 @@ class NodeData {
     final db = await _getNodeDatabase();
     var existingNode = await db.query(
       'node',
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'id = ? AND titleID = ?',
+      whereArgs: [id,titleID],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {
