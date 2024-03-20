@@ -14,6 +14,7 @@ class Nodulo extends StatefulWidget {
   final createBro;
   final controller;
 
+
   Nodulo(this.nodeId, this.title, this.selectedNode, this.setSelectedNode,
       this.createSon, this.createBro, this.controller, this.titleId);
 
@@ -31,6 +32,7 @@ class _NoduloState extends State<Nodulo> {
   final createSon;
   final createBro;
   final controller;
+
   var isSelected = false;
   bool isFirst = false;
   late FocusNode myFocusNode = new FocusNode();
@@ -63,7 +65,7 @@ class _NoduloState extends State<Nodulo> {
                 ? StartingNode(titleId,title,isSelected, selectedNode, setSelectedNode,
                 nodeId,  myFocusNode)
                 : CommonNode(isSelected, selectedNode, setSelectedNode, nodeId,
-                    myFocusNode),
+                    myFocusNode,titleId,title),
             isSelected
                 ? isFirst
                     ? NodeOptions(createSon, createBro, true)

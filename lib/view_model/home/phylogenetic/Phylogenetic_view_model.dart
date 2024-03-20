@@ -9,10 +9,12 @@ import '../../local_strage/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
-  var titleID = -1; // list tiletの id
-  var title = ""; // start nodeのタイトル
+  int titleID = -1; // list tiletの id
+  String title = ""; // start nodeのタイトル
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
+  List<Map<String, dynamic>>? nodes;
+  List<Map<String, int>>? edges;
 
   // 選択しているNodeの更新
   setSelectedNode(newNodeId) {
@@ -25,8 +27,8 @@ class PhylogeneticViewModel with ChangeNotifier {
   final controller = TransformationController();
 
   //  Nodeの最小単位 スタートとchildで兼用
-  Widget rectangleWidget(int? id, String? title) {
-    return Nodulo(id, title ?? "ERROR", selectedNode, setSelectedNode,
+  Widget rectangleWidget(int id, String title) {
+    return Nodulo(id, title, selectedNode, setSelectedNode,
         createSon, createBro, controller, titleID);
   }
 
@@ -42,7 +44,7 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   void init(String title) {
     titleID = -1;
-    title = "";
+    title = title;
     json = {
       "nodes": [
         {"id": 1, "label": title}
@@ -60,18 +62,16 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   initializeGraph(String title) async {
-    title = title;
     titleID = await TitleListData.selectedTitleId(title);
-    print(titleID);
-    print("tilteid");
-    var nodes = await NodeData.loadNodes(titleID);
-    var edges = await EdgeData.loadEdgeds(titleID);
+    nodes = await NodeData.loadNodes(titleID);
+    edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph({"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
     notifyListeners();
+    print(nodes);
   }
 
   addNode() {
@@ -89,6 +89,23 @@ class PhylogeneticViewModel with ChangeNotifier {
     EdgeData.addEdge(selectedNode.value, titleID, newId);
   }
 
+  Future<String> getNodeText(String title, int  nodeId) async {
+    print("ssss");
+    print(title);
+    print(nodeId);
+    titleID = await TitleListData.selectedTitleId("ささ");
+    var nodes =  await NodeData.loadNodes(titleID);
+    print(nodes);
+    if (nodes != null) {
+      var nodeText = nodes!.firstWhere(
+              (element) => element["id"] == nodeId,
+          orElse: () => {"label": ""}
+      )["label"];
+      return  nodeText;
+    } else {
+      return "NODATA";
+    }
+  }
   void createBro() {
     int newId = addNode();
     var previousNode = json['edges']
@@ -134,6 +151,5 @@ class PhylogeneticViewModel with ChangeNotifier {
     });
     notifyListeners();
   }
-
 //   ----------    phylogenetic     ---------------
 }

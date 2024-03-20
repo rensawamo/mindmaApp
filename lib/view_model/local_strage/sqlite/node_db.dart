@@ -24,7 +24,6 @@ Future<Database> _getNodeDatabase() async {
 }
 
 class NodeData {
-
   // 画面描写でデータ取得
   static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
     List<Map<String, dynamic>>? json = [];
@@ -57,5 +56,16 @@ class NodeData {
       'label': label,
     });
     print('Node with ID $id added.');
+  }
+
+  // Nodeのlabelを更新
+  static updateNodeText(int nodeId, int titleId, String text) async {
+    final db = await _getNodeDatabase();
+    await db.update(
+      'node',
+      {'label': text},
+      where: 'id = ? AND titleID = ?',
+      whereArgs: [nodeId, titleId],
+    );
   }
 }

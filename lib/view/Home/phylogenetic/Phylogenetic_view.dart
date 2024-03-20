@@ -14,11 +14,6 @@ class PhylogeneticTreeView extends ConsumerStatefulWidget {
 class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
 
-  final Future<String> _calculation = Future<String>.delayed(
-    const Duration(seconds: 2),
-    () => 'Data Loaded',
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

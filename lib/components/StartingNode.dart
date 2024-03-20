@@ -74,6 +74,8 @@ class _StartingNodeState extends ConsumerState<StartingNode> {
                 onTap: () {
                   ref.read(viewModel).
                   setSelectedNode(widget.nodeId);
+                  setState(() {
+                  });
                 },
                 maxLines: null,
                 decoration: InputDecoration(

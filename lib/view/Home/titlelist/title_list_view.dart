@@ -64,13 +64,15 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                 child: ListTile(
                   title: Text(tile),
                   onTap: () {
-                    Navigator.push<void>(
+                    final result = Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) =>
                             PhylogeneticTreeView(title: tile),
                       ),
                     );
+                    if (result != null) {
+                    }
                   },
                 ),
               ),
