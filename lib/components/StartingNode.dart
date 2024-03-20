@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import '../view_model/local_strage/sqlite/title_list_db.dart';
 
 class StartingNode extends ConsumerStatefulWidget {
+  final int titleId;
+  final String title;
   final bool isSelected;
   final ValueNotifier<int?> selectedNode;
   final Function setSelectedNode;
   final int? nodeId;
   final FocusNode myFocusNode;
 
-  StartingNode(this.isSelected,
+  StartingNode(
+      this.titleId,
+      this.title,
+      this.isSelected,
       this.selectedNode,
       this.setSelectedNode,
       this.nodeId,
@@ -56,16 +62,13 @@ class _StartingNodeState extends ConsumerState<StartingNode> {
               width: 20,
               height: 20,
               margin: EdgeInsets.only(right: 10),
-              child: Center(
-                child: Text('${widget.nodeId}'),
-              ),
             ),
           ),
           Expanded(
             flex: 5,
             child: TextFormField(
                 onChanged: (String value) {
-                  ref.read(viewModel).setStartTitle(value);
+                  TitleListData.updateTitle(value,widget.titleId);
                 },
                 focusNode: widget.myFocusNode,
                 onTap: () {
@@ -76,7 +79,7 @@ class _StartingNodeState extends ConsumerState<StartingNode> {
                 decoration: InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
-                  hintText: ref.watch(viewModel).startTitle,
+                  hintText: widget.title,
                   border: InputBorder.none,
                 ),
                 style: TextStyle(fontWeight: FontWeight.bold)),

@@ -9,16 +9,9 @@ import '../../local_strage/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
-  var titleID = 0;
-  var startTitle = "title";
-  int currentSelectId = 1;
-
-  //  -----------    widget          ---------------
-  // ページタイトルの更新
-  setStartTitle(String text) {
-    startTitle = text;
-    notifyListeners();
-  }
+  var titleID; // list tiletの id
+  Graph graph = Graph()..isTree = true;
+  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
   // 選択しているNodeの更新
   setSelectedNode(newNodeId) {
@@ -26,20 +19,16 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  //  -----------    widget          ---------------
-
-
   //   ----------    phylogenetic     ---------------
   var selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
-  Widget rectangleWidget(int? id, String? title) {
-    return Nodulo(id, title, selectedNode, setSelectedNode, createSon,
-        createBro, controller);
+
+
+  //  Nodeの最小単位 スタートとchildで兼用
+  Widget rectangleWidget(int? id, String? title)  {
+    return Nodulo(id, title ?? "ERROR", selectedNode, setSelectedNode, createSon,
+        createBro, controller,titleID);
   }
-
-  Graph graph = Graph()..isTree = true;
-  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
-
 
   void addEdge(from, to) {
     graph.addEdge(Node.Id(from), Node.Id(to));
@@ -51,34 +40,31 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void init() {
+  Future<int> init(String title) async {
     json = {
       "nodes": [
-        {"id": 1, "label": 'Início'}
+        {"id": 1, "label": title}
       ],
       "edges": []
     };
-    var nodes = json['nodes']!;
+    titleID = await TitleListData.selectedTitleId(title);
+    print(titleID);
     graph.addNode(Node.Id(1));
     builder
       ..siblingSeparation = (20)
       ..levelSeparation = (40)
       ..subtreeSeparation = (50)
       ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
-    notifyListeners();
-  }
-
-
-  initializeGraph(String title) async {
-    titleID = await TitleListData.selectedTitleId(title);
-    print(titleID);
+    // id でDBからdataを取得する
     var nodes = await NodeData.loadNodes(titleID);
     var edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph({"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
-    NodeData.addNode(1,titleID,'Início');
+    NodeData.addNode(1,titleID,title);
+    notifyListeners();
+    return  titleID;
   }
 
   addNode() {
@@ -101,9 +87,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
-
     json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
-
     addEdge(previousConnection, newId);
     notifyListeners();
     EdgeData.addEdge(previousConnection,titleID,newId);
