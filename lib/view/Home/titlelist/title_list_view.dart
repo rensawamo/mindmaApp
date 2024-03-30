@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindmapapp/configs/design/view+extention.dart';
-
 import '../../../DB/local_strage/sqlite/title_list_db.dart';
-import '../../../components/exception/snackbar.dart';
-import '../../../components/widget/alert_widget.dart';
+import '../../../core/exception/snackbar.dart';
+import '../../../core/widget/alert_widget.dart';
+import '../../../core/widget/delete_dialog_widget.dart';
 import '../phylogenetic/Phylogenetic_view.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
@@ -22,7 +21,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   // listの変化量を追跡する
   List<int> createIndexMapping(List<String> before, List<String> after) {
     List<int> indexMapping = [];
-
     // 各要素の変更後のインデックスを追跡
     for (var item in before) {
       int newIndex = after.indexOf(item);
@@ -59,6 +57,20 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
               child: Container(
                 color: Colors.grey[200],
                 child: ListTile(
+
+                  // 削除ダイアログのh表示
+                  trailing: GestureDetector(
+                    onTap: () async {
+                      ShowDeleteDialog(context, "削除").then((result) async {
+                        if (result != null) { //okがおされた場合
+                          TitleListData.deleteTitle(tile);
+                          myTiles.remove(tile);
+                          setState(() {});
+                        }
+                      });
+                    },
+                    child: Icon(Icons.delete),
+                  ),
                   title: Text(tile),
                   onTap: () {
                     final result = Navigator.push<void>(
@@ -73,6 +85,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                       setState(() {});
                     }));
                   },
+
                 ),
               ),
             ),
@@ -86,7 +99,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
             if (result != null) {
               // list titleは 一意とする
               if (myTiles.contains(result)) {
-                showErrorSnackBar(context, 'すでに登録されています');
+                ShowErrorSnackBar(context, 'すでに登録されています');
               } else {
                 TitleListData.addTitle(result, myTiles.length);
               };

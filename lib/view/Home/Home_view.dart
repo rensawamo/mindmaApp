@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
 import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
-
-import '../../Navbar.dart';
 import 'User/User.dart';
-
 
 class HomeView extends StatefulWidget {
   @override
@@ -13,7 +9,7 @@ class HomeView extends StatefulWidget {
 
 class _MyAppState extends State<HomeView> {
   int currentIndex = 0;
-  final pages = [TitleListView(), PhylogeneticTreeView(title: "",), UserView()];
+  final pages = [TitleListView(), UserView()];
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,10 +19,9 @@ class _MyAppState extends State<HomeView> {
         primaryColor: Colors.greenAccent,
       ),
       home: Scaffold(
-        drawer: Navbar(),
         appBar: AppBar(
-          title: Text('Teste'),
-          backgroundColor: Colors.greenAccent,
+          centerTitle: true,
+          title: Text(currentIndex == 0 ? "マインドマップ" : "ユーザーページ"),
         ),
         body: pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -34,14 +29,10 @@ class _MyAppState extends State<HomeView> {
             unselectedItemColor: Colors.greenAccent.shade700,
             selectedItemColor: Colors.white,
             backgroundColor: Colors.greenAccent,
-            items: [
+            items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'リスト', // Correct property is 'label', not 'itle'
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: '', // Correct property is 'label', not 'itle'
+                icon: Icon(Icons.account_tree),
+                label: 'Mind Map', // Correct property is 'label', not 'itle'
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_rounded),

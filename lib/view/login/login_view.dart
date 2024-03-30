@@ -24,7 +24,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-  final _counterProvider = ChangeNotifierProvider((ref) => LoginViewModel());
 
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
-import '../../components/exception/exception.dart';
+import '../../core/exception/exception.dart';
 import 'base_api.dart';
 
 class NetworkApiService implements BaseApiServices {

@@ -5,12 +5,9 @@ class RoutesName {
 
   //accounts routes name
   static const String login = 'login_screen' ;
-
-  //home screen routes name
+  // phylogenetic の view
   static const String home = 'home_screen' ;
-
-
-
+  // オープニングのスクリーン
   static const String launch = 'launch_view' ;
 
 
