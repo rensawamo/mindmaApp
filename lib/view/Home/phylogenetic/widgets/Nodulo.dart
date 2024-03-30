@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'StartingNode.dart';
 import 'CommonNode.dart';
 import 'NodeOptions.dart';
+import 'StartingNode.dart';
 
 class Nodulo extends StatefulWidget {
   final int titleId; // startNodeの id

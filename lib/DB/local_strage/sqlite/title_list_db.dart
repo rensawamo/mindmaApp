@@ -59,6 +59,18 @@ class TitleListData {
     return data[0]['title'] as String;
   }
 
+  // DB削除処理
+  static deleteTitle(String title) async {
+    final db = await _getTitleListDatabase();
+    // titleに一致するレコードを削除する
+    await db.delete(
+      'titleList',
+      where: 'title = ?',
+      whereArgs: [title],
+    );
+  }
+
+
   // DB追加処理
   static addTitle(String title,int sortId) async {
     final db = await _getTitleListDatabase();

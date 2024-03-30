@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../../../DB/local_strage/sqlite/node_db.dart';
 
-import '../DB/local_strage/sqlite/title_list_db.dart';
-import '../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import '../../../../DB/local_strage/sqlite/title_list_db.dart';
+import '../../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
 
 class StartingNode extends ConsumerStatefulWidget {
@@ -31,6 +32,17 @@ class StartingNode extends ConsumerStatefulWidget {
 
 class _StartingNodeState extends ConsumerState<StartingNode> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
+  TextEditingController _titleController = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final nodeText = widget.title!;
+      _titleController.text = nodeText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +80,13 @@ class _StartingNodeState extends ConsumerState<StartingNode> {
           Expanded(
             flex: 5,
             child: TextFormField(
+                controller: _titleController,
                 onChanged: (String value) {
+                  // listの titleを更新する
                   TitleListData.updateTitle(value,widget.titleId);
+                  // nodeのdbを更新する
+                  NodeData.updateNodeText(
+                      widget.nodeId!, widget.titleId, value);
                 },
                 focusNode: widget.myFocusNode,
                 onTap: () {
@@ -82,7 +99,6 @@ class _StartingNodeState extends ConsumerState<StartingNode> {
                 decoration: InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
-                  hintText: widget.title,
                   border: InputBorder.none,
                 ),
                 style: TextStyle(fontWeight: FontWeight.bold)),

@@ -4,7 +4,7 @@ import 'package:graphview/GraphView.dart';
 import '../../../DB/local_strage/sqlite/edge_db.dart';
 import '../../../DB/local_strage/sqlite/node_db.dart';
 import '../../../DB/local_strage/sqlite/title_list_db.dart';
-import '../../../components/Nodulo.dart';
+import '../../../view/Home/phylogenetic/widgets/Nodulo.dart';
 
 
 class PhylogeneticViewModel with ChangeNotifier {
@@ -92,20 +92,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     EdgeData.addEdge(selectedNode.value, titleID, newId);
   }
 
-  // 各nodeの titleを dbより画面描写時に検索する
-  // Future<String> getNodeText(int  nodeId) async {
-  //   titleID = await TitleListData.selectedTitleId(title);
-  //   var nodes =  await NodeData.loadNodes(titleID);
-  //   if (nodes != null) {
-  //     var nodeText = nodes!.firstWhere(
-  //             (element) => element["id"] == nodeId,
-  //         orElse: () => {"label": ""}
-  //     )["label"];
-  //     return  nodeText;
-  //   } else {
-  //     return "NODATA";
-  //   }
-  // }
   void createBro() {
     int newId = addNode();
     var previousNode = json['edges']

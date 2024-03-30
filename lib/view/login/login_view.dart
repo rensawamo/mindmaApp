@@ -24,7 +24,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-  final _counterProvider = ChangeNotifierProvider((ref) => LoginViewModel());
 
 
   @override
@@ -60,7 +59,6 @@ class _LoginViewState extends State<LoginView> {
               SizedBox(
                 height: context.mediaQueryHeight * .02,
               ),
-              //  Gooleのサインイン
             ],
           ),
         ),

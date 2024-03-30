@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-import 'buttons/CreateSonButton.dart';
-import 'buttons/CreateBroButton.dart';
+import '../../../../core/buttons/CreateBroButton.dart';
+import '../../../../core/buttons/CreateSonButton.dart';
+
 
 class NodeOptions extends StatelessWidget {
   var createSon;

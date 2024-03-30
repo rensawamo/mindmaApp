@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../DB/local_strage/session/session.dart';
-import '../../../components/login_button.dart';
 import '../../../configs/routes/routes_name.dart';
 import '../../../configs/utils.dart';
 import '../../../configs/validator.dart';
 import '../../../view_model/login/login_view_model.dart';
+import '../../Home/phylogenetic/widgets/login_button.dart';
 
 final _firebase = FirebaseAuth.instance;
 class LoginButtonWidget extends StatelessWidget {

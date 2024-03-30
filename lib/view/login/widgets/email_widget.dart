@@ -39,7 +39,6 @@ class InputEmailWidget extends StatelessWidget {
                 provider.setEmail(value);
               },
             ),
-
             // You can add more widgets as children here
           ],
         );
