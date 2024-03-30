@@ -6,7 +6,7 @@ import 'NodeOptions.dart';
 
 class Nodulo extends StatefulWidget {
   final int titleId; // startNodeの id
-  final String title; // startNode の title
+  final String title; // Node の title
   int? nodeId;
   ValueNotifier<int> selectedNode;
   final Function setSelectedNode;

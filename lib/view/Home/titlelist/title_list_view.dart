@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindmapapp/configs/design/view+extention.dart';
 
-import '../../../view_model/home/titlelist/title_list_view_model.dart';
-import '../../../view_model/local_strage/sqlite/title_list_db.dart';
+import '../../../DB/local_strage/sqlite/title_list_db.dart';
 import '../phylogenetic/Phylogenetic_view.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
@@ -28,7 +27,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       int newIndex = after.indexOf(item);
       indexMapping.add(newIndex);
     }
-
     return indexMapping;
   }
 
@@ -48,7 +46,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(title: const Text("Re-Orderable ListView")),
       body: ReorderableListView(
@@ -91,7 +88,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                   height: context.mediaQueryHeight * .06,
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'タイトル',
                       border: OutlineInputBorder(),
                     ),
@@ -123,7 +120,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       ),
     );
   }
-
   @override
   void initState() {
     super.initState();

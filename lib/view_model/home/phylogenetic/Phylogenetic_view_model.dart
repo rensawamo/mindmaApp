@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphview/GraphView.dart';
-
+import '../../../DB/local_strage/sqlite/edge_db.dart';
+import '../../../DB/local_strage/sqlite/node_db.dart';
+import '../../../DB/local_strage/sqlite/title_list_db.dart';
 import '../../../components/Nodulo.dart';
-import '../../local_strage/sqlite/edge_db.dart';
-import '../../local_strage/sqlite/node_db.dart';
-import '../../local_strage/sqlite/title_list_db.dart';
+
 
 class PhylogeneticViewModel with ChangeNotifier {
   var json;
@@ -26,9 +26,12 @@ class PhylogeneticViewModel with ChangeNotifier {
   var selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
 
-  //  Nodeの最小単位 スタートとchildで兼用
-  Widget rectangleWidget(int id, String title) {
-    return Nodulo(id, title, selectedNode, setSelectedNode,
+  //  Nodeの最小単位
+  // Node はすべてこれが生成されて表示される
+  // どのnodeの子かで識別
+  Widget rectangleWidget(int id, String nodeTitle) {
+    print(nodeTitle);
+    return Nodulo(id, nodeTitle, selectedNode, setSelectedNode,
         createSon, createBro, controller, titleID);
   }
 
@@ -71,7 +74,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
     notifyListeners();
-    print(nodes);
   }
 
   addNode() {
@@ -81,6 +83,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     return newId;
   }
 
+  // 子供のnodeを追加する
   void createSon() {
     int newId = addNode();
     json['edges'].add({"from": selectedNode.value, "to": newId});
@@ -89,23 +92,20 @@ class PhylogeneticViewModel with ChangeNotifier {
     EdgeData.addEdge(selectedNode.value, titleID, newId);
   }
 
-  Future<String> getNodeText(String title, int  nodeId) async {
-    print("ssss");
-    print(title);
-    print(nodeId);
-    titleID = await TitleListData.selectedTitleId("ささ");
-    var nodes =  await NodeData.loadNodes(titleID);
-    print(nodes);
-    if (nodes != null) {
-      var nodeText = nodes!.firstWhere(
-              (element) => element["id"] == nodeId,
-          orElse: () => {"label": ""}
-      )["label"];
-      return  nodeText;
-    } else {
-      return "NODATA";
-    }
-  }
+  // 各nodeの titleを dbより画面描写時に検索する
+  // Future<String> getNodeText(int  nodeId) async {
+  //   titleID = await TitleListData.selectedTitleId(title);
+  //   var nodes =  await NodeData.loadNodes(titleID);
+  //   if (nodes != null) {
+  //     var nodeText = nodes!.firstWhere(
+  //             (element) => element["id"] == nodeId,
+  //         orElse: () => {"label": ""}
+  //     )["label"];
+  //     return  nodeText;
+  //   } else {
+  //     return "NODATA";
+  //   }
+  // }
   void createBro() {
     int newId = addNode();
     var previousNode = json['edges']
