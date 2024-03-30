@@ -78,6 +78,7 @@ class TitleListData {
     });
   }
 
+  //  dbの並べ替え
   static Future<void> sortChange(List<int> sortIndexes) async {
     final db = await _getTitleListDatabase();
     // 既存のレコードを sortId の昇順で取得

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../configs/routes/routes_name.dart';
-import '../local_strage/session/session.dart';
+import '../../DB/local_strage/session/session.dart';
 
 
 class LaunchViewModel {

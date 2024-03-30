@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../DB/local_strage/sqlite/node_db.dart';
 import '../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
-import '../view_model/local_strage/sqlite/node_db.dart';
-import '../view_model/local_strage/sqlite/title_list_db.dart';
 
 class CommonNode extends ConsumerStatefulWidget {
   bool isSelected;
@@ -21,15 +20,17 @@ class CommonNode extends ConsumerStatefulWidget {
   _StartingNodeState createState() => _StartingNodeState();
 }
 
+// 各nodeのtitleをセット
 class _StartingNodeState extends ConsumerState<CommonNode> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
   TextEditingController _titleController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
     Future(() async {
-      final nodeText = await ref.read(viewModel).getNodeText(widget.title,widget.nodeId!);
+      final nodeText = widget.title!;
       _titleController.text = nodeText;
     });
   }
