@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../DB/local_strage/sqlite/node_db.dart';
-import '../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import '../../../../DB/local_strage/sqlite/node_db.dart';
+import '../../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
 class CommonNode extends ConsumerStatefulWidget {
   bool isSelected;

@@ -60,7 +60,6 @@ class _LoginViewState extends State<LoginView> {
               SizedBox(
                 height: context.mediaQueryHeight * .02,
               ),
-              //  Gooleのサインイン
             ],
           ),
         ),

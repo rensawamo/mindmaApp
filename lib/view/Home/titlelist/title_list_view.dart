@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindmapapp/configs/design/view+extention.dart';
 
 import '../../../DB/local_strage/sqlite/title_list_db.dart';
+import '../../../components/exception/snackbar.dart';
+import '../../../components/widget/alert_widget.dart';
 import '../phylogenetic/Phylogenetic_view.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
   const TitleListView({super.key});
-
   @override
   ConsumerState<TitleListView> createState() => _TitleListViewState();
 }
@@ -47,7 +48,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Re-Orderable ListView")),
       body: ReorderableListView(
         padding: const EdgeInsets.all(10),
         onReorder: updateMyTiles,
@@ -67,54 +67,33 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                         builder: (BuildContext context) =>
                             PhylogeneticTreeView(title: tile),
                       ),
-                    );
-                    if (result != null) {
-                    }
+                    ).then((result ) => Future.microtask(() async {
+                      // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
+                      myTiles = await TitleListData.loadTitles();
+                      setState(() {});
+                    }));
                   },
                 ),
               ),
             ),
         ],
       ),
+
+      //  titleの追加 ダイヤログ
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('新しいタイトル'),
-                content: SizedBox(
-                  width: context.mediaQueryWidth * .085,
-                  height: context.mediaQueryHeight * .06,
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: 'タイトル',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (text) {
-                      print("Current text: $text");
-                    },
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text("閉じる"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  TextButton(
-                    child: const Text("OK"),
-                    onPressed: () {
-                      TitleListData.addTitle(_controller.text, myTiles.length);
-                      myTiles.add(_controller.text);
-                      setState(() {});
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+        onPressed:  () async {
+          ShowConfirmDialog(context, "追加").then((result) async {
+            if (result != null) {
+              // list titleは 一意とする
+              if (myTiles.contains(result)) {
+                showErrorSnackBar(context, 'すでに登録されています');
+              } else {
+                TitleListData.addTitle(result, myTiles.length);
+              };
+              myTiles.add(result);
+              setState(() {});
+            }
+          });
         },
         child: const Icon(Icons.add),
       ),
@@ -129,3 +108,4 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
     });
   }
 }
+
