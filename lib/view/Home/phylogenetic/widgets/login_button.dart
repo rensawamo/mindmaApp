@@ -28,7 +28,7 @@ class RoundButton extends StatelessWidget {
         child: Center(
             child:loading ? const CircularProgressIndicator(color: Colors.white,) :
             const Text('Create an account' ,
-              style: TextStyle(color: AppColors.blackColor),
+              style: TextStyle(color: Colors.black),
             )),
       ),
     );
