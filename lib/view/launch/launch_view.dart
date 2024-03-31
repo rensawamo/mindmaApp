@@ -18,7 +18,6 @@ class _SplashViewState extends State<LaunchView> {
   @override
   void initState() {
     super.initState();
-
     splashServices.checkAuthentication(context);
   }
   @override

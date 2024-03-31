@@ -26,15 +26,21 @@ class LoginButtonWidget extends StatelessWidget {
           };
           await SessionController()
               .saveUserInPreference(data);
+
           await SessionController().getUserFromPreference();
+          // 既存ユーザはログインさせる
           if (provider.isLogin) {
+            await SessionController().saveUserEmail(provider.email.toString());
             await _firebase.signInWithEmailAndPassword(
                 email: provider.email.toString(), password: provider.password.toString());
             Navigator.pushNamed(context, RoutesName.home);
+
+            //  新しいユーザはアカウントを作成する
           } else {
             await _firebase.createUserWithEmailAndPassword(
                 email: provider.email.toString(),
                 password: provider.password.toString());
+            await SessionController().saveUserEmail(provider.email.toString());
             Navigator.pushNamed(context, RoutesName.home);
           }
         },

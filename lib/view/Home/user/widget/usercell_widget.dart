@@ -39,11 +39,6 @@ class UserCellWidget extends StatelessWidget {
               ),
             ],
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: AppColors.blackColor.withOpacity(.4),
-            size: 16,
-          )
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
+import '../../../configs/componets/loading_widget.dart';
 import '../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
@@ -21,7 +22,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
         title: Text(widget.title),
       ),
       body: ref.watch(viewModel).titleID == -1
-          ? Center(child: CircularProgressIndicator())
+          ? const LoadingWidget()
           : InteractiveViewer(
               transformationController: ref.watch(viewModel).controller,
               constrained: false,

@@ -11,6 +11,7 @@ class SessionController {
 
   bool? isLogin;
   UserModel user = UserModel();
+  String? email;
 
   factory SessionController() {
     return _session;
@@ -21,6 +22,12 @@ class SessionController {
     isLogin = false;
   }
 
+  // email をlocalに保存
+  // settingのview用
+  Future<void> saveUserEmail(String email) async {
+    sharedPreferenceClass.setValue('email', email);
+  }
+
   // saving data into shared preference
   Future<void> saveUserInPreference(dynamic user) async {
     sharedPreferenceClass.setValue('token', jsonEncode(user));
@@ -28,16 +35,12 @@ class SessionController {
     sharedPreferenceClass.setValue('isLogin', 'true');
   }
 
-
-
   //getting User Data from shared Preference
   // and assigning it to session controller to used it across the app
   Future<void> getUserFromPreference() async {
-
     try {
       var userData = await sharedPreferenceClass.readValue('token');
       var isLogin = await sharedPreferenceClass.readValue('isLogin');
-
       if (userData.isNotEmpty) {
         SessionController().user = UserModel.fromJson(jsonDecode(userData));
       }
@@ -46,6 +49,4 @@ class SessionController {
       debugPrint(e.toString());
     }
   }
-
-
 }
