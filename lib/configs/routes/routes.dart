@@ -16,11 +16,15 @@ class Routes {
         return MaterialPageRoute(builder: (BuildContext context) => HomeView());
 
       case RoutesName.login:
-      return MaterialPageRoute(builder: (BuildContext context) => const LoginView());
+        // ver  0.0.0では local strageのみとする
+        // ver upで firestoreと 認証を合わしていく
+      // return MaterialPageRoute(builder: (BuildContext context) => LoginView());
+        return MaterialPageRoute(builder: (BuildContext context) => HomeView());
+
 
       //    launch screen
       case RoutesName.launch:
-        return MaterialPageRoute(builder: (BuildContext context) => const LaunchView());
+        return MaterialPageRoute(builder: (BuildContext context) => LaunchView());
 
       default:
         return MaterialPageRoute(builder: (_){

@@ -8,7 +8,7 @@ class RoutesName {
   // phylogenetic の view
   static const String home = 'home_screen' ;
   // オープニングのスクリーン
-  static const String launch = 'launch_view' ;
+  static const String launch = 'LaunchView' ;
 
 
 }
