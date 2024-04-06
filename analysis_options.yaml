@@ -10,19 +10,54 @@
 include: package:flutter_lints/flutter.yaml
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # 強制的に戻り値の型宣言を要求。
+    - always_declare_return_types
+    # 制御文の本体を新しい行に配置することを要求。
+    - always_put_control_body_on_new_line
+    # 名前付きパラメータの中で、必須のものを最初に置く。
+    - always_put_required_named_parameters_first
+    # 名前付きパラメータがnull非許容であることを要求。
+    - always_specify_types
+    # オーバーライドされたメンバーに@overrideアノテーションを付けることを要求。
+    - annotate_overrides
+    # dynamic型の使用を避けることを推奨。
+    - avoid_annotating_with_dynamic
+    # 'as'キーワードの使用を避けることを推奨。
+    - avoid_as
+    # 条件式でのブールリテラルの使用を避けることを推奨。
+    - avoid_bool_literals_in_conditional_expressions
+    # 'on'句のないcatchブロックの使用を避けることを推奨。
+    - avoid_catches_without_on_clauses
+    # エラーをキャッチすることを避けることを推奨。
+    - avoid_catching_errors
+    # 静的メンバーのみを持つクラスの使用を避けることを推奨。
+    - avoid_classes_with_only_static_members
+    # doubleとintのチェックを避けることを推奨。
+    - avoid_double_and_int_checks
+    # 空のelseブロックの使用を避けることを推奨。
+    - avoid_empty_else
+    # 変更可能なクラスにequalsとhashCodeを実装することを避けることを推奨。
+    - avoid_equals_and_hash_code_on_mutable_classes
+    # constクラスでフィールドイニシャライザを使用することを避けることを推奨。
+    - avoid_field_initializers_in_const_classes
+    # foreachコール内の関数リテラルの使用を避けることを推奨
+    - avoid_function_literals_in_foreach_calls
+    # 値型を実装することを避けることを推奨。
+    - avoid_implementing_value_types
+    # nullの初期化を避けることを推奨。
+    - avoid_init_to_null
+    # JavaScriptの丸められた整数を避けることを推奨。
+    - avoid_js_rounded_ints
+    # 等価演算子でのnullチェックを避けることを推奨。
+    - avoid_null_checks_in_equality_operators
+    # 位置引数でのブールパラメータの使用を避けることを推奨。
+    - avoid_positional_boolean_parameters
+    # printの使用を避けることを推奨。
+    - avoid_print
+    # privateなtypedef関数の使用を避けることを推奨。
+    - avoid_private_typedef_functions
+    # 相対的なライブラリインポートを避けることを推奨。
+    - avoid_relative_lib_imports
+  
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options

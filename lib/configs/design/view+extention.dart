@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // 画面のサイズを取得するショートカット
 extension MediaQueryValues on BuildContext {
   double get mediaQueryHeight => MediaQuery.sizeOf(this).height;
