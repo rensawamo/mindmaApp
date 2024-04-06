@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/app_colors.dart';
-import 'package:mindmapapp/configs/componets/loading_widget.dart';
-import 'package:mindmapapp/configs/design/view+extention.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/componets/loading_widget.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class LoginButton extends StatelessWidget {
   final String title;
@@ -28,7 +28,7 @@ class LoginButton extends StatelessWidget {
             child: loading
                 ? const LoadingWidget()
                 : const Text(
-                    'アカウント作成',
+                    '認証',
                     style: TextStyle(color: AppColors.paleGreen, fontSize: 20),
                   )),
       ),

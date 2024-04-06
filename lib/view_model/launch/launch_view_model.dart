@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/routes/routes_name.dart';
+import 'package:mindmapapp/core/routes/routes_name.dart';
 import 'package:mindmapapp/db/session/session.dart';
 
 

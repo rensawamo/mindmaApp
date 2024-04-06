@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
-import 'package:mindmapapp/configs/design/app_texts.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
 class ChangeAuthWidget extends StatelessWidget {
 
   const ChangeAuthWidget(

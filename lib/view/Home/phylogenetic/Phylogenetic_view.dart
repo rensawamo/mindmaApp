@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-import '../../../configs/componets/loading_widget.dart';
+import '../../../core/componets/loading_widget.dart';
 import '../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {

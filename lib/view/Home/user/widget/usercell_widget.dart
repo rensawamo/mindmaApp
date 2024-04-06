@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../configs/design/app_colors.dart';
+import '../../../../core/design/app_colors.dart';
 
 class UserCellWidget extends StatelessWidget {
   final IconData icon;
