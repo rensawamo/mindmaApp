@@ -1,34 +1,26 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/color.dart';
+import 'package:mindmapapp/configs/design/app_colors.dart';
 import 'package:mindmapapp/configs/design/view+extention.dart';
-import 'package:mindmapapp/model/user_model/user_model.dart';
-import 'package:mindmapapp/view/Home/user/widget/mail.dart';
-import 'package:mindmapapp/view/Home/user/widget/mail_widget.dart';
 import 'package:mindmapapp/view/Home/user/widget/usercell_widget.dart';
-import 'package:mindmapapp/view/login/login_view.dart';
-import '../../../DB/local_strage/session/session.dart';
-import '../../../DB/local_strage/strage/strage.dart';
-import '../../../configs/componets/loading_widget.dart';
-import '../../../configs/routes/routes_name.dart';
-import '../../../core/widget/delete_dialog_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-class UserView extends StatefulWidget {
+import 'package:mindmapapp/db/strage/local_storage.dart';
+import 'package:mindmapapp/db/session/session.dart';
+import 'package:mindmapapp/configs/componets/loading_widget.dart';
+import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
+import 'package:mindmapapp/view/login/login_page.dart';
+class UserPage extends StatefulWidget {
   @override
   _UserViewState createState() => _UserViewState();
 }
 
-class _UserViewState extends State<UserView> {
+class _UserViewState extends State<UserPage> {
   late LocalStorage sharedPreferenceClass;
   late String user = "";
   late bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
-    // lacal strqe からの取得の関係で useremailが取得できるか
+    // lacal strqe からの取得の関係で useremailが取得している間はローディングを表示
     return isLoading
         ? const LoadingWidget()
         : Scaffold(
@@ -95,16 +87,16 @@ class _UserViewState extends State<UserView> {
                             ShowDeleteDialog(context, "ログアウトしますか？")
                                 .then((result) async {
                               if (result != null) {
-                                //okがおされた場合 launchに飛ばす
+                                // firebase のログアウト
                                 await FirebaseAuth.instance.signOut();
                                 // session を破壊
                                 await SessionController().sessionClear();
+                                // login 画面に戻す stackの削除
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginView()),
-                                  (Route<dynamic> route) =>
-                                      false, 
+                                      builder: (context) => LoginPage()),
+                                  (Route<dynamic> route) => false,
                                 );
                               }
                             });

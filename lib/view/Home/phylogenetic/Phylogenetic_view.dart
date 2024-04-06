@@ -21,7 +21,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ref.watch(viewModel).titleID == -1
+      // init処理で viewModelに前のlistで選択された titleIdが設定されるまでローディング画面を表示
+      body: ref.watch(viewModel).titleID == -1 
           ? const LoadingWidget()
           : InteractiveViewer(
               transformationController: ref.watch(viewModel).controller,
@@ -44,6 +45,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                   var nodes = ref.watch(viewModel).json['nodes']!;
                   var nodeValue =
                       nodes.firstWhere((element) => element['id'] == a);
+                      //  各nodeを生成
                   return ref
                       .watch(viewModel)
                       .rectangleWidget(nodeValue['id'], nodeValue['label']);

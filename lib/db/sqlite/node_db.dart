@@ -1,11 +1,6 @@
-import 'dart:ffi';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart' as syspaths;
-import 'package:uuid/uuid.dart';
-import 'dart:convert' as convert;
 
 
 Future<Database> _getNodeDatabase() async {
@@ -66,5 +61,11 @@ class NodeData {
       where: 'id = ? AND titleID = ?',
       whereArgs: [nodeId, titleId],
     );
+  }
+
+  //  Node削除
+  static Future deleteNode(int titleID, int nodeId) async {
+    final db = await _getNodeDatabase();
+    db.delete('node', where: 'id = ? AND titleID = ?', whereArgs: [nodeId, titleID]);
   }
 }

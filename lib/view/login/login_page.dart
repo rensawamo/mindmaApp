@@ -1,25 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mindmapapp/configs/design/view+extention.dart';
-import 'package:mindmapapp/view/Home/Home_view.dart';
 import 'package:mindmapapp/view/login/widgets/chang_auth_widget.dart';
 import 'package:mindmapapp/view/login/widgets/email_widget.dart';
 import 'package:mindmapapp/view/login/widgets/login_button_widget.dart';
 import 'package:mindmapapp/view/login/widgets/password_widget.dart';
+import 'package:mindmapapp/configs/design/app_colors.dart';
 
-
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginPageState extends State<LoginPage> {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
@@ -34,7 +28,9 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+        body: Container(
+      color: AppColors.paleGreen,
+      child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -44,13 +40,13 @@ class _LoginViewState extends State<LoginView> {
               InputEmailWidget(
                   focusNode: emailFocusNode,
                   passwordFocusNode: passwordFocusNode),
-              InputPasswordWidget(focusNode: passwordFocusNode),
+              PasswordWidget(focusNode: passwordFocusNode),
               SizedBox(
                 height: context.mediaQueryHeight * .085,
               ),
               const LoginButtonWidget(),
               SizedBox(
-                height: context.mediaQueryHeight * .02,
+                height: context.mediaQueryHeight * .03,
               ),
               const ChangeAuthWidget(),
               SizedBox(
@@ -60,6 +56,6 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

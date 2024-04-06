@@ -1,10 +1,8 @@
 
 
 class AppException implements Exception {
-  // ignore: prefer_typing_uninitialized_variables
-  final _message;
-  // ignore: prefer_typing_uninitialized_variables
-  final _prefix;
+  String? _message;
+  String? _prefix;
 
   AppException([this._message , this._prefix]);
 

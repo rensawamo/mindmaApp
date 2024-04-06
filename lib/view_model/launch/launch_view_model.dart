@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../configs/routes/routes_name.dart';
-import '../../DB/local_strage/session/session.dart';
+import 'package:mindmapapp/configs/routes/routes_name.dart';
+import 'package:mindmapapp/db/session/session.dart';
 
 
 class LaunchViewModel {
@@ -20,7 +20,7 @@ class LaunchViewModel {
               Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false),
         );
       }
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace){ //defalutでは loginに飛ばす
       Timer(const Duration(seconds: 2),
             () =>
             Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false),

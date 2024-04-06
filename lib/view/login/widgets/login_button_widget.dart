@@ -1,46 +1,44 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../DB/local_strage/session/session.dart';
-import '../../../configs/routes/routes_name.dart';
-import '../../../configs/utils.dart';
-import '../../../configs/validator.dart';
-import '../../../view_model/login/login_view_model.dart';
-import '../../Home/phylogenetic/widgets/login_button.dart';
+import 'package:mindmapapp/configs/routes/routes_name.dart';
+import 'package:mindmapapp/db/session/session.dart';
+import 'package:mindmapapp/view_model/login/login_view_model.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/widgets/buttons/login_button.dart';
 
 final _firebase = FirebaseAuth.instance;
+
 class LoginButtonWidget extends StatelessWidget {
-  const   LoginButtonWidget({Key? key}) : super(key: key);
+  const LoginButtonWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, provider, child) {
-      return RoundButton(
-        title: provider.isLogin ? 'Login' : 'SignUp',
-        loading: provider.loginLoading ? true : false,
+    return Consumer<LoginViewModel>(builder: (context, ref, child) {
+      return LoginButton(
+        title: ref.isLogin ? 'Login' : 'SignUp',
+        loading: ref.loginLoading ? true : false,
         onPress: () async {
-          Map data = {
-            'email' : provider.email.toString(),
-            'password' : provider.password.toString(),
+          Map<String, String> data = {
+            'email': ref.email.toString(),
+            'password': ref.password.toString(),
           };
-          await SessionController()
-              .saveUserInPreference(data);
+          await SessionController().saveUserInPreference(data);
 
           await SessionController().getUserFromPreference();
           // 既存ユーザはログインさせる
-          if (provider.isLogin) {
-            await SessionController().saveUserEmail(provider.email.toString());
+          if (ref.isLogin) {
+            await SessionController().saveUserEmail(ref.email.toString());
             await _firebase.signInWithEmailAndPassword(
-                email: provider.email.toString(), password: provider.password.toString());
+                email: ref.email.toString(),
+                password: ref.password.toString());
             Navigator.pushNamed(context, RoutesName.home);
 
             //  新しいユーザはアカウントを作成する
           } else {
             await _firebase.createUserWithEmailAndPassword(
-                email: provider.email.toString(),
-                password: provider.password.toString());
-            await SessionController().saveUserEmail(provider.email.toString());
+                email: ref.email.toString(),
+                password: ref.password.toString());
+            await SessionController().saveUserEmail(ref.email.toString());
             Navigator.pushNamed(context, RoutesName.home);
           }
         },

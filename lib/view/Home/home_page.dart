@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
-import 'User/User.dart';
+import 'package:mindmapapp/view/Home/user/user_page.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -9,7 +9,7 @@ class HomeView extends StatefulWidget {
 
 class _MyAppState extends State<HomeView> {
   int currentIndex = 0;
-  final pages = [TitleListView(), UserView()];
+  final pages = [TitleListView(), UserPage()];
 
   Widget build(BuildContext context) {
     return MaterialApp(

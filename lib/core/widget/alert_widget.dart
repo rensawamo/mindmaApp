@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/view+extention.dart';
+
 class ConfirmDialog extends StatefulWidget {
   final String title;
 
@@ -52,25 +52,26 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
     super.initState();
     _controller.addListener(_updateState);
   }
+
   @override
   void dispose() {
     _controller.removeListener(_updateState);
     _controller.dispose();
     super.dispose();
   }
+
   void _updateState() {
     setState(() {});
   }
 }
 
-// textfield に入力されれた文字を Okがおされた 時に変えして。呼び出し側で関数の処理をおこなう
-Future<String> ShowConfirmDialog(BuildContext context,String title) async {
-  final result = await showDialog<String>(
+// textfield に入力されれた文字を Okがおされた 時に。呼び出し側で関数の処理をおこなう
+Future<String?> ShowConfirmDialog(BuildContext context, String title) async {
+  String? result = await showDialog<String>(
     context: context,
     builder: (BuildContext context) => ConfirmDialog(
       title: title,
     ),
   );
-  return result!;
+  return result;
 }
-

@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/configs/routes/routes_name.dart';
 
-import '../../view/Home/Home_view.dart';
-import '../../view/launch/launch_view.dart';
-import '../../view/login/login_view.dart';
+import 'package:mindmapapp/view/Home/home_page.dart';
+import 'package:mindmapapp/view/launch/launch_page.dart';
+import 'package:mindmapapp/view/login/login_page.dart';
+
+
 
 class Routes {
 
   static Route<dynamic>  generateRoute(RouteSettings settings){
 
     switch(settings.name){
-
+      // phylogenetic と setting 
       case RoutesName.home:
         return MaterialPageRoute(builder: (BuildContext context) => HomeView());
 
       case RoutesName.login:
         // ver  0.0.0では local strageのみとする
         // ver upで firestoreと 認証を合わしていく
-      return MaterialPageRoute(builder: (BuildContext context) => LoginView());
+      return MaterialPageRoute(builder: (BuildContext context) => LoginPage());
         // return MaterialPageRoute(builder: (BuildContext context) => HomeView());
 
       //    launch screen
@@ -28,7 +30,7 @@ class Routes {
         return MaterialPageRoute(builder: (_){
           return const Scaffold(
             body: Center(
-              child: Text('No route defined.'),
+              child: Text('エラー画面'),
             ),
           );
         });

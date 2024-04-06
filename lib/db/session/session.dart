@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../../model/user_model/user_model.dart';
-import '../strage/strage.dart';
+import 'package:mindmapapp/model/user_model/user_model.dart';
+import 'package:mindmapapp/db/strage/local_storage.dart';
 
 //singleton class
 class SessionController {
@@ -16,9 +16,8 @@ class SessionController {
   factory SessionController() {
     return _session;
   }
-
+  
   SessionController._internel() {
-    // here we can initialize the values
     isLogin = false;
   }
 
@@ -28,20 +27,21 @@ class SessionController {
     sharedPreferenceClass.setValue('email', email);
   }
 
+  // email をlocalから取得
   Future<void> sessionClear() async {
     sharedPreferenceClass.clearValue('token');
     sharedPreferenceClass.clearValue('isLogin');
+    isLogin = false;
   }
 
-  // saving data into shared preference
-  Future<void> saveUserInPreference(dynamic user) async {
+  //  token 情報の保存
+  Future<void> saveUserInPreference(user) async {
     sharedPreferenceClass.setValue('token', jsonEncode(user));
     //storing value to check login
     sharedPreferenceClass.setValue('isLogin', 'true');
   }
 
-  //getting User Data from shared Preference
-  // and assigning it to session controller to used it across the app
+  //  ユーザ情報を取得
   Future<void> getUserFromPreference() async {
     try {
       var userData = await sharedPreferenceClass.readValue('token');

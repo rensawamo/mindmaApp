@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../DB/local_strage/sqlite/title_list_db.dart';
-import '../../../core/exception/snackbar.dart';
-import '../../../core/widget/alert_widget.dart';
-import '../../../core/widget/delete_dialog_widget.dart';
-import '../phylogenetic/Phylogenetic_view.dart';
+import 'package:mindmapapp/db/sqlite/title_list_db.dart';
+import 'package:mindmapapp/core/exception/snackbar.dart';
+import 'package:mindmapapp/core/widget/alert_widget.dart';
+import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
   const TitleListView({super.key});
@@ -13,7 +13,6 @@ class TitleListView extends ConsumerStatefulWidget {
 }
 
 class _TitleListViewState extends ConsumerState<TitleListView> {
-  final TextEditingController _controller = TextEditingController();
 
   // マインドマップのタイトル
   List<String> myTiles = [];
@@ -57,12 +56,12 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
               child: Container(
                 color: Colors.grey[200],
                 child: ListTile(
-
                   // 削除ダイアログのh表示
                   trailing: GestureDetector(
                     onTap: () async {
                       ShowDeleteDialog(context, "削除").then((result) async {
-                        if (result != null) { //okがおされた場合
+                        if (result != null) {
+                          //okがおされた場合
                           TitleListData.deleteTitle(tile);
                           myTiles.remove(tile);
                           setState(() {});
@@ -73,19 +72,18 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                   ),
                   title: Text(tile),
                   onTap: () {
-                    final result = Navigator.push<void>(
+                    Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) =>
                             PhylogeneticTreeView(title: tile),
                       ),
-                    ).then((result ) => Future.microtask(() async {
-                      // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
-                      myTiles = await TitleListData.loadTitles();
-                      setState(() {});
-                    }));
+                    ).then((result) => Future.microtask(() async {
+                          // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
+                          myTiles = await TitleListData.loadTitles();
+                          setState(() {});
+                        }));
                   },
-
                 ),
               ),
             ),
@@ -94,7 +92,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
 
       //  titleの追加 ダイヤログ
       floatingActionButton: FloatingActionButton(
-        onPressed:  () async {
+        onPressed: () async {
           ShowConfirmDialog(context, "追加").then((result) async {
             if (result != null) {
               // list titleは 一意とする
@@ -102,7 +100,8 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                 ShowErrorSnackBar(context, 'すでに登録されています');
               } else {
                 TitleListData.addTitle(result, myTiles.length);
-              };
+              }
+              ;
               myTiles.add(result);
               setState(() {});
             }
@@ -112,6 +111,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
@@ -121,4 +121,3 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
     });
   }
 }
-

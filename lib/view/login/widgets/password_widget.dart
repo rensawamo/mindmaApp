@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mindmapapp/view_model/login/login_view_model.dart';
 
-import '../../../view_model/login/login_view_model.dart';
 
-class InputPasswordWidget extends StatelessWidget {
-  InputPasswordWidget({Key? key ,required this.focusNode}) : super(key: key);
+class PasswordWidget extends StatelessWidget {
+  PasswordWidget({Key? key ,required this.focusNode}) : super(key: key);
 
   final FocusNode focusNode;
   final ValueNotifier<bool> _obSecurePassword = ValueNotifier<bool>(true);
@@ -21,7 +21,6 @@ class InputPasswordWidget extends StatelessWidget {
                   focusNode: focusNode,
                   obscuringCharacter: "*",
                   decoration: InputDecoration(
-                    hintText: 'Password',
                     labelText: 'Password',
                     prefixIcon: const Icon(Icons.lock_open_rounded),
                     suffixIcon: InkWell(

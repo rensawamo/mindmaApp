@@ -1,12 +1,6 @@
-import 'dart:ffi';
-import 'package:mindmapapp/DB/local_strage/sqlite/title_list_db.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart' as syspaths;
-import 'package:uuid/uuid.dart';
-import 'dart:convert' as convert;
 
 Future<Database> _getEdgeDatabase() async {
   final dbPath = await sql.getDatabasesPath();
@@ -37,12 +31,19 @@ class EdgeData {
     return json;
   }
 
-  static addEdge(int fromId, int titleID, int toId) async {
+  static Future<void> addEdge(int fromId, int titleID, int toId) async {
     final db = await _getEdgeDatabase();
     db.insert('edge', {
       'fromId': fromId,
       'titleID': titleID,
       'toId': toId,
     });
+  }
+
+  static Future<void> deleteEdge(int titleID,int toId) async {
+    final db = await _getEdgeDatabase();
+    db.delete('edge',
+        where: 'titleID = ? AND toId = ?',
+        whereArgs: [titleID, toId]);
   }
 }

@@ -1,29 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 
 class LoginViewModel with ChangeNotifier {
+  
+  bool _loginLoading = false; // ぐるぐる
+  bool get loginLoading => _loginLoading;
+  bool isLogin = false;
 
-  //  changeNotifierによる loading
-  bool _loginLoading = false ;
-  bool get loginLoading => _loginLoading ;
-  bool isLogin = false ;
-
-  setLoginLoading(bool value){
+  void setLoginLoading(bool value) {
     _loginLoading = value;
     notifyListeners();
   }
 
-  //creating getter method to store value of input email
-  String _email = '' ;
-  String get email => _email ;
 
-  setEmail(String email){
-    _email = email ;
+  String _email = '';
+  String get email => _email;
+
+  void setEmail(String email) {
+    _email = email;
   }
-  setIsLogin() {
+
+  void setIsLogin() {
     if (isLogin == true) {
       isLogin = false;
     } else {
@@ -32,12 +30,10 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  //creating getter method to store value of input password
-  String _password = '' ;
-  String get password => _password ;
+  String _password = '';
+  String get password => _password;
 
-  setPassword(String password){
-    _password = password ;
+  void setPassword(String password) {
+    _password = password;
   }
 }
-
