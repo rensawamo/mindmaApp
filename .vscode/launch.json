@@ -1,0 +1,59 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "dev-debug",
+          "program": "lib/main_development.dart",
+          "request": "launch",
+          "type": "dart",
+          
+          "flutterMode": "debug",
+          "args": [
+              "--dart-define-from-file=dart_defines/dev.env"
+          ]
+      },
+      {
+          "name": "stg-debug",
+          "program": "lib/main_staging.dart",
+          "request": "launch",
+          "type": "dart",
+          "flutterMode": "debug",
+          "args": [
+              "--dart-define-from-file=dart_defines/stg.env"
+          ]
+      },
+      {
+          "name": "prod-debug",
+          "program": "lib/main_production.dart",
+          "request": "launch",
+          "type": "dart",
+          "flutterMode": "debug",
+          "args": [
+              "--dart-define-from-file=dart_defines/prod.env"
+          ]
+      },
+      {
+          "name": "prod Profile",
+          "program": "lib/main.dart",
+          "request": "launch",
+          "type": "dart",
+          "flutterMode": "profile",
+          "args": [
+              "--dart-define-from-file=dart_defines/prod.env"
+          ]
+      },
+      {
+          "name": "prod Release",   
+          "program": "lib/main.dart",
+          "request": "launch",
+          "type": "dart",
+          "flutterMode": "release",
+          "args": [
+              "--dart-define-from-file=dart_defines/prod.env"
+          ]
+      },
+  ]
+}

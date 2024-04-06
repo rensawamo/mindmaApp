@@ -28,6 +28,11 @@ class SessionController {
     sharedPreferenceClass.setValue('email', email);
   }
 
+  Future<void> sessionClear() async {
+    sharedPreferenceClass.clearValue('token');
+    sharedPreferenceClass.clearValue('isLogin');
+  }
+
   // saving data into shared preference
   Future<void> saveUserInPreference(dynamic user) async {
     sharedPreferenceClass.setValue('token', jsonEncode(user));
