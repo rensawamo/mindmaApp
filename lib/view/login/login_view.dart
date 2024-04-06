@@ -11,8 +11,6 @@ import 'package:mindmapapp/view/login/widgets/email_widget.dart';
 import 'package:mindmapapp/view/login/widgets/login_button_widget.dart';
 import 'package:mindmapapp/view/login/widgets/password_widget.dart';
 
-import '../../configs/routes/routes_name.dart';
-import '../../view_model/login/login_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -24,7 +22,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-
 
   @override
   void dispose() {
