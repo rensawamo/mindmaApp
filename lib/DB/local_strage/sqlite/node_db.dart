@@ -67,4 +67,10 @@ class NodeData {
       whereArgs: [nodeId, titleId],
     );
   }
+
+  //  Node削除
+  static Future deleteNode(int titleID, int nodeId) async {
+    final db = await _getNodeDatabase();
+    db.delete('node', where: 'id = ? AND titleID = ?', whereArgs: [nodeId, titleID]);
+  }
 }

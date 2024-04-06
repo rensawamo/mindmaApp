@@ -20,7 +20,7 @@ class LaunchViewModel {
               Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false),
         );
       }
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace){ //defalutでは loginに飛ばす
       Timer(const Duration(seconds: 2),
             () =>
             Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false),

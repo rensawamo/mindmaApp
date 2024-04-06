@@ -45,4 +45,11 @@ class EdgeData {
       'toId': toId,
     });
   }
+
+  static deleteEdge(int titleID,int toId) async {
+    final db = await _getEdgeDatabase();
+    db.delete('edge',
+        where: 'titleID = ? AND toId = ?',
+        whereArgs: [titleID, toId]);
+  }
 }

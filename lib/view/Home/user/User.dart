@@ -28,7 +28,7 @@ class _UserViewState extends State<UserView> {
 
   @override
   Widget build(BuildContext context) {
-    // lacal strqe からの取得の関係で useremailが取得できるか
+    // lacal strqe からの取得の関係で useremailが取得している間はローディングを表示
     return isLoading
         ? const LoadingWidget()
         : Scaffold(
@@ -95,10 +95,11 @@ class _UserViewState extends State<UserView> {
                             ShowDeleteDialog(context, "ログアウトしますか？")
                                 .then((result) async {
                               if (result != null) {
-                                //okがおされた場合 launchに飛ばす
+                                // firebase のログアウト
                                 await FirebaseAuth.instance.signOut();
                                 // session を破壊
                                 await SessionController().sessionClear();
+                                // login 画面に戻す stackの削除
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

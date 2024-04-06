@@ -31,6 +31,7 @@ class SessionController {
   Future<void> sessionClear() async {
     sharedPreferenceClass.clearValue('token');
     sharedPreferenceClass.clearValue('isLogin');
+    isLogin = false;
   }
 
   // saving data into shared preference

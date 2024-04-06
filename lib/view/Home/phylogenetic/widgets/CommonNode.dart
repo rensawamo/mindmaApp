@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../DB/local_strage/sqlite/node_db.dart';
 import '../../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 
+// 各nodeの共通部分
 class CommonNode extends ConsumerStatefulWidget {
-  bool isSelected;
-  ValueNotifier<int?> selectedNode;
-  Function setSelectedNode;
-  int? nodeId;
-  int titleId;
-  String title;
+  bool isSelected; // 各nodeが選択されているかどうか
+  ValueNotifier<int?> selectedNode; // 
+  Function setSelectedNode; // 選択されたnodeをセットする関数
+  int? nodeId; // 各nodeのid
+  int titleId; // 各nodeのtitleのid
+  String title; // 各nodeのtitle
   var myFocusNode;
 
   CommonNode(this.isSelected, this.selectedNode, this.setSelectedNode,
