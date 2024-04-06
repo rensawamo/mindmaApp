@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/app_colors.dart';
-import 'package:mindmapapp/configs/design/view+extention.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/view/Home/user/widget/usercell_widget.dart';
 import 'package:mindmapapp/db/strage/local_storage.dart';
 import 'package:mindmapapp/db/session/session.dart';
-import 'package:mindmapapp/configs/componets/loading_widget.dart';
+import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/login/login_page.dart';
 class UserPage extends StatefulWidget {

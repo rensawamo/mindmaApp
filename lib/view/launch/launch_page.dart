@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view_model/launch/launch_view_model.dart';
-import 'package:mindmapapp/configs/design/app_colors.dart';
-import 'package:mindmapapp/configs/design/app_texts.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
 
 class LaunchView extends StatefulWidget {
   const LaunchView({Key? key}) : super(key: key);

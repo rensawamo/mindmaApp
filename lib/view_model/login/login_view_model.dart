@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 
 class LoginViewModel with ChangeNotifier {
-  
+  String? errorMessage;  // firebaseのエラーメッセージ
   bool _loginLoading = false; // ぐるぐる
   bool get loginLoading => _loginLoading;
   bool isLogin = false;
@@ -12,7 +12,6 @@ class LoginViewModel with ChangeNotifier {
     _loginLoading = value;
     notifyListeners();
   }
-
 
   String _email = '';
   String get email => _email;

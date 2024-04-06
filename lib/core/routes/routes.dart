@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/routes/routes_name.dart';
+import 'package:mindmapapp/core/routes/routes_name.dart';
 
 import 'package:mindmapapp/view/Home/home_page.dart';
 import 'package:mindmapapp/view/launch/launch_page.dart';

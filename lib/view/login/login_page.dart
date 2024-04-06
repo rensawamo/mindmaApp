@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/view+extention.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/view/login/widgets/chang_auth_widget.dart';
 import 'package:mindmapapp/view/login/widgets/email_widget.dart';
 import 'package:mindmapapp/view/login/widgets/login_button_widget.dart';
 import 'package:mindmapapp/view/login/widgets/password_widget.dart';
-import 'package:mindmapapp/configs/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   passwordFocusNode: passwordFocusNode),
               PasswordWidget(focusNode: passwordFocusNode),
               SizedBox(
-                height: context.mediaQueryHeight * .085,
+                height: context.mediaQueryHeight * .045,
               ),
               const LoginButtonWidget(),
               SizedBox(
