@@ -1,9 +1,6 @@
-import 'dart:ffi';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:convert' as convert;
 
 Future<Database> _getTitleListDatabase() async {
   final dbPath = await sql.getDatabasesPath();
@@ -20,7 +17,6 @@ Future<Database> _getTitleListDatabase() async {
 }
 
 class TitleListData {
-
   // 画面描写でデータ取得
   static Future<List<String>> loadTitles() async {
     // マインドマップのタイトル

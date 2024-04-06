@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../view_model/launch/launch_view_model.dart';
+import 'package:mindmapapp/view_model/launch/launch_view_model.dart';
 
 
 

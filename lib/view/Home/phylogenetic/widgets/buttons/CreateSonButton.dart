@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CreateSonButton extends StatelessWidget {
-  var createSon;
+  final void Function() createSon;
 
   CreateSonButton(this.createSon);
 

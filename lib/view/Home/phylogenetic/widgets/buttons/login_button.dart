@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../../configs/design/color.dart';
+import 'package:mindmapapp/configs/design/color.dart';
 
 
-class RoundButton extends StatelessWidget {
+class LoginButton extends StatelessWidget {
 
   final String title ;
   final bool loading ;
   final VoidCallback onPress ;
-  const RoundButton({Key? key ,
+  const LoginButton({Key? key ,
     required this.title,
     this.loading = false ,
     required this.onPress ,

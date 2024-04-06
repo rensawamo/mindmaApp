@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'CommonNode.dart';
+import 'common_node_widget.dart';
 import 'NodeOptions.dart';
-import 'StartingNode.dart';
-import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
-import 'package:mindmapapp/core/exception/snackbar.dart';
+import 'starting_node_widget.dart';
 
-class Nodulo extends StatefulWidget {
+
+class NoduloWidget extends StatefulWidget {
   final int titleId; // startNodeの id
   final String title; // Node の title
-  int? nodeId; // Node の id
-  ValueNotifier<int> selectedNode; // 選択されている Node の id
+  final int? nodeId; // Node の id
+  final ValueNotifier<int> selectedNode; // 選択されている Node の id
   final Function setSelectedNode; // 選択された Node をセットする関数
-  final createSon; // 子 Node を生成する関数
-  final createBro; // 兄弟 Node を生成する関数
-  final deleteNode; // Node を削除する関数
-  final controller; // phylogenetic graph の controller
+  final void Function() createSon; // 子 Node を生成する関数
+  final void Function() createBro; // 兄弟 Node を生成する関数
+  final void Function() deleteNode; // Node を削除する関数
+  final controller; // transform controller
 
-  Nodulo(
+  NoduloWidget(
       this.nodeId,
       this.title,
       this.selectedNode,
@@ -28,27 +27,27 @@ class Nodulo extends StatefulWidget {
       this.titleId);
 
   @override
-  State<Nodulo> createState() => _NoduloState(nodeId, title, selectedNode,
+  State<NoduloWidget> createState() => _NoduloState(nodeId, title, selectedNode,
       setSelectedNode, createSon, createBro, controller, deleteNode, titleId);
 }
 
-class _NoduloState extends State<Nodulo> {
+class _NoduloState extends State<NoduloWidget> {
   final int titleId; // startNodeの id
   final String title; // startNode の title
   int? nodeId;
   ValueNotifier<int> selectedNode;
-  final Function setSelectedNode;
-  final createSon;
-  final createBro;
-  final deleteNode;
+  Function setSelectedNode;
+  void Function() createSon;
+  void Function() createBro;
+  void Function() deleteNode;
   final controller;
 
   var isSelected = false;
   bool isFirst = false;
   late FocusNode myFocusNode = new FocusNode();
 
-  void handleFocus(value) {
-    if (value == this.nodeId && isSelected == false) {
+  void handleFocus(int value) {
+    if (value == this.nodeId! && isSelected == false) {
       isSelected = true;
     } else {
       isSelected = false;
@@ -81,9 +80,9 @@ class _NoduloState extends State<Nodulo> {
           handleFocus(value);
           return Column(children: [
             isFirst
-                ? StartingNode(titleId, title, isSelected, selectedNode,
+                ? StartingNodeWidget(titleId, title, isSelected, selectedNode,
                     setSelectedNode, nodeId, myFocusNode)
-                : CommonNode(isSelected, selectedNode, setSelectedNode, nodeId,
+                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode, nodeId,
                     myFocusNode, titleId, title),
             isSelected
                 ? isFirst

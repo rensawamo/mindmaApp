@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
-import 'package:mindmapapp/core/exception/snackbar.dart';
+
 
 class DeleteNodeButton extends StatelessWidget {
-  var deleteNode; // 子 Node を生成する関数
+  final void Function() deleteNode; // 子 Node を生成する関数
 
   DeleteNodeButton(this.deleteNode);
 

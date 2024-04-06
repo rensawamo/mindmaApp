@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../../DB/local_strage/sqlite/node_db.dart';
+import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import 'package:mindmapapp/db/sqlite/node_db.dart';
+import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
-import '../../../../DB/local_strage/sqlite/title_list_db.dart';
-import '../../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
-
-
-class StartingNode extends ConsumerStatefulWidget {
+class StartingNodeWidget extends ConsumerStatefulWidget {
   final int titleId;
   final String title;
   final bool isSelected;
@@ -15,7 +13,7 @@ class StartingNode extends ConsumerStatefulWidget {
   final int? nodeId;
   final FocusNode myFocusNode;
 
-  StartingNode(
+  StartingNodeWidget(
       this.titleId,
       this.title,
       this.isSelected,
@@ -30,7 +28,7 @@ class StartingNode extends ConsumerStatefulWidget {
   _StartingNodeState createState() => _StartingNodeState();
 }
 
-class _StartingNodeState extends ConsumerState<StartingNode> {
+class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
   TextEditingController _titleController = TextEditingController();
 

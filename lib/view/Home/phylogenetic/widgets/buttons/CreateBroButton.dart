@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class CreateBroButton extends StatelessWidget {
-  var createBro;
+  final void Function() createBro;
 
   CreateBroButton(this.createBro);
 

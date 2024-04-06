@@ -3,19 +3,16 @@ import 'package:another_flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 // アラート系統
 class Utils {
-
   // text  fieldのフォーカスを変える
-  static void fieldFocusChange(BuildContext context , FocusNode current , FocusNode nextFocus){
+  static void fieldFocusChange(
+      BuildContext context, FocusNode current, FocusNode nextFocus) {
     current.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  // generic toast message imported from toast package
-  // we will utilise this for showing errors or success messages
-  static toastMessage(String message){
+  static toastMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
       backgroundColor: Colors.black,
@@ -24,10 +21,11 @@ class Utils {
   }
 
   // フラッシュバーで error や successのメッセージを表示する
-  static void flushBarErrorMessage(String message, BuildContext context){
-    showFlushbar(context: context,
+  static void flushBarErrorMessage(String message, BuildContext context) {
+    showFlushbar(
+      context: context,
       flushbar: Flushbar(
-        forwardAnimationCurve:Curves.decelerate,
+        forwardAnimationCurve: Curves.decelerate,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         padding: const EdgeInsets.all(15),
         message: message,
@@ -37,18 +35,18 @@ class Utils {
         backgroundColor: Colors.red,
         reverseAnimationCurve: Curves.easeInOut,
         positionOffset: 20,
-        icon: const Icon(Icons.error , size: 28 , color: Colors.white,),
+        icon: const Icon(
+          Icons.error,
+          size: 28,
+          color: Colors.white,
+        ),
       )..show(context),
     );
   }
 
   //  スナックバー
-  static snackBar(String message, BuildContext context){
+  static snackBar(String message, BuildContext context) {
     return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(message ))
-    );
+        SnackBar(backgroundColor: Colors.red, content: Text(message)));
   }
-
 }

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../DB/local_strage/sqlite/node_db.dart';
-import '../../../../view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
+import 'package:mindmapapp/db/sqlite/node_db.dart';
 
 // 各nodeの共通部分
-class CommonNode extends ConsumerStatefulWidget {
-  bool isSelected; // 各nodeが選択されているかどうか
-  ValueNotifier<int?> selectedNode; // 
-  Function setSelectedNode; // 選択されたnodeをセットする関数
-  int? nodeId; // 各nodeのid
-  int titleId; // 各nodeのtitleのid
-  String title; // 各nodeのtitle
-  var myFocusNode;
+class CommonNodeWidget extends ConsumerStatefulWidget {
+  final bool isSelected; // 各nodeが選択されているかどうか
+  final ValueNotifier<int?> selectedNode; // 
+  final Function setSelectedNode; // 選択されたnodeをセットする関数
+  final int? nodeId; // 各nodeのid
+  final int titleId; // 各nodeのtitleのid
+  final String title; // 各nodeのtitle
+  final FocusNode myFocusNode;
 
-  CommonNode(this.isSelected, this.selectedNode, this.setSelectedNode,
+  CommonNodeWidget(this.isSelected, this.selectedNode, this.setSelectedNode,
       this.nodeId, this.myFocusNode, this.titleId,this.title);
 
   @override
@@ -22,7 +21,7 @@ class CommonNode extends ConsumerStatefulWidget {
 }
 
 // 各nodeのtitleをセット
-class _StartingNodeState extends ConsumerState<CommonNode> {
+class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
   final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
   TextEditingController _titleController = TextEditingController();
 

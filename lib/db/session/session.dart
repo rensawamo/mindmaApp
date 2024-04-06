@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../model/user_model/user_model.dart';
-import '../strage/strage.dart';
+import '../strage/local_storage.dart';
 
 //singleton class
 class SessionController {
@@ -35,7 +35,7 @@ class SessionController {
   }
 
   // saving data into shared preference
-  Future<void> saveUserInPreference(dynamic user) async {
+  Future<void> saveUserInPreference(user) async {
     sharedPreferenceClass.setValue('token', jsonEncode(user));
     //storing value to check login
     sharedPreferenceClass.setValue('isLogin', 'true');
