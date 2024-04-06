@@ -4,6 +4,7 @@ import 'package:mindmapapp/view/login/widgets/chang_auth_widget.dart';
 import 'package:mindmapapp/view/login/widgets/email_widget.dart';
 import 'package:mindmapapp/view/login/widgets/login_button_widget.dart';
 import 'package:mindmapapp/view/login/widgets/password_widget.dart';
+import 'package:mindmapapp/configs/design/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,7 +28,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+        body: Container(
+      color: AppColors.paleGreen,
+      child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -43,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const LoginButtonWidget(),
               SizedBox(
-                height: context.mediaQueryHeight * .02,
+                height: context.mediaQueryHeight * .03,
               ),
               const ChangeAuthWidget(),
               SizedBox(
@@ -53,6 +56,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

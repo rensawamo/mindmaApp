@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class LoginViewModel with ChangeNotifier {
   
-  bool _loginLoading = false;
+  bool _loginLoading = false; // ぐるぐる
   bool get loginLoading => _loginLoading;
   bool isLogin = false;
 

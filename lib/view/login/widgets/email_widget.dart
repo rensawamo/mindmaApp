@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
+import 'package:mindmapapp/configs/design/app_texts.dart';
 
 class InputEmailWidget extends StatelessWidget {
   final FocusNode focusNode;
@@ -15,31 +16,36 @@ class InputEmailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginViewModel>(
-      builder: (context, provider, child) {
+      builder: (context, ref, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Text(provider.isLogin ? 'サインイン' : 'サインアップ',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+              child: Text(ref.isLogin ? 'サインイン' : 'サインアップ',
+                  style: AppTexts.title2),
             ),
+            const SizedBox(height: 20),
             TextFormField(
-              decoration: const InputDecoration(labelText: 'Email Address'),
+              decoration: InputDecoration(
+                labelText: 'Eamil',
+                prefixIcon: const Icon(Icons.email),
+              ),
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               textCapitalization: TextCapitalization.none,
               validator: (value) {
-                if (value == null || value.trim().isEmpty || !value.contains('@')) {
-                  return 'Please enter a valid email address.';
+                if (value == null ||
+                    value.trim().isEmpty ||
+                    !value.contains('@')) {
+                  return '正しい形式で入力してください';
                 }
                 return null;
               },
-              onChanged: (value) {
-                provider.setEmail(value);
+              onChanged: (String value) {
+                ref.setEmail(value);
               },
             ),
-            // You can add more widgets as children here
           ],
         );
       },

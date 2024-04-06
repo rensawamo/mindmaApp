@@ -13,32 +13,32 @@ class LoginButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, provider, child) {
+    return Consumer<LoginViewModel>(builder: (context, ref, child) {
       return LoginButton(
-        title: provider.isLogin ? 'Login' : 'SignUp',
-        loading: provider.loginLoading ? true : false,
+        title: ref.isLogin ? 'Login' : 'SignUp',
+        loading: ref.loginLoading ? true : false,
         onPress: () async {
           Map<String, String> data = {
-            'email': provider.email.toString(),
-            'password': provider.password.toString(),
+            'email': ref.email.toString(),
+            'password': ref.password.toString(),
           };
           await SessionController().saveUserInPreference(data);
 
           await SessionController().getUserFromPreference();
           // 既存ユーザはログインさせる
-          if (provider.isLogin) {
-            await SessionController().saveUserEmail(provider.email.toString());
+          if (ref.isLogin) {
+            await SessionController().saveUserEmail(ref.email.toString());
             await _firebase.signInWithEmailAndPassword(
-                email: provider.email.toString(),
-                password: provider.password.toString());
+                email: ref.email.toString(),
+                password: ref.password.toString());
             Navigator.pushNamed(context, RoutesName.home);
 
             //  新しいユーザはアカウントを作成する
           } else {
             await _firebase.createUserWithEmailAndPassword(
-                email: provider.email.toString(),
-                password: provider.password.toString());
-            await SessionController().saveUserEmail(provider.email.toString());
+                email: ref.email.toString(),
+                password: ref.password.toString());
+            await SessionController().saveUserEmail(ref.email.toString());
             Navigator.pushNamed(context, RoutesName.home);
           }
         },

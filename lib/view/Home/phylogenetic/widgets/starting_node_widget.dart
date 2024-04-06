@@ -37,7 +37,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   void initState() {
     super.initState();
     Future(() async {
-      final nodeText = widget.title!;
+      final nodeText = widget.title;
       _titleController.text = nodeText;
     });
   }
@@ -89,7 +89,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
                 focusNode: widget.myFocusNode,
                 onTap: () {
                   ref.read(viewModel).
-                  setSelectedNode(widget.nodeId);
+                  setSelectedNode(widget.nodeId!);
                   setState(() {
                   });
                 },

@@ -79,6 +79,7 @@ class _NoduloState extends State<NoduloWidget> {
         builder: (context, value, child) {
           handleFocus(value);
           return Column(children: [
+            // 最初のnode
             isFirst
                 ? StartingNodeWidget(titleId, title, isSelected, selectedNode,
                     setSelectedNode, nodeId, myFocusNode)
@@ -104,12 +105,10 @@ class _NoduloState extends State<NoduloWidget> {
     }
     setSelectedNode(nodeId);
     myFocusNode.requestFocus();
-    //controller.value = Matrix4.identity();
   }
 
   @override
   void dispose() {
-    // Clean up the focus node when the Form is disposed.
     myFocusNode.dispose();
     super.dispose();
   }

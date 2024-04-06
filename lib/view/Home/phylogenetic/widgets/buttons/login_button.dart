@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/color.dart';
-
+import 'package:mindmapapp/configs/design/app_colors.dart';
+import 'package:mindmapapp/configs/componets/loading_widget.dart';
+import 'package:mindmapapp/configs/design/view+extention.dart';
 
 class LoginButton extends StatelessWidget {
-
-  final String title ;
-  final bool loading ;
-  final VoidCallback onPress ;
-  const LoginButton({Key? key ,
+  final String title;
+  final bool loading;
+  final VoidCallback onPress;
+  const LoginButton({
+    Key? key,
     required this.title,
-    this.loading = false ,
-    required this.onPress ,
-
+    this.loading = false,
+    required this.onPress,
   }) : super(key: key);
 
   @override
@@ -19,17 +19,18 @@ class LoginButton extends StatelessWidget {
     return InkWell(
       onTap: onPress,
       child: Container(
-        height: 40,
-        width: 200,
+        height: context.mediaQueryHeight * .065,
+        width: context.mediaQueryWidth * .55,
         decoration: BoxDecoration(
-            color: AppColors.blackColor,
-            borderRadius: BorderRadius.circular(10)
-        ),
+            color: AppColors.darkGreen,
+            borderRadius: BorderRadius.circular(10)),
         child: Center(
-            child:loading ? const CircularProgressIndicator(color: Colors.white,) :
-            const Text('Create an account' ,
-              style: TextStyle(color: Colors.black),
-            )),
+            child: loading
+                ? const LoadingWidget()
+                : const Text(
+                    'アカウント作成',
+                    style: TextStyle(color: AppColors.paleGreen, fontSize: 20),
+                  )),
       ),
     );
   }

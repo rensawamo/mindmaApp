@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/configs/design/color.dart';
+import 'package:mindmapapp/configs/design/app_colors.dart';
 import 'package:mindmapapp/configs/design/view+extention.dart';
 import 'package:mindmapapp/view/Home/user/widget/usercell_widget.dart';
 import 'package:mindmapapp/db/strage/local_storage.dart';

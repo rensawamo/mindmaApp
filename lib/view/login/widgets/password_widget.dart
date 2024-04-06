@@ -21,7 +21,6 @@ class PasswordWidget extends StatelessWidget {
                   focusNode: focusNode,
                   obscuringCharacter: "*",
                   decoration: InputDecoration(
-                    hintText: 'Password',
                     labelText: 'Password',
                     prefixIcon: const Icon(Icons.lock_open_rounded),
                     suffixIcon: InkWell(

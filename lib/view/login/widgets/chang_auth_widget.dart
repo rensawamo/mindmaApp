@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
-
+import 'package:mindmapapp/configs/design/app_texts.dart';
 class ChangeAuthWidget extends StatelessWidget {
 
   const ChangeAuthWidget(
@@ -10,15 +10,18 @@ class ChangeAuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, provider, child) {
+    return Consumer<LoginViewModel>(builder: (context, ref, child) {
       return TextButton(
         onPressed: () {
-          provider.setIsLogin();
+          ref.setIsLogin();
         },
-        child: Text(provider.isLogin
+        child:
+        Text(ref.isLogin
             ? '新しいアカウントを作成しますか？'
-            : 'すでにアカウントをお持ちですか？'),
-      );
+            : 'すでにアカウントをお持ちですか？',
+            style: AppTexts.caption,),
+      )
+      ;
     });
   }
 }
