@@ -1,69 +1,9 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:mindmapapp/view_model/login/email_verfication_view_model.dart';
-// import 'package:mindmapapp/core/routes/routes_name.dart';
-// import 'package:mindmapapp/core/componets/loading_widget.dart';
-
-// class EmailVerificationPage extends ConsumerStatefulWidget {
-//   const EmailVerificationPage({super.key});
-
-//   @override
-//   ConsumerState<EmailVerificationPage> createState() =>
-//       _EmailVerificationScreenState();
-// }
-
-// class _EmailVerificationScreenState
-//     extends ConsumerState<EmailVerificationPage> {
-//   final ChangeNotifierProvider<EmailVericationViewModel> viewModel =
-//       ChangeNotifierProvider((ChangeNotifierProviderRef<Object?> ref) =>
-//           EmailVericationViewModel());
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("メールアドレスの確認"),
-//       ),
-//       body: Center(
-//         child: ref.watch(viewModel).isChecking
-//             ? const LoadingWidget()
-//             : Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: <Widget>[
-//                   Text(
-//                     ref.watch(viewModel).message ?? "",
-//                     textAlign: TextAlign.center,
-//                   ),
-//                   const SizedBox(height: 20),
-//                   ElevatedButton(
-//                     // メールの認証が完了している場合にホーム画面に遷移
-//                     onPressed: () async {
-//                       bool isMailCheck =
-//                           await ref.watch(viewModel).checkEmailVerified();
-//                       if (isMailCheck) {
-//                         Navigator.pushNamed(context, RoutesName.home);
-//                       }
-//                     },
-//                     child: const Text('確認済み'),
-//                   ),
-//                   const SizedBox(height: 20),
-//                   ElevatedButton(
-//                     onPressed: () async {
-//                       await ref.watch(viewModel).resendEmailVerification();
-//                     },
-//                     child: const Text('メールを再送する'),
-//                   ),
-//                 ],
-//               ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mindmapapp/core/routes/routes_name.dart';
-
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class EmailVerificationPage extends StatefulWidget {
   const EmailVerificationPage({Key? key}) : super(key: key);
@@ -102,6 +42,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
     }
   }
 
+  // メールを再送信
   Future<void> resendEmailVerification() async {
     var user = _firebaseAuth.currentUser;
     if (user != null && !user.emailVerified) {
@@ -117,30 +58,60 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("メールアドレスの確認"),
+        backgroundColor: Colors.transparent,
       ),
+      backgroundColor: AppColors.paleGreen, // Scaffoldの背景色を設定
       body: Center(
         child: isChecking
             ? CircularProgressIndicator()
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(
+                    height: context.mediaQueryHeight * .04,
+                  ),
                   Text(
                     message,
                     textAlign: TextAlign.center,
+                    style: AppTexts.body,
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await checkEmailVerified();
-                    },
-                    child: Text('確認済み'),
+                  SizedBox(
+                    height: context.mediaQueryHeight * .035,
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await resendEmailVerification();
-                    },
-                    child: Text('メールを再送する'),
+                  GestureDetector(
+                    onTap: checkEmailVerified,
+                    child: Container(
+                      height: context.mediaQueryHeight * .065,
+                      width: context.mediaQueryWidth * .55,
+                      decoration: BoxDecoration(
+                          color: AppColors.darkGreen,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                          child: Text(
+                        '確認済み',
+                        style:
+                            TextStyle(color: AppColors.paleGreen, fontSize: 16),
+                      )),
+                    ),
+                  ),
+                  SizedBox(
+                    height: context.mediaQueryHeight * .035,
+                  ),
+                  GestureDetector(
+                    onTap: resendEmailVerification,
+                    child: Container(
+                      height: context.mediaQueryHeight * .065,
+                      width: context.mediaQueryWidth * .55,
+                      decoration: BoxDecoration(
+                          color: AppColors.lightGreen,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                          child: Text(
+                        'メールを再送する',
+                        style:
+                            TextStyle(color: AppColors.paleGreen, fontSize: 16),
+                      )),
+                    ),
                   ),
                 ],
               ),

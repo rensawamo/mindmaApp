@@ -19,7 +19,7 @@ class LaunchViewModel {
               context, RoutesName.home, (Route route) => false),
         );
       } else {
-        // ログインがまだの場合 登録かログインに飛ばす
+        // ログインがまだの場合 ログインに飛ばす
         Timer(
           const Duration(seconds: 2),
           () => Navigator.pushNamedAndRemoveUntil(

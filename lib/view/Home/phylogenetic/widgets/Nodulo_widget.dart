@@ -3,7 +3,6 @@ import 'common_node_widget.dart';
 import 'NodeOptions.dart';
 import 'starting_node_widget.dart';
 
-
 class NoduloWidget extends StatefulWidget {
   final int titleId; // startNodeの id
   final String title; // Node の title
@@ -24,7 +23,8 @@ class NoduloWidget extends StatefulWidget {
       this.createBro,
       this.controller,
       this.deleteNode,
-      this.titleId, {super.key});
+      this.titleId,
+      {super.key});
 
   @override
   State<NoduloWidget> createState() => _NoduloState(nodeId, title, selectedNode,
@@ -71,7 +71,7 @@ class _NoduloState extends State<NoduloWidget> {
         // 選択されているnodeを更新
         setSelectedNode(nodeId);
       },
-      onLongPress: ()  {
+      onLongPress: () {
         setSelectedNode(nodeId);
       },
       child: ValueListenableBuilder(
@@ -83,12 +83,12 @@ class _NoduloState extends State<NoduloWidget> {
             isFirst
                 ? StartingNodeWidget(titleId, title, isSelected, selectedNode,
                     setSelectedNode, nodeId, myFocusNode)
-                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode, nodeId,
-                    myFocusNode, titleId, title),
+                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode,
+                    nodeId, myFocusNode, titleId, title),
             isSelected
                 ? isFirst
-                    ? NodeOptions(createSon, createBro,deleteNode, true)
-                    : NodeOptions(createSon, createBro,deleteNode, false)
+                    ? NodeOptions(createSon, createBro, deleteNode, true)
+                    : NodeOptions(createSon, createBro, deleteNode, false)
                 : const Column(),
           ]);
         },

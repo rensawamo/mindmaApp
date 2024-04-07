@@ -21,6 +21,8 @@ class AppColors {
   static Color appFontColor = const Color.fromRGBO(91, 161, 4, 1);
 
   static Color darkGreen = const Color.fromRGBO(21, 105, 84, 1.0);
+  
+  static Color lightGreen = Color.fromARGB(255, 157, 160, 157);
 
 
 
