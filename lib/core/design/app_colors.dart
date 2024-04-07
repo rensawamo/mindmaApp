@@ -21,9 +21,13 @@ class AppColors {
 
   static Color applistColor = Color.fromARGB(255, 195, 206, 195);
 
+  static const Color nodeIconColor = Color.fromARGB(255, 125, 168, 125);
+
   static Color appbarColor = Color.fromARGB(255, 157, 194, 157);
 
   static Color addButtonColor = Color.fromRGBO(138, 130, 121, 1);
+
+  static Color treeColor = Color.fromRGBO(119, 94, 83, 1);
 
   static Color appBottomColor = Color.fromARGB(255, 202, 201, 149);
 

@@ -23,7 +23,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  //   ----------    phylogenetic     ---------------
   ValueNotifier<int> selectedNode = ValueNotifier<int>(0);
   final controller = TransformationController();
 

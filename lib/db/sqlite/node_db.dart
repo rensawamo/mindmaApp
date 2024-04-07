@@ -18,7 +18,7 @@ Future<Database> _getNodeDatabase() async {
 }
 
 class NodeData {
-  // 画面描写でデータ取得
+  // 画面描写でデータ取得 
   static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
     List<Map<String, dynamic>>? json = [];
     final db = await _getNodeDatabase();

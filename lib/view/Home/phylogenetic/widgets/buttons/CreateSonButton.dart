@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class CreateSonButton extends StatelessWidget {
   final void Function() createSon;
@@ -12,12 +15,12 @@ class CreateSonButton extends StatelessWidget {
       child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50),
+                bottomLeft: Radius.circular(50),
                 bottomRight: Radius.circular(50)),
-            color: Colors.amber,
+            color: AppColors.nodeIconColor,
           ),
           padding: const EdgeInsets.all(5),
-          child: const Icon(Icons.add)),
+          child: const Icon(Icons.add,color: Colors.white)),
     );
   }
 }
