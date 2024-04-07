@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
-import 'package:mindmapapp/core/exception/snackbar.dart';
+import 'package:mindmapapp/core/componets/snackbar.dart';
 import 'package:mindmapapp/core/widget/alert_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
   const TitleListView({super.key});
@@ -13,15 +16,13 @@ class TitleListView extends ConsumerStatefulWidget {
 }
 
 class _TitleListViewState extends ConsumerState<TitleListView> {
-
   // マインドマップのタイトル
-  List<String> myTiles = [];
-
+  List<String> myTiles = <String>[];
   // listの変化量を追跡する
   List<int> createIndexMapping(List<String> before, List<String> after) {
-    List<int> indexMapping = [];
+    List<int> indexMapping = <int>[];
     // 各要素の変更後のインデックスを追跡
-    for (var item in before) {
+    for (String item in before) {
       int newIndex = after.indexOf(item);
       indexMapping.add(newIndex);
     }
@@ -34,7 +35,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
-      var preTitles = List<String>.from(myTiles);
+      List<String> preTitles = List<String>.from(myTiles);
       final String tile = myTiles.removeAt(oldIndex);
       myTiles.insert(newIndex, tile);
       List<int> indexMapping = createIndexMapping(preTitles, myTiles);
@@ -44,72 +45,76 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ReorderableListView(
-        padding: const EdgeInsets.all(10),
-        onReorder: updateMyTiles,
-        children: [
-          for (final tile in myTiles)
-            Padding(
-              key: ValueKey(tile),
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                color: Colors.grey[200],
-                child: ListTile(
-                  // 削除ダイアログのh表示
-                  trailing: GestureDetector(
-                    onTap: () async {
-                      ShowDeleteDialog(context, "削除").then((result) async {
-                        if (result != null) {
-                          //okがおされた場合
-                          TitleListData.deleteTitle(tile);
-                          myTiles.remove(tile);
-                          setState(() {});
-                        }
-                      });
-                    },
-                    child: Icon(Icons.delete),
-                  ),
-                  title: Text(tile),
-                  onTap: () {
-                    Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            PhylogeneticTreeView(title: tile),
+    return Container(
+        color: AppColors.paleGreen,
+        child: Scaffold(
+          backgroundColor: AppColors.transparent,
+          body: ReorderableListView(
+            padding: const EdgeInsets.all(10),
+            onReorder: updateMyTiles,
+            children: <Widget>[
+              for (final String tile in myTiles)
+                Padding(
+                  key: ValueKey(tile),
+                  padding: const EdgeInsets.all(13.0),
+                  child: Container(
+                    color: AppColors.applistColor,
+                    child: ListTile(
+                      // 削除ダイアログのh表示
+                      trailing: GestureDetector(
+                        onTap: () async {
+                          ShowDeleteDialog(context, "削除してもよろしいですか？")
+                              .then((bool? result) async {
+                            if (result != null) {
+                              //okがおされた場合
+                              TitleListData.deleteTitle(tile);
+                              myTiles.remove(tile);
+                              setState(() {});
+                            }
+                          });
+                        },
+                        child: const Icon(Icons.delete),
                       ),
-                    ).then((result) => Future.microtask(() async {
-                          // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
-                          myTiles = await TitleListData.loadTitles();
-                          setState(() {});
-                        }));
-                  },
+                      title: Text(tile, style: AppTexts.body),
+                      onTap: () {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                PhylogeneticTreeView(title: tile),
+                          ),
+                        ).then((result) => Future.microtask(() async {
+                              // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
+                              myTiles = await TitleListData.loadTitles();
+                              setState(() {});
+                            }));
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-        ],
-      ),
+            ],
+          ),
 
-      //  titleの追加 ダイヤログ
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          ShowConfirmDialog(context, "追加").then((result) async {
-            if (result != null) {
-              // list titleは 一意とする
-              if (myTiles.contains(result)) {
-                ShowErrorSnackBar(context, 'すでに登録されています');
-              } else {
-                TitleListData.addTitle(result, myTiles.length);
-              }
-              ;
-              myTiles.add(result);
-              setState(() {});
-            }
-          });
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+          //  titleの追加
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColors.addButtonColor,
+            onPressed: () async {
+              ShowConfirmDialog(context, "追加").then((String? result) async {
+                if (result != null) {
+                  // list titleは 一意とする
+                  if (myTiles.contains(result)) {
+                    ShowErrorSnackBar(context, 'すでに登録されています');
+                  } else {
+                    TitleListData.addTitle(result, myTiles.length);
+                  }
+                  myTiles.add(result);
+                  setState(() {});
+                }
+              });
+            },
+            child: const Icon(Icons.add, color: Colors.white),
+          ),
+        ));
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/view/Home/user/widget/usercell_widget.dart';
 import 'package:mindmapapp/db/strage/local_storage.dart';
@@ -8,7 +9,10 @@ import 'package:mindmapapp/db/session/session.dart';
 import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/login/login_page.dart';
+
 class UserPage extends StatefulWidget {
+  const UserPage({super.key});
+
   @override
   _UserViewState createState() => _UserViewState();
 }
@@ -23,117 +27,118 @@ class _UserViewState extends State<UserPage> {
     // lacal strqe からの取得の関係で useremailが取得している間はローディングを表示
     return isLoading
         ? const LoadingWidget()
-        : Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // アプリアイコン情報
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          width: 100,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.rectangle,
+        : Container(
+            color: AppColors.paleGreen,
+            child: Scaffold(
+              backgroundColor: AppColors.transparent,
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // アプリアイコン情報
+                        children: <Widget>[
+                          SizedBox(
+                            height: context.mediaQueryHeight * .015,
                           ),
-                          child: Image.asset('assets/images/Group.png'),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                          width: context.mediaQueryWidth * .35,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Life Mind',
-                                style: TextStyle(
-                                    color: AppColors.blackColor,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'ver: 0.0.0',
-                                style: TextStyle(
-                                  color: AppColors.subBlackColor,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            width: context.mediaQueryHeight * .15,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Image.asset('assets/images/Group.png'),
+                          ),
+                          SizedBox(
+                            width: context.mediaQueryWidth * .35,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Life Mind',
+                                  style: AppTexts.title3,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  'ver: 0.0.0',
+                                  style: AppTexts.caption2,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    height: context.mediaQueryHeight * .7,
-                    width: context.mediaQueryWidth * .9,
-                    child: Container(
-                        child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            ShowDeleteDialog(context, "ログアウトしますか？")
-                                .then((result) async {
-                              if (result != null) {
-                                // firebase のログアウト
-                                await FirebaseAuth.instance.signOut();
-                                // session を破壊
-                                await SessionController().sessionClear();
-                                // login 画面に戻す stackの削除
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
-                                  (Route<dynamic> route) => false,
-                                );
-                              }
-                            });
-                          },
-                          child: UserCellWidget(
-                            icon: Icons.person,
-                            title: user,
+                    SizedBox(
+                      height: context.mediaQueryHeight * .035,
+                    ),
+                    SizedBox(
+                      height: context.mediaQueryHeight * .7,
+                      width: context.mediaQueryWidth * .9,
+                      child: Container(
+                        padding: const EdgeInsets.all(20) ,
+                          child: Column(
+                        children: <Widget>[
+                          // ユーザのメールアドレス
+                          GestureDetector(
+                            child: UserCellWidget(
+                              icon: Icons.person,
+                              title: user,
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () => print("Log Out tapped."),
-                          child: UserCellWidget(
-                              icon: Icons.logout, title: 'Log Out'),
-                        ),
-                        GestureDetector(
-                          onTap: () => print("Notifications tapped."),
-                          child: UserCellWidget(
-                              icon: Icons.notifications,
-                              title: 'Notifications'),
-                        ),
-                        GestureDetector(
-                          onTap: () => print("FAQs tapped."),
-                          child:
-                              UserCellWidget(icon: Icons.chat, title: 'FAQs'),
-                        ),
-                        GestureDetector(
-                          onTap: () => print("Share tapped."),
-                          child:
-                              UserCellWidget(icon: Icons.share, title: 'Share'),
-                        ),
-                      ],
-                    )),
-                  ),
-                ],
+                          Divider(),
+                          GestureDetector(
+                            onTap: () async {
+                              ShowDeleteDialog(context, "ログアウトしますか？")
+                                  .then((bool? result) async {
+                                if (result != null) {
+                                  // firebase のログアウト
+                                  await FirebaseAuth.instance.signOut();
+                                  // session を破壊
+                                  await SessionController().sessionClear();
+                                  // login 画面に戻す stackの削除
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const LoginPage()),
+                                    (Route<dynamic> route) => false,
+                                  );
+                                }
+                              });
+                            },
+                            child: const UserCellWidget(
+                                icon: Icons.logout, title: 'Log Out'),
+                          ),
+                          Divider(),
+                          GestureDetector(
+                            onTap: () => print("Notifications tapped."),
+                            child: const UserCellWidget(
+                                icon: Icons.notifications,
+                                title: 'Notifications'),
+                          ),
+                          Divider(),
+                          GestureDetector(
+                            onTap: () => print("FAQs tapped."),
+                            child: const UserCellWidget(
+                                icon: Icons.chat, title: 'FAQs'),
+                          ),
+                          Divider(),
+                          GestureDetector(
+                            onTap: () => print("Share tapped."),
+                            child: const UserCellWidget(
+                                icon: Icons.share, title: 'Share'),
+                          ),
+                          Divider(),
+
+                        ],
+                      )),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
+            ));
   }
 
   // void openMailApp() async {

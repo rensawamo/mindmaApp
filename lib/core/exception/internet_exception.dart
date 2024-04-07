@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class InterNetExceptionWidget extends StatefulWidget {
   final VoidCallback onPress;
-  const InterNetExceptionWidget({Key? key, required this.onPress})
+  const InterNetExceptionWidget({required this.onPress, Key? key})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class _InterNetExceptionWidgetState extends State<InterNetExceptionWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-        children: [
+        children: <Widget>[
           SizedBox(height: MediaQuery.of(context).size.height * .15),
           const Icon(
             Icons.cloud_off,

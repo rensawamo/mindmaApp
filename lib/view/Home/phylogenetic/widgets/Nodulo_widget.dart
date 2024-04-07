@@ -3,7 +3,6 @@ import 'common_node_widget.dart';
 import 'NodeOptions.dart';
 import 'starting_node_widget.dart';
 
-
 class NoduloWidget extends StatefulWidget {
   final int titleId; // startNodeの id
   final String title; // Node の title
@@ -15,7 +14,7 @@ class NoduloWidget extends StatefulWidget {
   final void Function() deleteNode; // Node を削除する関数
   final controller; // transform controller
 
-  NoduloWidget(
+  const NoduloWidget(
       this.nodeId,
       this.title,
       this.selectedNode,
@@ -24,7 +23,8 @@ class NoduloWidget extends StatefulWidget {
       this.createBro,
       this.controller,
       this.deleteNode,
-      this.titleId);
+      this.titleId,
+      {super.key});
 
   @override
   State<NoduloWidget> createState() => _NoduloState(nodeId, title, selectedNode,
@@ -42,12 +42,12 @@ class _NoduloState extends State<NoduloWidget> {
   void Function() deleteNode;
   final controller;
 
-  var isSelected = false;
+  bool isSelected = false;
   bool isFirst = false;
-  late FocusNode myFocusNode = new FocusNode();
+  late FocusNode myFocusNode = FocusNode();
 
   void handleFocus(int value) {
-    if (value == this.nodeId! && isSelected == false) {
+    if (value == nodeId! && isSelected == false) {
       isSelected = true;
     } else {
       isSelected = false;
@@ -71,27 +71,26 @@ class _NoduloState extends State<NoduloWidget> {
         // 選択されているnodeを更新
         setSelectedNode(nodeId);
       },
-      onLongPress: ()  {
+      onLongPress: () {
         setSelectedNode(nodeId);
       },
       child: ValueListenableBuilder(
         valueListenable: selectedNode,
-        builder: (context, value, child) {
+        builder: (BuildContext context, int value, Widget? child) {
           handleFocus(value);
-          return Column(children: [
+          return Column(children: <Widget>[
             // 最初のnode
             isFirst
                 ? StartingNodeWidget(titleId, title, isSelected, selectedNode,
                     setSelectedNode, nodeId, myFocusNode)
-                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode, nodeId,
-                    myFocusNode, titleId, title),
+                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode,
+                    nodeId, myFocusNode, titleId, title),
             isSelected
                 ? isFirst
-                    ? NodeOptions(createSon, createBro,deleteNode, true)
-                    : NodeOptions(createSon, createBro,deleteNode, false)
-                : Column(),
+                    ? NodeOptions(createSon, createBro, deleteNode, true)
+                    : NodeOptions(createSon, createBro, deleteNode, false)
+                : const Column(),
           ]);
-          ;
         },
       ),
     );
@@ -100,7 +99,7 @@ class _NoduloState extends State<NoduloWidget> {
   @override
   void initState() {
     super.initState();
-    if (this.nodeId == 1) {
+    if (nodeId == 1) {
       isFirst = true;
     }
     setSelectedNode(nodeId);

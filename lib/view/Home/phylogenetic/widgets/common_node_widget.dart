@@ -13,8 +13,8 @@ class CommonNodeWidget extends ConsumerStatefulWidget {
   final String title; // 各nodeのtitle
   final FocusNode myFocusNode;
 
-  CommonNodeWidget(this.isSelected, this.selectedNode, this.setSelectedNode,
-      this.nodeId, this.myFocusNode, this.titleId,this.title);
+  const CommonNodeWidget(this.isSelected, this.selectedNode, this.setSelectedNode,
+      this.nodeId, this.myFocusNode, this.titleId,this.title, {super.key});
 
   @override
   _StartingNodeState createState() => _StartingNodeState();
@@ -22,15 +22,15 @@ class CommonNodeWidget extends ConsumerStatefulWidget {
 
 // 各nodeのtitleをセット
 class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
-  final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
-  TextEditingController _titleController = TextEditingController();
+  final ChangeNotifierProvider<PhylogeneticViewModel> viewModel = ChangeNotifierProvider((ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
+  final TextEditingController _titleController = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
     Future(() async {
-      final nodeText = widget.title!;
+      final String nodeText = widget.title;
       _titleController.text = nodeText;
     });
   }
@@ -38,7 +38,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       width: 250,
       decoration: BoxDecoration(
           color: Colors.white.withAlpha(200),
@@ -46,7 +46,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
           border: widget.isSelected
               ? Border.all(width: 3, color: Colors.amber)
               : Border.all(width: 2, color: Colors.lightBlue.shade200),
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.grey.withAlpha(60),
               blurRadius: 10,
@@ -55,7 +55,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
           ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           Container(
             child: Container(
               decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
               ),
               width: 20,
               height: 20,
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
             ),
           ),
           Expanded(
@@ -81,12 +81,12 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
                   widget.setSelectedNode(widget.nodeId);
                 },
                 maxLines: null,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),

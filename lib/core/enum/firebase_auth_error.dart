@@ -1,4 +1,5 @@
 enum FirebaseAuthResultStatus {
+  weakpassword,
   Successful,
   EmailAlreadyExists,
   WrongPassword,
@@ -8,4 +9,5 @@ enum FirebaseAuthResultStatus {
   OperationNotAllowed,
   TooManyRequests,
   Undefined,
+  InvalidCredential,
 }

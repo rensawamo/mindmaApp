@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class ConfirmDialog extends StatefulWidget {
   final String title;
 
   const ConfirmDialog({
-    Key? key,
-    required this.title,
+    required this.title, Key? key,
   }) : super(key: key);
 
   @override
@@ -17,11 +19,13 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    
     return AlertDialog(
-      title: Text(widget.title),
+      backgroundColor: AppColors.paleGreen,
+      title: Text(widget.title,style: AppTexts.title4),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           TextField(
             controller: _controller,
             // TextFieldの設定...
@@ -30,17 +34,17 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('キャンセル'),
+          child: const Text('キャンセル',style: AppTexts.caption3),
           onPressed: () => Navigator.of(context).pop(),
         ),
         // OpacityでTextButtonをラップ
         Opacity(
           opacity: _controller.text.isNotEmpty ? 1.0 : 0.5,
           child: TextButton(
-            child: Text('OK'),
             onPressed: _controller.text.isNotEmpty
                 ? () => Navigator.of(context).pop(_controller.text)
-                : null, // TextFieldが空の場合はnullを設定
+                : null,
+            child: const Text('OK',style: AppTexts.caption3), // TextFieldが空の場合はnullを設定
           ),
         ),
       ],

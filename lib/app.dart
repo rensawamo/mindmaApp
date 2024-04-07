@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
+import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/routes.dart';
 import 'core/routes/routes_name.dart';
+import 'view_model/login/email_verfication_view_model.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
+      providers: <SingleChildWidget>[
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
       child: MaterialApp(

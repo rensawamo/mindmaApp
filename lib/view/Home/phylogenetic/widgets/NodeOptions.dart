@@ -10,7 +10,7 @@ class NodeOptions extends StatelessWidget {
   final void Function() deleteNode; // Node を削除する関数
   final bool isFirst; // 一番最初の Node かどうか
 
-  NodeOptions(this.createSon, this.createBro, this.deleteNode, this.isFirst);
+  const NodeOptions(this.createSon, this.createBro, this.deleteNode, this.isFirst, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +20,18 @@ class NodeOptions extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [CreateSonButton(createSon)],
+                children: <Widget>[CreateSonButton(createSon)],
               )
             // その他 共通のNode
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 // 子Nodeを生成するボタン、兄弟Nodeを生成するボタン、Nodeを削除するボタン
-                children: [
+                children: <Widget>[
                   CreateSonButton(createSon),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   CreateBroButton(createBro),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   DeleteNodeButton(deleteNode)
                 ],
               ));

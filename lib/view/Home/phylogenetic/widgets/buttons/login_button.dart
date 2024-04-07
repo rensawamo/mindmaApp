@@ -8,10 +8,8 @@ class LoginButton extends StatelessWidget {
   final bool loading;
   final VoidCallback onPress;
   const LoginButton({
-    Key? key,
-    required this.title,
+    required this.title, required this.onPress, Key? key,
     this.loading = false,
-    required this.onPress,
   }) : super(key: key);
 
   @override

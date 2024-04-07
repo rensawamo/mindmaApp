@@ -2,6 +2,6 @@
 // 接続する url の記載
 
 class AppUrl {
-  static var baseUrl = 'https://' ;
-  static var loginEndPint =  '$baseUrl/api/login' ;
+  static String baseUrl = 'https://' ;
+  static String loginEndPint =  '$baseUrl/api/login' ;
 }
