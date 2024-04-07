@@ -35,10 +35,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Container(
       color: AppColors.paleGreen,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.transparent,
         appBar: AppBar(
           title: Text('パスワードリセット'),
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppColors.transparent,
           elevation: 0,
         ),
         body: Padding(

@@ -16,11 +16,6 @@ class EmailVericationViewModel with ChangeNotifier {
     await SessionController().saveUserInPreference(data);
   }
 
-  void init(Map<String, String> data, String email) async {
-    print(data);
-    data = data;
-    email = email;
-  }
 
   Future<bool> checkEmailVerified() async {
     isChecking = true;

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
 import 'package:mindmapapp/view/Home/user/user_page.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -11,27 +14,27 @@ class HomeView extends StatefulWidget {
 
 class _MyAppState extends State<HomeView> {
   int currentIndex = 0;
-  final List<StatefulWidget> pages = <StatefulWidget>[const TitleListView(), const UserPage()];
+  final List<StatefulWidget> pages = <StatefulWidget>[
+    const TitleListView(),
+    const UserPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.grey[200],
-        primaryColor: Colors.greenAccent,
-      ),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.appbarColor,
           centerTitle: true,
           title: Text(currentIndex == 0 ? "マインドマップ" : "ユーザーページ"),
         ),
         body: pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
-            unselectedItemColor: Colors.greenAccent.shade700,
-            selectedItemColor: Colors.white,
-            backgroundColor: Colors.greenAccent,
+            unselectedItemColor: Colors.white,
+            selectedItemColor: AppColors.primaryColor,
+            backgroundColor: AppColors.appbarColor,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_tree),
@@ -43,10 +46,10 @@ class _MyAppState extends State<HomeView> {
               ),
             ],
             onTap: (int index) => <void>{
-              setState(() {
-                currentIndex = index;
-              })
-            }),
+                  setState(() {
+                    currentIndex = index;
+                  })
+                }),
       ),
     );
   }

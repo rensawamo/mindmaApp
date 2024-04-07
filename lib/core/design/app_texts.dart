@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTexts {
-  static const TextStyle launch= TextStyle(
+  static const TextStyle launch = TextStyle(
     fontSize: 40.0,
     color: Color.fromARGB(255, 21, 105, 84),
     fontWeight: FontWeight.bold,
@@ -17,14 +17,28 @@ class AppTexts {
     color: Color.fromARGB(255, 21, 105, 84),
     fontWeight: FontWeight.bold,
   );
-  
+
+  static const TextStyle title3 = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle title4 = TextStyle(
+    fontSize: 17,
+  );
+
   static const TextStyle caption = TextStyle(
     fontSize: 18.0,
     color: Color.fromARGB(255, 78, 50, 110),
   );
 
+  static const TextStyle caption3 = TextStyle(
+    fontSize: 16.0,
+    color: Color.fromARGB(255, 78, 50, 110),
+  );
+
   static const TextStyle caption2 = TextStyle(
-    fontSize: 12.0,
+    fontSize: 14.0,
     color: Colors.grey,
   );
 
@@ -32,10 +46,15 @@ class AppTexts {
     fontSize: 16.0,
     color: Colors.black,
   );
-  
+
   // errorのテキストスタイル
-  static const TextStyle error =TextStyle(
+  static const TextStyle error = TextStyle(
     fontSize: 14.0,
     color: Color.fromARGB(255, 165, 80, 87),
+  );
+
+  static const TextStyle transparent = TextStyle(
+    fontSize: 16.0,
+    color: Colors.transparent,
   );
 }
