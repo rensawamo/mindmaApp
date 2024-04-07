@@ -9,6 +9,8 @@ import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/login/login_page.dart';
 class UserPage extends StatefulWidget {
+  const UserPage({super.key});
+
   @override
   _UserViewState createState() => _UserViewState();
 }
@@ -27,14 +29,14 @@ class _UserViewState extends State<UserPage> {
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // アプリアイコン情報
-                      children: [
+                      children: <Widget>[
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           width: 100,
                           decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -48,7 +50,7 @@ class _UserViewState extends State<UserPage> {
                           width: context.mediaQueryWidth * .35,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 'Life Mind',
                                 style: TextStyle(
@@ -81,11 +83,11 @@ class _UserViewState extends State<UserPage> {
                     width: context.mediaQueryWidth * .9,
                     child: Container(
                         child: Column(
-                      children: [
+                      children: <Widget>[
                         GestureDetector(
                           onTap: () async {
                             ShowDeleteDialog(context, "ログアウトしますか？")
-                                .then((result) async {
+                                .then((bool? result) async {
                               if (result != null) {
                                 // firebase のログアウト
                                 await FirebaseAuth.instance.signOut();
@@ -95,7 +97,7 @@ class _UserViewState extends State<UserPage> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
+                                      builder: (BuildContext context) => const LoginPage()),
                                   (Route<dynamic> route) => false,
                                 );
                               }
@@ -108,24 +110,24 @@ class _UserViewState extends State<UserPage> {
                         ),
                         GestureDetector(
                           onTap: () => print("Log Out tapped."),
-                          child: UserCellWidget(
+                          child: const UserCellWidget(
                               icon: Icons.logout, title: 'Log Out'),
                         ),
                         GestureDetector(
                           onTap: () => print("Notifications tapped."),
-                          child: UserCellWidget(
+                          child: const UserCellWidget(
                               icon: Icons.notifications,
                               title: 'Notifications'),
                         ),
                         GestureDetector(
                           onTap: () => print("FAQs tapped."),
                           child:
-                              UserCellWidget(icon: Icons.chat, title: 'FAQs'),
+                              const UserCellWidget(icon: Icons.chat, title: 'FAQs'),
                         ),
                         GestureDetector(
                           onTap: () => print("Share tapped."),
                           child:
-                              UserCellWidget(icon: Icons.share, title: 'Share'),
+                              const UserCellWidget(icon: Icons.share, title: 'Share'),
                         ),
                       ],
                     )),

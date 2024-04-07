@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 class CreateSonButton extends StatelessWidget {
   final void Function() createSon;
 
-  CreateSonButton(this.createSon);
+  const CreateSonButton(this.createSon, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: createSon,
       child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50)),
             color: Colors.amber,
           ),
-          padding: EdgeInsets.all(5),
-          child: Icon(Icons.add)),
+          padding: const EdgeInsets.all(5),
+          child: const Icon(Icons.add)),
     );
   }
 }

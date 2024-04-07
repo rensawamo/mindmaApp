@@ -17,7 +17,7 @@ class NetworkApiService implements BaseApiServices {
     }
     dynamic responseJson ;
     try {
-      final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 20));
+      final Response response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 20));
       responseJson = returnResponse(response);
     }on SocketException {
       throw NoInternetException('');
@@ -32,7 +32,7 @@ class NetworkApiService implements BaseApiServices {
 
 
   @override
-  Future getPostApiResponse(String url , dynamic data) async{
+  Future getPostApiResponse(String url , data) async{
 
     if (kDebugMode) {
       print(url);

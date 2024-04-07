@@ -5,8 +5,7 @@ class ConfirmDialog extends StatefulWidget {
   final String title;
 
   const ConfirmDialog({
-    Key? key,
-    required this.title,
+    required this.title, Key? key,
   }) : super(key: key);
 
   @override
@@ -21,7 +20,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       title: Text(widget.title),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           TextField(
             controller: _controller,
             // TextFieldの設定...
@@ -30,17 +29,17 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('キャンセル'),
+          child: const Text('キャンセル'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         // OpacityでTextButtonをラップ
         Opacity(
           opacity: _controller.text.isNotEmpty ? 1.0 : 0.5,
           child: TextButton(
-            child: Text('OK'),
             onPressed: _controller.text.isNotEmpty
                 ? () => Navigator.of(context).pop(_controller.text)
-                : null, // TextFieldが空の場合はnullを設定
+                : null,
+            child: const Text('OK'), // TextFieldが空の場合はnullを設定
           ),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
-import 'package:mindmapapp/core/exception/snackbar.dart';
+import 'package:mindmapapp/core/componets/snackbar.dart';
 import 'package:mindmapapp/core/widget/alert_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
@@ -15,13 +15,13 @@ class TitleListView extends ConsumerStatefulWidget {
 class _TitleListViewState extends ConsumerState<TitleListView> {
 
   // マインドマップのタイトル
-  List<String> myTiles = [];
+  List<String> myTiles = <String>[];
 
   // listの変化量を追跡する
   List<int> createIndexMapping(List<String> before, List<String> after) {
-    List<int> indexMapping = [];
+    List<int> indexMapping = <int>[];
     // 各要素の変更後のインデックスを追跡
-    for (var item in before) {
+    for (String item in before) {
       int newIndex = after.indexOf(item);
       indexMapping.add(newIndex);
     }
@@ -34,7 +34,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
-      var preTitles = List<String>.from(myTiles);
+      List<String> preTitles = List<String>.from(myTiles);
       final String tile = myTiles.removeAt(oldIndex);
       myTiles.insert(newIndex, tile);
       List<int> indexMapping = createIndexMapping(preTitles, myTiles);
@@ -48,8 +48,8 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       body: ReorderableListView(
         padding: const EdgeInsets.all(10),
         onReorder: updateMyTiles,
-        children: [
-          for (final tile in myTiles)
+        children: <Widget>[
+          for (final String tile in myTiles)
             Padding(
               key: ValueKey(tile),
               padding: const EdgeInsets.all(8.0),
@@ -59,7 +59,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                   // 削除ダイアログのh表示
                   trailing: GestureDetector(
                     onTap: () async {
-                      ShowDeleteDialog(context, "削除").then((result) async {
+                      ShowDeleteDialog(context, "削除").then((bool? result) async {
                         if (result != null) {
                           //okがおされた場合
                           TitleListData.deleteTitle(tile);
@@ -68,7 +68,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                         }
                       });
                     },
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                   ),
                   title: Text(tile),
                   onTap: () {
@@ -93,7 +93,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
       //  titleの追加 ダイヤログ
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          ShowConfirmDialog(context, "追加").then((result) async {
+          ShowConfirmDialog(context, "追加").then((String? result) async {
             if (result != null) {
               // list titleは 一意とする
               if (myTiles.contains(result)) {
@@ -101,7 +101,6 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
               } else {
                 TitleListData.addTitle(result, myTiles.length);
               }
-              ;
               myTiles.add(result);
               setState(() {});
             }

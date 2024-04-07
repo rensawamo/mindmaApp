@@ -4,7 +4,7 @@ import 'package:mindmapapp/view_model/login/login_view_model.dart';
 
 
 class PasswordWidget extends StatelessWidget {
-  PasswordWidget({Key? key ,required this.focusNode}) : super(key: key);
+  PasswordWidget({required this.focusNode, Key? key}) : super(key: key);
 
   final FocusNode focusNode;
   final ValueNotifier<bool> _obSecurePassword = ValueNotifier<bool>(true);
@@ -12,10 +12,10 @@ class PasswordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginViewModel>(
-        builder: (context, provider, child){
+        builder: (BuildContext context, LoginViewModel provider, Widget? child){
           return ValueListenableBuilder(
               valueListenable: _obSecurePassword,
-              builder: (context , value, child){
+              builder: (BuildContext context , bool value, Widget? child){
                 return TextFormField(
                   obscureText: _obSecurePassword.value,
                   focusNode: focusNode,
@@ -32,7 +32,7 @@ class PasswordWidget extends StatelessWidget {
                             Icons.visibility
                         )),
                   ),
-                  onChanged: (value){
+                  onChanged: (String value){
                     provider.setPassword(value);
                   },
                 );

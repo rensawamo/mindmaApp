@@ -3,10 +3,10 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 
 Future<Database> _getTitleListDatabase() async {
-  final dbPath = await sql.getDatabasesPath();
-  final db = await sql.openDatabase(
+  final String dbPath = await sql.getDatabasesPath();
+  final sql.Database db = await sql.openDatabase(
     path.join(dbPath, 'titleList.db'),
-    onCreate: (db, version) {
+    onCreate: (sql.Database db, int version) {
       return db.execute(
         'CREATE TABLE titleList(id INTEGER PRIMARY KEY AUTOINCREMENT,sortId INTEGER, title TEXT )',
       );
@@ -20,11 +20,11 @@ class TitleListData {
   // 画面描写でデータ取得
   static Future<List<String>> loadTitles() async {
     // マインドマップのタイトル
-    List<String> titles = [];
-    final db = await _getTitleListDatabase();
-    final datas = await db.query('titleList', orderBy: 'sortId ASC');
+    List<String> titles = <String>[];
+    final sql.Database db = await _getTitleListDatabase();
+    final List<Map<String, Object?>> datas = await db.query('titleList', orderBy: 'sortId ASC');
     if (datas.isNotEmpty) {
-      for (var data in datas) {
+      for (Map<String, Object?> data in datas) {
         titles.add(data["title"] as String);
       }
     }
@@ -33,54 +33,54 @@ class TitleListData {
 
   // phylognetic viewで 最初のタイトルが変更された場合 DBの更新をおこなう
   static void updateTitle(String title, int titleId) async {
-    final db = await _getTitleListDatabase();
+    final sql.Database db = await _getTitleListDatabase();
     await db.update(
       'titleList',
-      {'title': title},
+      <String, Object?>{'title': title},
       where: 'id = ?',
-      whereArgs: [titleId],
+      whereArgs: <Object?>[titleId],
     );
   }
 
   static Future<int> selectedTitleId(String title) async {
-    final db = await _getTitleListDatabase();
-    final data = await db.query('titleList', where: 'title = ?', whereArgs: [title]);
+    final sql.Database db = await _getTitleListDatabase();
+    final List<Map<String, Object?>> data = await db.query('titleList', where: 'title = ?', whereArgs: <Object?>[title]);
     return data[0]['id'] as int;
   }
 
   // タップされたリストの titleを取得 (系統樹の最初)
   static Future<String> getStartTitle(int id) async {
-    final db = await _getTitleListDatabase();
-    final data = await db.query('titleList', where: 'id = ?', whereArgs: [id]);
+    final sql.Database db = await _getTitleListDatabase();
+    final List<Map<String, Object?>> data = await db.query('titleList', where: 'id = ?', whereArgs: <Object?>[id]);
     return data[0]['title'] as String;
   }
 
   // DB削除処理
   static deleteTitle(String title) async {
-    final db = await _getTitleListDatabase();
+    final sql.Database db = await _getTitleListDatabase();
     // titleに一致するレコードを削除する
     await db.delete(
       'titleList',
       where: 'title = ?',
-      whereArgs: [title],
+      whereArgs: <Object?>[title],
     );
   }
 
 
   // DB追加処理
-  static addTitle(String title,int sortId) async {
-    final db = await _getTitleListDatabase();
-    var existingNode = await db.query(
+  static Future<void> addTitle(String title,int sortId) async {
+    final sql.Database db = await _getTitleListDatabase();
+    List<Map<String, Object?>> existingNode = await db.query(
       'titleList',
       where: 'title = ?',
-      whereArgs: [title],
+      whereArgs: <Object?>[title],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {
       print('ID $sortId is already in the database.');
       return;
     }
-    db.insert('titleList', {
+    db.insert('titleList', <String, Object?>{
       'title': title,
       'sortId': sortId,
     });
@@ -88,21 +88,21 @@ class TitleListData {
 
   //  dbの並べ替え
   static Future<void> sortChange(List<int> sortIndexes) async {
-    final db = await _getTitleListDatabase();
+    final sql.Database db = await _getTitleListDatabase();
     // 既存のレコードを sortId の昇順で取得
-    final datas = await db.query('titleList', orderBy: 'sortId ASC');
+    final List<Map<String, Object?>> datas = await db.query('titleList', orderBy: 'sortId ASC');
 
     // トランザクションを開始
-    await db.transaction((txn) async {
+    await db.transaction((sql.Transaction txn) async {
       for (int i = 0; i < datas.length; i++) {
-        var data = datas[i];
-        var newSortId = sortIndexes[i];
+        Map<String, Object?> data = datas[i];
+        int newSortId = sortIndexes[i];
         // データベースを更新
         await txn.update(
           'titleList',
-          {'sortId': newSortId},
+          <String, Object?>{'sortId': newSortId},
           where: 'id = ?',
-          whereArgs: [data['id']],
+          whereArgs: <Object?>[data['id']],
         );
       }
     });

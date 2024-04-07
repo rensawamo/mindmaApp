@@ -5,7 +5,6 @@ import 'package:mindmapapp/db/strage/local_storage.dart';
 
 //singleton class
 class SessionController {
-
   LocalStorage sharedPreferenceClass = LocalStorage();
   static final SessionController _session = SessionController._internel();
 
@@ -16,7 +15,7 @@ class SessionController {
   factory SessionController() {
     return _session;
   }
-  
+
   SessionController._internel() {
     isLogin = false;
   }
@@ -49,7 +48,7 @@ class SessionController {
       if (userData.isNotEmpty) {
         SessionController().user = UserModel.fromJson(jsonDecode(userData));
       }
-      SessionController().isLogin = isLogin == 'true'  ? true : false;
+      SessionController().isLogin = isLogin == 'true' ? true : false;
     } catch (e) {
       debugPrint(e.toString());
     }

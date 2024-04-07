@@ -27,7 +27,7 @@ class _SplashViewState extends State<LaunchView> {
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width * 0.5,
@@ -36,7 +36,7 @@ class _SplashViewState extends State<LaunchView> {
               ),
               child: Image.asset('assets/images/launch.png'),
             ),
-            Text(
+            const Text(
               'Life Mind',
               style: AppTexts.launch,
             ),

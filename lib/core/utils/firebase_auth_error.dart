@@ -1,34 +1,44 @@
 import 'package:mindmapapp/core/enum/firebase_auth_error.dart';
 
 String exceptionMessage(FirebaseAuthResultStatus result) {
-  String? message = '';
+  String message = '';
   switch (result) {
-    case FirebaseAuthResultStatus.Successful:
-      message = 'ログインに成功しました。';
+    case FirebaseAuthResultStatus.weakpassword:
+      message = 'パスワードが短かすぎます。';
       break;
-    case FirebaseAuthResultStatus.EmailAlreadyExists:
-      message = '指定されたメールアドレスは既に使用されています。';
-      break;
-    case FirebaseAuthResultStatus.WrongPassword:
-      message = 'パスワードが違います。';
+    case FirebaseAuthResultStatus.InvalidCredential:
+      message = 'メールアドレスとパスワードを正しく入力してください。';
       break;
     case FirebaseAuthResultStatus.InvalidEmail:
-      message = 'メールアドレスが不正です。';
+      message = 'メールアドレスを正しく入力してください。';
       break;
+
+    case FirebaseAuthResultStatus.WrongPassword:
+      message = 'パスワードが間違っています。';
+      break;
+
     case FirebaseAuthResultStatus.UserNotFound:
-      message = '指定されたユーザーは存在しません。';
+      message = 'このアカウントは存在しません。';
       break;
+
     case FirebaseAuthResultStatus.UserDisabled:
-      message = '指定されたユーザーは無効です。';
+      message = 'このメールアドレスは無効になっています。';
       break;
-    case FirebaseAuthResultStatus.OperationNotAllowed:
-      message = '指定されたユーザーはこの操作を許可していません。';
-      break;
+
     case FirebaseAuthResultStatus.TooManyRequests:
-      message = '指定されたユーザーはこの操作を許可していません。';
+      message = 'リクエストが多すぎます。しばらくしてから再度お試しください。';
       break;
-    case FirebaseAuthResultStatus.Undefined:
-      message = '不明なエラーが発生しました。';
+
+    case FirebaseAuthResultStatus.OperationNotAllowed:
+      message = 'メールアドレスとパスワードでのログインは有効になっていません。';
+      break;
+
+    case FirebaseAuthResultStatus.EmailAlreadyExists:
+      message = 'このメールアドレスはすでに登録されています。';
+      break;
+
+    default:
+      message = '予期せぬエラーが発生しました。';
       break;
   }
   return message;

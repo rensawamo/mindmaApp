@@ -3,10 +3,10 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 
 Future<Database> _getEdgeDatabase() async {
-  final dbPath = await sql.getDatabasesPath();
-  final db = await sql.openDatabase(
+  final String dbPath = await sql.getDatabasesPath();
+  final sql.Database db = await sql.openDatabase(
     path.join(dbPath, 'edge.db'),
-    onCreate: (db, version) {
+    onCreate: (sql.Database db, int version) {
       return db.execute(
         'CREATE TABLE edge(fromId INTEGER, titleID INTEGER, toId INTEGER)',
       );
@@ -19,21 +19,21 @@ Future<Database> _getEdgeDatabase() async {
 class EdgeData {
   // 画面描写時に取得
   static Future<List<Map<String, int>>?> loadEdgeds(int titleID) async {
-    List<Map<String, int>>? json = [];
-    final db = await _getEdgeDatabase();
-    final datas =
-        await db.query('edge', where: 'titleID = ?', whereArgs: [titleID]);
+    List<Map<String, int>>? json = <Map<String, int>>[];
+    final sql.Database db = await _getEdgeDatabase();
+    final List<Map<String, Object?>> datas =
+        await db.query('edge', where: 'titleID = ?', whereArgs: <Object?>[titleID]);
     if (datas.isNotEmpty) {
-      for (var data in datas) {
-        json.add({"from": data["fromId"] as int, "to": data["toId"] as int});
+      for (Map<String, Object?> data in datas) {
+        json.add(<String, int>{"from": data["fromId"] as int, "to": data["toId"] as int});
       }
     }
     return json;
   }
 
   static Future<void> addEdge(int fromId, int titleID, int toId) async {
-    final db = await _getEdgeDatabase();
-    db.insert('edge', {
+    final sql.Database db = await _getEdgeDatabase();
+    db.insert('edge', <String, Object?>{
       'fromId': fromId,
       'titleID': titleID,
       'toId': toId,
@@ -41,9 +41,9 @@ class EdgeData {
   }
 
   static Future<void> deleteEdge(int titleID,int toId) async {
-    final db = await _getEdgeDatabase();
+    final sql.Database db = await _getEdgeDatabase();
     db.delete('edge',
         where: 'titleID = ? AND toId = ?',
-        whereArgs: [titleID, toId]);
+        whereArgs: <Object?>[titleID, toId]);
   }
 }

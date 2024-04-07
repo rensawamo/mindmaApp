@@ -7,9 +7,7 @@ class UserCellWidget extends StatelessWidget {
   final IconData icon;
   final String title;
   const UserCellWidget({
-    Key? key,
-    required this.icon,
-    required this.title,
+    required this.icon, required this.title, Key? key,
   }) : super(key: key);
 
   @override
@@ -18,9 +16,9 @@ class UserCellWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               Icon(
                 icon,
                 color: AppColors.blackColor.withOpacity(.5),

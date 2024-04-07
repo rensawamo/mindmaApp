@@ -10,7 +10,7 @@ class ChangeAuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, ref, child) {
+    return Consumer<LoginViewModel>(builder: (BuildContext context, LoginViewModel ref, Widget? child) {
       return TextButton(
         onPressed: () {
           ref.setIsLogin();

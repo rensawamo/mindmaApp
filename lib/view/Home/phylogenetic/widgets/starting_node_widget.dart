@@ -13,7 +13,7 @@ class StartingNodeWidget extends ConsumerStatefulWidget {
   final int? nodeId;
   final FocusNode myFocusNode;
 
-  StartingNodeWidget(
+  const StartingNodeWidget(
       this.titleId,
       this.title,
       this.isSelected,
@@ -29,15 +29,15 @@ class StartingNodeWidget extends ConsumerStatefulWidget {
 }
 
 class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
-  final viewModel = ChangeNotifierProvider((ref) => PhylogeneticViewModel());
-  TextEditingController _titleController = TextEditingController();
+  final ChangeNotifierProvider<PhylogeneticViewModel> viewModel = ChangeNotifierProvider((ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
+  final TextEditingController _titleController = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
     Future(() async {
-      final nodeText = widget.title;
+      final String nodeText = widget.title;
       _titleController.text = nodeText;
     });
   }
@@ -45,7 +45,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20), // 内側から paddingをかけられる
+      padding: const EdgeInsets.all(20), // 内側から paddingをかけられる
       width: 250,
       decoration: BoxDecoration(
           color: Colors.red,
@@ -53,7 +53,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
           border: widget.isSelected
               ? Border.all(width: 3, color: Colors.amber)
               : Border.all(width: 2, color: Colors.red.shade900),
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.grey.withAlpha(60),
               blurRadius: 10,
@@ -62,7 +62,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
           ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           Container(
             child: Container(
               decoration: BoxDecoration(
@@ -72,7 +72,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
               ),
               width: 20,
               height: 20,
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
             ),
           ),
           Expanded(
@@ -94,12 +94,12 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
                   });
                 },
                 maxLines: null,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),

@@ -5,8 +5,7 @@ class DeleteDialog extends StatefulWidget {
   final String title;
 
   const DeleteDialog({
-    Key? key,
-    required this.title,
+    required this.title, Key? key,
   }) : super(key: key);
 
   @override
@@ -18,16 +17,16 @@ class _ConfirmDialogState extends State<DeleteDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.title),
-      content: Column(
+      content: const Column(
         mainAxisSize: MainAxisSize.min,
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('キャンセル'),
+          child: const Text('キャンセル'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text('OK'),
+          child: const Text('OK'),
           onPressed: () =>  Navigator.of(context).pop(true),
         ),
       ],
@@ -47,7 +46,7 @@ class _ConfirmDialogState extends State<DeleteDialog> {
 
 // ok がおされたか
 Future<bool?> ShowDeleteDialog(BuildContext context,String title) async {
-  final result = await showDialog<bool>(
+  final bool? result = await showDialog<bool>(
     context: context,
     builder: (BuildContext context) => DeleteDialog(
       title: title,

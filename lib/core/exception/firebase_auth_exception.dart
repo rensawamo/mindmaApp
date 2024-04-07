@@ -1,9 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mindmapapp/core/enum/firebase_auth_error.dart';
 
+
 FirebaseAuthResultStatus handleException(FirebaseAuthException e) {
   FirebaseAuthResultStatus result;
   switch (e.code) {
+    case 'weak-password':
+      result = FirebaseAuthResultStatus.weakpassword;
+      break;
+    case 'invalid-credential' :
+      result = FirebaseAuthResultStatus.InvalidCredential;
+      break;
     case 'invalid-email':
       result = FirebaseAuthResultStatus.InvalidEmail;
       break;
@@ -22,7 +29,7 @@ FirebaseAuthResultStatus handleException(FirebaseAuthException e) {
     case 'too-many-requests':
       result = FirebaseAuthResultStatus.TooManyRequests;
       break;
-    case 'email-already-exists':
+    case 'email-already-in-use':
       result = FirebaseAuthResultStatus.EmailAlreadyExists;
       break;
     default:

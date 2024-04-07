@@ -6,12 +6,11 @@ import 'package:mindmapapp/db/session/session.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/buttons/login_button.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
-import 'package:mindmapapp/core/exception/firebase_auth_error.dart';
-import 'package:mindmapapp/core/enum/firebase_auth_error.dart';
+import 'package:mindmapapp/core/exception/firebase_auth_exception.dart';
 import 'package:mindmapapp/core/utils/firebase_auth_error.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:mindmapapp/core/design/app_texts.dart';
 
-final _firebase = FirebaseAuth.instance;
+final FirebaseAuth _firebase = FirebaseAuth.instance;
 
 class LoginButtonWidget extends StatefulWidget {
   const LoginButtonWidget({
@@ -24,24 +23,32 @@ class LoginButtonWidget extends StatefulWidget {
 class _LoginButtonWidget extends State<LoginButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, ref, child) {
+    return Consumer<LoginViewModel>(
+        builder: (BuildContext context, LoginViewModel ref, Widget? child) {
       return Column(
         children: <Widget>[
-          Text(ref.errorMessage ?? ""),
+          Text(ref.errorMessage ?? "", style: AppTexts.error),
           SizedBox(
             // firebase のエラー用の
-            height: context.mediaQueryHeight * .002,
+            height: context.mediaQueryHeight * .003,
           ),
           LoginButton(
             title: ref.isLogin ? 'Login' : 'SignUp',
             loading: ref.loginLoading ? true : false,
             onPress: () async {
-              Map<String, String> data = {
+              if (ref.email.isEmpty || ref.password.isEmpty) {
+                ref.errorMessage = "正しく入力してください。";
+                ref.setLoginLoading(false);
+                return;
+              }
+              // session用のデータ
+              Map<String, String> data = <String, String>{
                 'email': ref.email.toString(),
                 'password': ref.password.toString(),
               };
-              ref.setLoginLoading(true);
-
+              ref.setLoginLoading(true); // ローディングを表示
+              print(ref.checkEmailVerified());
+              var isMailCheck = await ref.checkEmailVerified();
               // 既存ユーザはログインさせる
               if (ref.isLogin) {
                 try {
@@ -49,31 +56,54 @@ class _LoginButtonWidget extends State<LoginButtonWidget> {
                   await _firebase.signInWithEmailAndPassword(
                       email: ref.email.toString(),
                       password: ref.password.toString());
-                  await SessionController().saveUserEmail(ref.email.toString());
-                  await SessionController().saveUserInPreference(data);
-                  Navigator.pushNamed(context, RoutesName.home);
+                  if (isMailCheck == false) {
+                    // emailの確認がまだ完了していない時
+                    Navigator.pushNamed(context, RoutesName.emailAuth);
+                  } else {
+                    // emailの確認が完了している時
+                    Navigator.pushNamed(context, RoutesName.home);
+                  }
+                  ref.setLoginLoading(false);
                   ref.errorMessage = null;
                 } on FirebaseAuthException catch (e) {
-                  ref.errorMessage = e.toString();
+                  ref.errorMessage = exceptionMessage(handleException(e));
                 }
                 //  新しいユーザはアカウントを作成する
               } else {
                 try {
-                  await _firebase.createUserWithEmailAndPassword(
-                      email: ref.email.toString(),
-                      password: ref.password.toString());
-                  await SessionController().saveUserEmail(ref.email.toString());
-                  await SessionController().saveUserInPreference(data);
+                  // 一時的に userを作成して emailの確認に進む
+                  final userCredential =
+                      await _firebase.createUserWithEmailAndPassword(
+                          email: ref.email.toString(),
+                          password: ref.password.toString());
+                  // ユーザーがnullでないことを確認
+                  if (userCredential.user != null) {
+                    // 確認メールを送信
+                    await userCredential.user!.sendEmailVerification();
+                  } else {
+                    // ユーザー作成に失敗
+                    ref.errorMessage = "ユーザーの作成に失敗しました。";
+                    ref.setLoginLoading(false);
+                    return;
+                  }
+                  // emailの確認を行う
+                  Navigator.pushNamed(context, RoutesName.emailAuth);
+                  ref.setLoginLoading(false);
                   ref.errorMessage = null;
-
-                  Navigator.pushNamed(context, RoutesName.home);
                 } on FirebaseAuthException catch (e) {
-                  ref.errorMessage = e.toString();
+                  // Firebaseのエラーをハンドリング
+                  print(e.code);
+                  ref.errorMessage =
+                      exceptionMessage(handleException(e)); // エラーメッセージを適切に設定
                 }
               }
               ref.setLoginLoading(false);
+
+              // sessionを更新
+              await SessionController().saveUserEmail(ref.email.toString());
+              await SessionController().saveUserInPreference(data);
             },
-          )
+          ),
         ],
       );
     });

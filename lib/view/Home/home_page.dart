@@ -3,14 +3,17 @@ import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
 import 'package:mindmapapp/view/Home/user/user_page.dart';
 
 class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
   @override
   State<HomeView> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<HomeView> {
   int currentIndex = 0;
-  final pages = [TitleListView(), UserPage()];
+  final List<StatefulWidget> pages = <StatefulWidget>[const TitleListView(), const UserPage()];
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -29,7 +32,7 @@ class _MyAppState extends State<HomeView> {
             unselectedItemColor: Colors.greenAccent.shade700,
             selectedItemColor: Colors.white,
             backgroundColor: Colors.greenAccent,
-            items: const [
+            items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_tree),
                 label: 'Mind Map', // Correct property is 'label', not 'itle'
@@ -39,7 +42,7 @@ class _MyAppState extends State<HomeView> {
                 label: 'User', // Use 'label' instead of 'title'
               ),
             ],
-            onTap: (index) => {
+            onTap: (int index) => <void>{
               setState(() {
                 currentIndex = index;
               })

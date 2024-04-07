@@ -45,7 +45,7 @@ class Utils {
   }
 
   //  スナックバー
-  static snackBar(String message, BuildContext context) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(String message, BuildContext context) {
     return ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(backgroundColor: Colors.red, content: Text(message)));
   }

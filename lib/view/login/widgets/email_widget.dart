@@ -8,18 +8,16 @@ class InputEmailWidget extends StatelessWidget {
   final FocusNode passwordFocusNode;
 
   const InputEmailWidget({
-    Key? key,
-    required this.focusNode,
-    required this.passwordFocusNode,
+    required this.focusNode, required this.passwordFocusNode, Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginViewModel>(
-      builder: (context, ref, child) {
+      builder: (BuildContext context, LoginViewModel ref, Widget? child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(ref.isLogin ? 'サインイン' : 'サインアップ',
@@ -27,14 +25,14 @@ class InputEmailWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Eamil',
-                prefixIcon: const Icon(Icons.email),
+                prefixIcon: Icon(Icons.email),
               ),
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               textCapitalization: TextCapitalization.none,
-              validator: (value) {
+              validator: (String? value) {
                 if (value == null ||
                     value.trim().isEmpty ||
                     !value.contains('@')) {
