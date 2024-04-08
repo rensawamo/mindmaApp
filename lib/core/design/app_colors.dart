@@ -19,21 +19,21 @@ class AppColors {
   // app iconとセットの文字の色
   static Color appFontColor = const Color.fromRGBO(91, 161, 4, 1);
 
-  static Color applistColor = Color.fromARGB(255, 195, 206, 195);
+  static Color applistColor = const Color.fromARGB(255, 195, 206, 195);
 
   static const Color nodeIconColor = Color.fromARGB(255, 125, 168, 125);
 
-  static Color appbarColor = Color.fromARGB(255, 157, 194, 157);
+  static Color appbarColor = const Color.fromARGB(255, 157, 194, 157);
 
-  static Color addButtonColor = Color.fromRGBO(138, 130, 121, 1);
+  static Color addButtonColor = const Color.fromRGBO(138, 130, 121, 1);
 
-  static Color treeColor = Color.fromRGBO(119, 94, 83, 1);
+  static Color treeColor = const Color.fromRGBO(119, 94, 83, 1);
 
-  static Color appBottomColor = Color.fromARGB(255, 202, 201, 149);
+  static Color appBottomColor = const Color.fromARGB(255, 202, 201, 149);
 
   static Color darkGreen = const Color.fromRGBO(21, 105, 84, 1.0);
 
-  static Color lightGreen = Color.fromARGB(255, 157, 160, 157);
+  static Color lightGreen = const Color.fromARGB(255, 157, 160, 157);
 
   static Color transparent = Colors.transparent;
 }

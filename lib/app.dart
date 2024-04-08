@@ -4,7 +4,6 @@ import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/routes.dart';
 import 'core/routes/routes_name.dart';
-import 'view_model/login/email_verfication_view_model.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

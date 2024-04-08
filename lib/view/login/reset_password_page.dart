@@ -37,7 +37,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         appBar: AppBar(
-          title: Text('パスワードリセット'),
+          title: const Text('パスワードリセット'),
           backgroundColor: AppColors.transparent,
           elevation: 0,
         ),
@@ -46,13 +46,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
+              const Text(
                 'パスワードリセットのためのメールアドレスを入力してください。',
                 style: AppTexts.body,
               ),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'メールアドレス'),
+                decoration: const InputDecoration(labelText: 'メールアドレス'),
               ),
               SizedBox(
                 height: context.mediaQueryHeight * .04,
@@ -65,7 +65,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   decoration: BoxDecoration(
                       color: AppColors.darkGreen,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                  child: const Center(
                       child: Text(
                     'リセットメールを送信',
                     style: TextStyle(color: AppColors.paleGreen, fontSize: 16),

@@ -7,7 +7,6 @@ import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/app_texts.dart';
-import 'package:mindmapapp/core/design/view+extention.dart';
 
 class TitleListView extends ConsumerStatefulWidget {
   const TitleListView({super.key});

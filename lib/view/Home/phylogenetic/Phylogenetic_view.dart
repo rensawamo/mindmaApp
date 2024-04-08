@@ -4,8 +4,6 @@ import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
-import 'package:mindmapapp/core/design/app_texts.dart';
-import 'package:mindmapapp/core/design/view+extention.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
   final String title; // 受け取る文字列パラメータ

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/app.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/app_texts.dart';
-import 'package:mindmapapp/core/design/view+extention.dart';
 
 class DeleteDialog extends StatefulWidget {
   final String title;
@@ -27,7 +25,7 @@ class _ConfirmDialogState extends State<DeleteDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child:  Text('キャンセル',style: AppTexts.caption3),
+          child:  const Text('キャンセル',style: AppTexts.caption3),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(

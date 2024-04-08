@@ -48,7 +48,7 @@ class _LoginButtonWidget extends State<LoginButtonWidget> {
               };
               ref.setLoginLoading(true); // ローディングを表示
               print(ref.checkEmailVerified());
-              var isMailCheck = await ref.checkEmailVerified();
+              bool isMailCheck = await ref.checkEmailVerified();
               // 既存ユーザはログインさせる
               if (ref.isLogin) {
                 try {
@@ -72,7 +72,7 @@ class _LoginButtonWidget extends State<LoginButtonWidget> {
               } else {
                 try {
                   // 一時的に userを作成して emailの確認に進む
-                  final userCredential =
+                  final UserCredential userCredential =
                       await _firebase.createUserWithEmailAndPassword(
                           email: ref.email.toString(),
                           password: ref.password.toString());

@@ -55,6 +55,7 @@ dependencies:
   sign_in_with_apple: ^5.0.0
   flutter_signin_button: ^2.0.0
   image_picker: ^0.8.7+1
+  flutter_launcher_icons: ^0.13.1
   # flutter_email_sender: ^5.0.2
   # flutter_phone_direct_caller: ^2.1.1
   flutter:
@@ -93,38 +94,11 @@ flutter:
   uses-material-design: true
 
 
-flavorizr:
-  app:
-    android:
-      flavorDimensions: "flavor-type"
-
-  flavors:
-    development:
-      app:
-        name: "Development"
-      android:
-        applicationId: "com.rensawamo.mindmapApp.flavor.dev"
-        firebase:
-          config: "./android/app/src/development/google-services.json"
-      ios:
-        bundleId: "com.rensawamo.mindmapApp.dev"
-
-    staging:
-      app:
-        name: "Staging"
-      android:
-        applicationId: "com.rensawamo.mindmapApp.flavor.staging"
-        firebase:
-          config: "./android/app/src/staging/google-services.json"
-      ios:
-        bundleId: "com.rensawamo.mindmapApp.staging"
-
-    production:
-      app:
-        name: "Production"
-      android:
-        applicationId: "com.rensawamo.mindmapApp.flavor.prod"
-        firebase:
-          config: "./android/app/src/production/google-services.json"
-      ios:
-        bundleId: "com.rensawmao.mindmapApp.prod"
+flutter_icons:
+  android: true
+  ios: true
+  assets:
+    - ./assets/images/
+    - ./assets/launcher_icons/dev.png
+    - ./assets/launcher_icons/prd.png
+    - ./assets/launcher_icons/stg.png

@@ -4,8 +4,6 @@ import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
-import 'package:mindmapapp/core/design/app_texts.dart';
-import 'package:mindmapapp/core/design/view+extention.dart';
 
 
 class StartingNodeWidget extends ConsumerStatefulWidget {

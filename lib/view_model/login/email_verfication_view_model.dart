@@ -25,7 +25,7 @@ class EmailVericationViewModel with ChangeNotifier {
   }
 
   Future<void> resendEmailVerification() async {
-    var user = _firebaseAuth.currentUser;
+    User? user = _firebaseAuth.currentUser;
     if (user != null && !user.emailVerified) {
       await user.sendEmailVerification();
       message = '確認メールを再送しました。メールをチェックして、リンクをクリックしてください。';

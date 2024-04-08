@@ -53,7 +53,7 @@ class _UserViewState extends State<UserPage> {
                           ),
                           SizedBox(
                             width: context.mediaQueryWidth * .35,
-                            child: Column(
+                            child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
@@ -87,7 +87,7 @@ class _UserViewState extends State<UserPage> {
                               title: user,
                             ),
                           ),
-                          Divider(),
+                          const Divider(),
                           GestureDetector(
                             onTap: () async {
                               ShowDeleteDialog(context, "ログアウトしますか？")
@@ -111,26 +111,26 @@ class _UserViewState extends State<UserPage> {
                             child: const UserCellWidget(
                                 icon: Icons.logout, title: 'Log Out'),
                           ),
-                          Divider(),
+                          const Divider(),
                           GestureDetector(
                             onTap: () => print("Notifications tapped."),
                             child: const UserCellWidget(
                                 icon: Icons.notifications,
                                 title: 'Notifications'),
                           ),
-                          Divider(),
+                          const Divider(),
                           GestureDetector(
                             onTap: () => print("FAQs tapped."),
                             child: const UserCellWidget(
                                 icon: Icons.chat, title: 'FAQs'),
                           ),
-                          Divider(),
+                          const Divider(),
                           GestureDetector(
                             onTap: () => print("Share tapped."),
                             child: const UserCellWidget(
                                 icon: Icons.share, title: 'Share'),
                           ),
-                          Divider(),
+                          const Divider(),
 
                         ],
                       )),

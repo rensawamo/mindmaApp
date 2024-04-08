@@ -14,7 +14,7 @@ class EmailVerificationPage extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationPage> {
-  final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool isChecking = false;
   String message = '登録したメールアドレスに確認メールを送信しました。\nメール内のリンクをクリックしてください。';
 
@@ -29,7 +29,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
 
     // ユーザーが最新の情報に更新されていることを確認
     await _firebaseAuth.currentUser!.reload();
-    var user = _firebaseAuth.currentUser;
+    User? user = _firebaseAuth.currentUser;
 
     if (user != null && user.emailVerified) {
       // メールが確認されていれば、ホーム画面に移動
@@ -44,7 +44,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
 
   // メールを再送信
   Future<void> resendEmailVerification() async {
-    var user = _firebaseAuth.currentUser;
+    User? user = _firebaseAuth.currentUser;
     if (user != null && !user.emailVerified) {
       await user.sendEmailVerification();
       setState(() {
@@ -57,13 +57,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("メールアドレスの確認"),
+        title: const Text("メールアドレスの確認"),
         backgroundColor: Colors.transparent,
       ),
       backgroundColor: AppColors.paleGreen, // Scaffoldの背景色を設定
       body: Center(
         child: isChecking
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -86,7 +86,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
                       decoration: BoxDecoration(
                           color: AppColors.darkGreen,
                           borderRadius: BorderRadius.circular(10)),
-                      child: Center(
+                      child: const Center(
                           child: Text(
                         '確認済み',
                         style:
@@ -105,7 +105,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationPage> {
                       decoration: BoxDecoration(
                           color: AppColors.lightGreen,
                           borderRadius: BorderRadius.circular(10)),
-                      child: Center(
+                      child: const Center(
                           child: Text(
                         'メールを再送する',
                         style:
