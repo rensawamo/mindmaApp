@@ -1,0 +1,12 @@
+{
+  "flavor": "prd",
+  "appIdSuffix": ".prd",
+  "appName": "Life Mind",
+  "appId": "com.rensawamo.mindmapApp",
+  "providerLogPrint": [
+    "add",
+    "update",
+    "dispose",
+    "error"
+  ]
+}

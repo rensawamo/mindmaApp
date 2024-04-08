@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
+
 
 class StartingNodeWidget extends ConsumerStatefulWidget {
   final int titleId;
@@ -48,7 +50,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
       padding: const EdgeInsets.all(20), // 内側から paddingをかけられる
       width: 250,
       decoration: BoxDecoration(
-          color: Colors.red,
+          color: AppColors.treeColor,
           borderRadius: BorderRadius.circular(10),
           border: widget.isSelected
               ? Border.all(width: 3, color: Colors.amber)

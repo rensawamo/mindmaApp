@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
 import 'package:mindmapapp/db/sqlite/edge_db.dart';
@@ -23,9 +22,8 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  //   ----------    phylogenetic     ---------------
   ValueNotifier<int> selectedNode = ValueNotifier<int>(0);
-  final controller = TransformationController();
+  final TransformationController controller = TransformationController();
 
   //  Nodeの最小単位
   // Node はすべてこれが生成されて表示される
@@ -49,9 +47,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   void init(String title) {
     titleID = -1;
     title = title;
-    json = {
-      "nodes": [
-        {"id": 1, "label": title}
+    json = <String, List>{
+      "nodes": <Map<String, Object>>[
+        <String, Object>{"id": 1, "label": title}
       ],
       "edges": []
     };
@@ -70,7 +68,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     nodes = await NodeData.loadNodes(titleID);
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
-      updateGraph({"nodes": nodes, "edges": edges});
+      updateGraph(<String, List<Map<String, dynamic>>?>{"nodes": nodes, "edges": edges});
     }
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
@@ -90,7 +88,7 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   int addNode() {
     int newId = json["nodes"].length + 1;
-    json['nodes'].add({"id": newId, "label": title});
+    json['nodes'].add(<String, Object>{"id": newId, "label": title});
     NodeData.addNode(newId, titleID, title);
     return newId;
   }
@@ -98,7 +96,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 子供のnodeを追加する
   void createSon() {
     int newId = addNode();
-    json['edges'].add({"from": selectedNode.value, "to": newId});
+    json['edges'].add(<String, int>{"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
     notifyListeners();
     EdgeData.addEdge(selectedNode.value, titleID, newId);
@@ -110,7 +108,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
-    json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
+    json['edges']!.add(<String, int>{"from": previousConnection, "to": newId}) as Map?;
     addEdge(previousConnection, newId);
     notifyListeners();
     EdgeData.addEdge(previousConnection, titleID, newId);
@@ -120,22 +118,22 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
   void deleteNode() async {
     var edges = json['edges'];
-    var nodeIdArray = [selectedNode.value];
-    for (var i = 0; i < edges.length; i++) {
-      for (var index = 0; index < nodeIdArray.length; index++) {
+    List<int> nodeIdArray = <int>[selectedNode.value];
+    for (int i = 0; i < edges.length; i++) {
+      for (int index = 0; index < nodeIdArray.length; index++) {
         if (edges[i]['from'] == nodeIdArray[index]) {
           nodeIdArray.add(edges[i]['to']);
         }
       }
     }
-    nodeIdArray.forEach((int element) {
+    for (int element in nodeIdArray) {
       json['nodes'].removeWhere((node) => node['id'] == element);
       json['edges'].removeWhere(
           (node) => node['from'] == element || node['to'] == element);
-    });
+    }
     notifyListeners();
     graph.removeNode(Node.Id(nodeIdArray[0]));
-    nodeIdArray.forEach((element) async {
+    nodeIdArray.forEach((int element) async {
       await NodeData.deleteNode(titleID, element);
       await EdgeData.deleteEdge(titleID, element);
     });

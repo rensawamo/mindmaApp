@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 import 'buttons/CreateBroButton.dart';
 import 'buttons/CreateSonButton.dart';
@@ -10,7 +11,9 @@ class NodeOptions extends StatelessWidget {
   final void Function() deleteNode; // Node を削除する関数
   final bool isFirst; // 一番最初の Node かどうか
 
-  const NodeOptions(this.createSon, this.createBro, this.deleteNode, this.isFirst, {super.key});
+  const NodeOptions(
+      this.createSon, this.createBro, this.deleteNode, this.isFirst,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +32,13 @@ class NodeOptions extends StatelessWidget {
                 // 子Nodeを生成するボタン、兄弟Nodeを生成するボタン、Nodeを削除するボタン
                 children: <Widget>[
                   CreateSonButton(createSon),
-                  const SizedBox(width: 12),
+                  SizedBox(
+                    width: context.mediaQueryWidth * .05,
+                  ),
                   CreateBroButton(createBro),
-                  const SizedBox(width: 12),
+                  SizedBox(
+                    width: context.mediaQueryWidth * .05,
+                  ),
                   DeleteNodeButton(deleteNode)
                 ],
               ));

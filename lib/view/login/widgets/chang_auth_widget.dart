@@ -14,7 +14,7 @@ class ChangeAuthWidget extends StatelessWidget {
     return Consumer<LoginViewModel>(
         builder: (BuildContext context, LoginViewModel ref, Widget? child) {
       return Column(
-        children: [
+        children: <Widget>[
           // ログインか新規登録かを切り替えるボタン
           TextButton(
             onPressed: () {

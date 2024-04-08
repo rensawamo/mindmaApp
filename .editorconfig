@@ -1,0 +1,29 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# editorconfig.org
+root = true
+
+[*]
+# ハードタブかソフトタブ
+indent_style = space
+# インデントのサイズを4に設定。
+indent_size = 4
+# 改行コードをLFに設定。 windows と mac での環境の差をなくす。Golangは
+end_of_line = lf
+# ファイルの最後に改行を1つ挿入。
+insert_final_newline = true
+# 行の末尾の空白文字を削除。
+trim_trailing_whitespace = true
+# 文字セットをutf-8に設定。
+charset = utf-8
+
+# [*.md]
+[*.md]
+# Markdownファイルでは行末の空白が意味を持つことがあるため、
+# 行末の空白を削除する設定を無効にする。
+trim_trailing_whitespace = false
+
+# [*.dart]
+[*.dart]
+indent_style = space
+indent_size = 2

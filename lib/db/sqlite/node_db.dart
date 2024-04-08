@@ -4,10 +4,10 @@ import 'package:sqflite/sqlite_api.dart';
 
 
 Future<Database> _getNodeDatabase() async {
-  final dbPath = await sql.getDatabasesPath();
-  final db = await sql.openDatabase(
+  final String dbPath = await sql.getDatabasesPath();
+  final sql.Database db = await sql.openDatabase(
     path.join(dbPath, 'node.db'),
-    onCreate: (db, version) {
+    onCreate: (sql.Database db, int version) {
       return db.execute(
         'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT)',
       );
@@ -18,13 +18,13 @@ Future<Database> _getNodeDatabase() async {
 }
 
 class NodeData {
-  // 画面描写でデータ取得
+  // 画面描写でデータ取得 
   static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
-    List<Map<String, dynamic>>? json = [];
-    final db = await _getNodeDatabase();
-    final datas = await db.query('node', where: 'titleID = ?', whereArgs: [titleID], orderBy: 'id ASC');
+    List<Map<String, dynamic>>? json = <Map<String, dynamic>>[];
+    final sql.Database db = await _getNodeDatabase();
+    final List<Map<String, Object?>> datas = await db.query('node', where: 'titleID = ?', whereArgs: <Object?>[titleID], orderBy: 'id ASC');
     if (datas.isNotEmpty) {
-      for (var data in datas) {
+      for (Map<String, Object?> data in datas) {
         json.add({"id": data["id"], "label": data["label"]});
       }
     }
@@ -32,19 +32,19 @@ class NodeData {
   }
 
   // node追加処理
-  static addNode(int id, int titleID, String label) async {
-    final db = await _getNodeDatabase();
-    var existingNode = await db.query(
+  static Future<void> addNode(int id, int titleID, String label) async {
+    final sql.Database db = await _getNodeDatabase();
+    List<Map<String, Object?>> existingNode = await db.query(
       'node',
       where: 'id = ? AND titleID = ?',
-      whereArgs: [id,titleID],
+      whereArgs: <Object?>[id,titleID],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {
       print('ID $id is already in the database.');
       return;
     }
-    await db.insert('node', {
+    await db.insert('node', <String, Object?>{
       'id': id,
       'titleID': titleID,
       'label': label,
@@ -54,18 +54,18 @@ class NodeData {
 
   // Nodeのlabelを更新
   static updateNodeText(int nodeId, int titleId, String text) async {
-    final db = await _getNodeDatabase();
+    final sql.Database db = await _getNodeDatabase();
     await db.update(
       'node',
-      {'label': text},
+      <String, Object?>{'label': text},
       where: 'id = ? AND titleID = ?',
-      whereArgs: [nodeId, titleId],
+      whereArgs: <Object?>[nodeId, titleId],
     );
   }
 
   //  Node削除
   static Future deleteNode(int titleID, int nodeId) async {
-    final db = await _getNodeDatabase();
-    db.delete('node', where: 'id = ? AND titleID = ?', whereArgs: [nodeId, titleID]);
+    final sql.Database db = await _getNodeDatabase();
+    db.delete('node', where: 'id = ? AND titleID = ?', whereArgs: <Object?>[nodeId, titleID]);
   }
 }

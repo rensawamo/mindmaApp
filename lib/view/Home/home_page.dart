@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mindmapapp/view/Home/titlelist/title_list_view.dart';
 import 'package:mindmapapp/view/Home/user/user_page.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
-import 'package:mindmapapp/core/design/app_texts.dart';
-import 'package:mindmapapp/core/design/view+extention.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

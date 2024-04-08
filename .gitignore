@@ -74,10 +74,20 @@ unlinked_spec.ds
 **/android/**/GeneratedPluginRegistrant.java
 **/android/keystore.properties
 /android/app/google-services.json
-/android/app/src/staging/google-services.json
-/android/app/src/production/google-services.json
-**/android/app/src/development/google-services.json
-
+/android/app/src/stg/google-services.json
+/android/app/src/prd/google-services.json
+**/android/app/src/dev/google-services.json
+## 追加
+DartDefine.xcconfig
+**/android/app/src/main/res/mipmap-*/ic_launcher.png
+#  firebase ファイル
+ios/GoogleService-Info.plist
+ios/FIrebase/devGoogleService-Info.plist
+ios/FIrebase/sthGoogleService-Info.plist
+ios/FIrebase/prdGoogleService-Info.plist
+android/app/src/firebase/dev-google-services.json
+android/app/src/firebase/stg-google-services.json
+android/app/src/firebase/prd-google-services.json
 app/google-services.*
 
 *.jks
