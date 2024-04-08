@@ -82,9 +82,9 @@ DartDefine.xcconfig
 **/android/app/src/main/res/mipmap-*/ic_launcher.png
 #  firebase ファイル
 ios/GoogleService-Info.plist
-ios/FIrebase/devGoogleService-Info.plist
-ios/FIrebase/sthGoogleService-Info.plist
-ios/FIrebase/prdGoogleService-Info.plist
+ios/Firebase/devGoogleService-Info.plist
+ios/Firebase/sthGoogleService-Info.plist
+ios/Firebase/prdGoogleService-Info.plist
 android/app/src/firebase/dev-google-services.json
 android/app/src/firebase/stg-google-services.json
 android/app/src/firebase/prd-google-services.json
