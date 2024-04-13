@@ -28,7 +28,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
     return indexMapping;
   }
 
-  // list darg dropはriver pod の適応？
+  // リストタイトルの更新
   void updateMyTiles(int oldIndex, int newIndex) {
     setState(() {
       if (oldIndex < newIndex) {

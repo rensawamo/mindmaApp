@@ -6,7 +6,7 @@ import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.
 import 'package:mindmapapp/core/design/app_colors.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
-  final String title; // 受け取る文字列パラメータ
+  final String title; // リストのタップされた要素
   const PhylogeneticTreeView({required this.title, super.key});
 
   @override

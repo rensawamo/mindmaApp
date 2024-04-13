@@ -20,11 +20,14 @@ class AppColors {
   static Color appFontColor = const Color.fromRGBO(91, 161, 4, 1);
 
   static Color applistColor = const Color.fromARGB(255, 195, 206, 195);
-
+  
+  // ノードのアイコンの色 
   static const Color nodeIconColor = Color.fromARGB(255, 125, 168, 125);
+
 
   static Color appbarColor = const Color.fromARGB(255, 157, 194, 157);
 
+  // floating button
   static Color addButtonColor = const Color.fromRGBO(138, 130, 121, 1);
 
   // マインドマップの 最初のnodeの色 根っこをイメージ
@@ -33,7 +36,7 @@ class AppColors {
   // マインドマップの子供 nodeの色 葉っぱをイメージ
   static Color leafColor = Color.fromARGB(255, 167, 179, 162);
   
-  // マインドマップの 枝の色
+  // マインドマップの 枝の色 木をイメージ
   static Color treeColor = const Color.fromRGBO(119, 94, 83, 1);
 
 
@@ -43,5 +46,6 @@ class AppColors {
 
   static Color lightGreen = const Color.fromARGB(255, 157, 160, 157);
 
+  // 
   static Color transparent = Colors.transparent;
 }

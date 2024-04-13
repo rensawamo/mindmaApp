@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
 import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
+import 'package:mindmapapp/core/componets/snackbar.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
@@ -133,17 +136,35 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-
-    notifyListeners();
+    // グラフからノードを削除
     graph.removeNode(Node.Id(nodeIdArray[0]));
-    nodeIdArray.forEach((int element) async {
-      await NodeData.deleteNode(titleID, element);
-      json['nodes'].removeWhere((node) => node['id'] == element);
-
-      await EdgeData.deleteEdge(titleID, element);
-      json['edges'].removeWhere(
-          (node) => node['from'] == element || node['to'] == element);
-    });
-    print("delete node");
+    // ノードとエッジの削除を管理する
+    String? nodeError;
+    String? edgeError;
+    for (int element in nodeIdArray) {
+      // ノード削除
+      nodeError = await NodeData.deleteNode(titleID, element);
+      if (nodeError != null) {
+        print(nodeError);
+      }
+      // エッジ削除
+      edgeError = await EdgeData.deleteEdge(titleID, element);
+      if (edgeError != null) {
+        print(edgeError);
+      }
+    }
+    //  dbの量が多かったりした場合を想定
+    if (nodeError != null || edgeError != null) {
+      print("error occured ");
+      // dbの削除が成功した場合 グラフの更新
+    } else {
+      for (int element in nodeIdArray) {
+        json['nodes'].removeWhere((node) => node['id'] == element);
+        json['edges'].removeWhere(
+            (edge) => edge['from'] == element || edge['to'] == element);
+        notifyListeners();
+        print("delete all succsecs");
+      }
+    }
   }
 }
