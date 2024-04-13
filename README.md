@@ -1,4 +1,4 @@
 ビルド
 ```sh
-$ flutter run --dart-define-from-file=dart_defines/prd.json
+$ flutter run --dart-define=FLAVOR=prd  
 ```

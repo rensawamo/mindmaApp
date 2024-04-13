@@ -6,8 +6,8 @@ import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
-  var json; // phylogenetic graphのデータ jsonで管理  
-  int titleID = -1; // list tiletの id
+  var json; // phylogenetic graphのデータ jsonで管理
+  int titleID = -1; // list tiletの id この-1 というマジックナンバーは初期値(isloading の true)
   String title = ""; // start nodeのタイトル
 
   // phylogenetic graphの生成部品
@@ -23,7 +23,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   ValueNotifier<int> selectedNode = ValueNotifier<int>(0);
-  final TransformationController controller = TransformationController();
+  // 初期値の拡大スケールの調節
+  final TransformationController controller =
+      TransformationController(Matrix4.diagonal3Values(0.7, 0.7, 1.0));
 
   //  Nodeの最小単位
   // Node はすべてこれが生成されて表示される
@@ -33,7 +35,7 @@ class PhylogeneticViewModel with ChangeNotifier {
         createBro, controller, deleteNode, titleID);
   }
 
-  void addEdge(int from,int  to) {
+  void addEdge(int from, int to) {
     graph.addEdge(Node.Id(from), Node.Id(to));
     notifyListeners();
   }
@@ -54,10 +56,11 @@ class PhylogeneticViewModel with ChangeNotifier {
       "edges": []
     };
     graph.addNode(Node.Id(1));
+    // グラフのnode間の距離とかを設定
     builder
-      ..siblingSeparation = (20)
-      ..levelSeparation = (40)
-      ..subtreeSeparation = (50)
+      ..siblingSeparation = (10)
+      ..levelSeparation = (35)
+      ..subtreeSeparation = (35)
       ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
     notifyListeners();
   }
@@ -68,7 +71,10 @@ class PhylogeneticViewModel with ChangeNotifier {
     nodes = await NodeData.loadNodes(titleID);
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
-      updateGraph(<String, List<Map<String, dynamic>>?>{"nodes": nodes, "edges": edges});
+      updateGraph(<String, List<Map<String, dynamic>>?>{
+        "nodes": nodes,
+        "edges": edges
+      });
     }
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
@@ -108,7 +114,8 @@ class PhylogeneticViewModel with ChangeNotifier {
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
-    json['edges']!.add(<String, int>{"from": previousConnection, "to": newId}) as Map?;
+    json['edges']!.add(<String, int>{"from": previousConnection, "to": newId})
+        as Map?;
     addEdge(previousConnection, newId);
     notifyListeners();
     EdgeData.addEdge(previousConnection, titleID, newId);
@@ -126,16 +133,16 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-    for (int element in nodeIdArray) {
-      json['nodes'].removeWhere((node) => node['id'] == element);
-      json['edges'].removeWhere(
-          (node) => node['from'] == element || node['to'] == element);
-    }
+
     notifyListeners();
     graph.removeNode(Node.Id(nodeIdArray[0]));
     nodeIdArray.forEach((int element) async {
       await NodeData.deleteNode(titleID, element);
+      json['nodes'].removeWhere((node) => node['id'] == element);
+
       await EdgeData.deleteEdge(titleID, element);
+      json['edges'].removeWhere(
+          (node) => node['from'] == element || node['to'] == element);
     });
     print("delete node");
   }

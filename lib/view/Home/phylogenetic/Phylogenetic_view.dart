@@ -48,7 +48,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                     ),
                     paint: Paint()
                       ..color = AppColors.treeColor // 枝の色
-                      ..strokeWidth = 2  // 枝の太さ
+                      ..strokeWidth = 2 // 枝の太さ
                       ..style = PaintingStyle.stroke,
                     builder: (Node node) {
                       int? a = node.key!.value as int?;
@@ -67,6 +67,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
 
   @override
   void initState() {
+    // dbからデータを取得してグラフを作成 titleidがセットされるまでローディング画面を表示
     ref.read(viewModel).init(widget.title);
     ref.read(viewModel).initializeGraph(widget.title);
   }
