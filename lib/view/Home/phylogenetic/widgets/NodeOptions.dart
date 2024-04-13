@@ -23,7 +23,7 @@ class NodeOptions extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[CreateSonButton(createSon)],
+                children: <Widget>[CreateSonButton(createSon, isFirst)],
               )
             // その他 共通のNode
             : Row(
@@ -31,7 +31,7 @@ class NodeOptions extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 // 子Nodeを生成するボタン、兄弟Nodeを生成するボタン、Nodeを削除するボタン
                 children: <Widget>[
-                  CreateSonButton(createSon),
+                  CreateSonButton(createSon,isFirst),
                   SizedBox(
                     width: context.mediaQueryWidth * .05,
                   ),

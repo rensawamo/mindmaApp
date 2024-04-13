@@ -4,7 +4,7 @@ import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
-
+import 'package:mindmapapp/core/design/view+extention.dart';
 
 class StartingNodeWidget extends ConsumerStatefulWidget {
   final int titleId;
@@ -16,13 +16,13 @@ class StartingNodeWidget extends ConsumerStatefulWidget {
   final FocusNode myFocusNode;
 
   const StartingNodeWidget(
-      this.titleId,
-      this.title,
-      this.isSelected,
-      this.selectedNode,
-      this.setSelectedNode,
-      this.nodeId,
-      this.myFocusNode, {
+    this.titleId,
+    this.title,
+    this.isSelected,
+    this.selectedNode,
+    this.setSelectedNode,
+    this.nodeId,
+    this.myFocusNode, {
     Key? key,
   }) : super(key: key);
 
@@ -31,9 +31,10 @@ class StartingNodeWidget extends ConsumerStatefulWidget {
 }
 
 class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
-  final ChangeNotifierProvider<PhylogeneticViewModel> viewModel = ChangeNotifierProvider((ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
+  final ChangeNotifierProvider<PhylogeneticViewModel> viewModel =
+      ChangeNotifierProvider(
+          (ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
   final TextEditingController _titleController = TextEditingController();
-
 
   @override
   void initState() {
@@ -47,17 +48,18 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20), // 内側から paddingをかけられる
-      width: 250,
+      padding: const EdgeInsets.all(13), // 内側から paddingをかけられる
+      width: context.mediaQueryWidth * .56,
+      height: context.mediaQueryHeight * .1,
       decoration: BoxDecoration(
-          color: AppColors.treeColor,
+          color: AppColors.rootColor.withAlpha(200),
           borderRadius: BorderRadius.circular(10),
           border: widget.isSelected
-              ? Border.all(width: 3, color: Colors.amber)
-              : Border.all(width: 2, color: Colors.red.shade900),
+              ? Border.all(width: 3, color: AppColors.treeColor)
+              : Border.all(width: 2, color: AppColors.rootColor),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: Colors.grey.withAlpha(60),
+              color: AppColors.rootColor.withAlpha(60),
               blurRadius: 10,
               spreadRadius: 5,
             )
@@ -65,43 +67,32 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                border: Border.all(width: 1, color: Colors.grey),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              width: 20,
-              height: 20,
-              margin: const EdgeInsets.only(right: 10),
-            ),
-          ),
           Expanded(
             flex: 5,
             child: TextFormField(
                 controller: _titleController,
                 onChanged: (String value) {
                   // listの titleを更新する
-                  TitleListData.updateTitle(value,widget.titleId);
+                  TitleListData.updateTitle(value, widget.titleId);
                   // nodeのdbを更新する
                   NodeData.updateNodeText(
                       widget.nodeId!, widget.titleId, value);
                 },
                 focusNode: widget.myFocusNode,
                 onTap: () {
-                  ref.read(viewModel).
-                  setSelectedNode(widget.nodeId!);
-                  setState(() {
-                  });
+                  ref.read(viewModel).setSelectedNode(widget.nodeId!);
+                  setState(() {});
                 },
                 maxLines: null,
                 decoration: const InputDecoration(
-                  focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
                   border: InputBorder.none,
                 ),
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center),
           ),
         ],
       ),

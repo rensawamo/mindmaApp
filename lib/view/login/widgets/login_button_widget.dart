@@ -27,9 +27,10 @@ class _LoginButtonWidget extends State<LoginButtonWidget> {
         builder: (BuildContext context, LoginViewModel ref, Widget? child) {
       return Column(
         children: <Widget>[
+          // エラーメッセージ
           Text(ref.errorMessage ?? "", style: AppTexts.error),
+          
           SizedBox(
-            // firebase のエラー用の
             height: context.mediaQueryHeight * .003,
           ),
           LoginButton(

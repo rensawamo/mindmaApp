@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
-
 
 class DeleteNodeButton extends StatelessWidget {
   final void Function() deleteNode; // 子 Node を生成する関数
@@ -22,10 +22,10 @@ class DeleteNodeButton extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50)),
-            color: Colors.amber,
+            color: AppColors.nodeIconColor,
           ),
           padding: const EdgeInsets.all(5),
-          child: const Icon(Icons.delete)),
+          child: const Icon(Icons.delete, color: Colors.white)),
     );
   }
 }

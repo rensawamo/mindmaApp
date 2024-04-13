@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:mindmapapp/core/design/app_colors.dart';
 
 class CreateBroButton extends StatelessWidget {
   final void Function() createBro;
@@ -14,12 +15,13 @@ class CreateBroButton extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50), bottomRight: Radius.circular(50)),
-          color: Colors.amber,
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50)),
+          color: AppColors.nodeIconColor,
         ),
         child: Transform.rotate(
           angle: pi / 2,
-          child: const Icon(Icons.alt_route_rounded),
+          child: const Icon(Icons.alt_route_rounded,color: Colors.white),
         ),
       ),
     );

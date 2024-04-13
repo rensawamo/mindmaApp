@@ -27,7 +27,15 @@ class AppColors {
 
   static Color addButtonColor = const Color.fromRGBO(138, 130, 121, 1);
 
+  // マインドマップの 最初のnodeの色 根っこをイメージ
+  static Color rootColor = Color.fromARGB(255, 151, 134, 115);
+
+  // マインドマップの子供 nodeの色 葉っぱをイメージ
+  static Color leafColor = Color.fromARGB(255, 167, 179, 162);
+  
+  // マインドマップの 枝の色
   static Color treeColor = const Color.fromRGBO(119, 94, 83, 1);
+
 
   static Color appBottomColor = const Color.fromARGB(255, 202, 201, 149);
 
