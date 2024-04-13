@@ -44,7 +44,7 @@ class _NoduloState extends State<NoduloWidget> {
 
   bool isSelected = false;
   bool isFirst = false;
-  late FocusNode myFocusNode = FocusNode();
+  late FocusNode myFocusNode = FocusNode(); // どのnodeにfocus入っているか textcontroller
 
   void handleFocus(int value) {
     if (value == nodeId! && isSelected == false) {

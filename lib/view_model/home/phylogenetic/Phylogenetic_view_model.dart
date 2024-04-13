@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
 import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
-import 'package:mindmapapp/core/componets/snackbar.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
@@ -22,6 +19,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 選択しているNodeの更新
   void setSelectedNode(int newNodeId) {
     selectedNode.value = newNodeId;
+    print(selectedNode.value);
     notifyListeners();
   }
 

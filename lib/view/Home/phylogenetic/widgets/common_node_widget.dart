@@ -48,9 +48,9 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       width: context.mediaQueryWidth * .5,
-      height: context.mediaQueryHeight * .1,
+      height: context.mediaQueryHeight * .11,
       decoration: BoxDecoration(
           color: AppColors.leafColor.withOpacity(0.7),
           borderRadius: BorderRadius.circular(10),
