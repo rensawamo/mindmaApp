@@ -155,16 +155,17 @@ class PhylogeneticViewModel with ChangeNotifier {
     }
     //  dbの量が多かったりした場合を想定
     if (nodeError != null || edgeError != null) {
+      // showSnackBar("エラーが発生しました", "もう一度お試しください"); でもおく
       print("error occured ");
-      // dbの削除が成功した場合 グラフの更新
     } else {
+      // 
       for (int element in nodeIdArray) {
         json['nodes'].removeWhere((node) => node['id'] == element);
         json['edges'].removeWhere(
             (edge) => edge['from'] == element || edge['to'] == element);
         notifyListeners();
-        print("delete all succsecs");
       }
+      print("delete all succsecs");
     }
   }
 }

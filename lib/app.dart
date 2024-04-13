@@ -15,10 +15,9 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Life Mind',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+
         // this is the initial route indicating from where our app will start
         initialRoute: RoutesName.launch,
         onGenerateRoute: Routes.generateRoute,

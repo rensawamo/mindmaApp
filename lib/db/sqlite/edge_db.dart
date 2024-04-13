@@ -56,14 +56,14 @@ class EdgeData {
 
   // edge削除処理
   //
-  static Future<String?> deleteEdge(int titleID, int toId) async {
+  static Future<String?> deleteEdge(int titleID, int element) async {
     String? error;
     final db = await _getEdgeDatabase();
     try {
       await db.delete(
         'edge',
-        where: 'titleID = ? AND toId = ?',
-        whereArgs: [titleID, toId],
+        where: 'titleID = ? AND (toId = ? OR fromId = ?)',
+        whereArgs: [titleID, element,element],
       );
       return null;
     } catch (e) {

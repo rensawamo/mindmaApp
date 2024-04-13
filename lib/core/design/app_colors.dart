@@ -46,6 +46,6 @@ class AppColors {
 
   static Color lightGreen = const Color.fromARGB(255, 157, 160, 157);
 
-  // 
+  // 背景色のデフォルトの無効用
   static Color transparent = Colors.transparent;
 }
