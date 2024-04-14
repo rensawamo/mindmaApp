@@ -128,12 +128,12 @@ class _UserViewState extends State<UserPage> {
                                     icon: Icons.web, title: 'website'),
                               ),
                               const Divider(),
-                              GestureDetector(
-                                onTap: () => print("FAQs tapped."),
-                                child: const UserCellWidget(
-                                    icon: Icons.chat, title: 'FAQs'),
-                              ),
-                              const Divider(),
+                              // GestureDetector(
+                              //   onTap: () => print("FAQs tapped."),
+                              //   child: const UserCellWidget(
+                              //       icon: Icons.chat, title: 'FAQs'),
+                              // ),
+                              // const Divider(),
                               GestureDetector(
                                 onTap: () => launchURL(
                                     'https://rensawamo.github.io/Privacy-Policy-ja/'),
