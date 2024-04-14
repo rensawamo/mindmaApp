@@ -6,7 +6,7 @@ import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.
 import 'package:mindmapapp/core/design/app_colors.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
-  final String title; // 受け取る文字列パラメータ
+  final String title; // リストのタップされた要素
   const PhylogeneticTreeView({required this.title, super.key});
 
   @override
@@ -50,6 +50,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                       ..color = AppColors.treeColor // 枝の色
                       ..strokeWidth = 2 // 枝の太さ
                       ..style = PaintingStyle.stroke,
+                    // この builder は requireで必須で 新しい viewmodelの jsonのid更新かからないため、deleteのidが前のidと被りsqlが破壊される
+                    // 描写させるために listにもどすことにした(2024/4/14)
                     builder: (Node node) {
                       int? a = node.key!.value as int?;
                       var nodes = ref.watch(viewModel).json['nodes']!;

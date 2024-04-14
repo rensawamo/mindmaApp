@@ -4,16 +4,20 @@ import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 
 class DeleteNodeButton extends StatelessWidget {
   final void Function() deleteNode; // 子 Node を生成する関数
+  final FocusNode myFocusNode;
 
-  const DeleteNodeButton(this.deleteNode, {super.key});
+  const DeleteNodeButton(this.deleteNode, this.myFocusNode, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        ShowDeleteDialog(context, "削除しますか？").then((bool? result) async {
+        ShowDeleteDialog(context, "削除しますか？\nグラフを再構築するため一度リストに戻ります。")
+            .then((bool? result) async {
           if (result != null) {
+            myFocusNode.unfocus();
             deleteNode();
+            Navigator.of(context).pop();
           }
         });
       },

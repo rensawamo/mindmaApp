@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
@@ -19,6 +21,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 選択しているNodeの更新
   void setSelectedNode(int newNodeId) {
     selectedNode.value = newNodeId;
+    print(selectedNode.value);
     notifyListeners();
   }
 
@@ -81,6 +84,33 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> saigen() async {
+    Graph newgGraph = Graph()..isTree = true;
+    newgGraph.addNode(Node.Id(1));
+    builder
+      ..siblingSeparation = (10)
+      ..levelSeparation = (35)
+      ..subtreeSeparation = (35)
+      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
+    nodes = await NodeData.loadNodes(titleID);
+    edges = await EdgeData.loadEdgeds(titleID);
+    json = <String, List<Map<String, dynamic>>?>{
+      "nodes": nodes,
+      "edges": edges
+    };
+
+    notifyListeners();
+
+    print(json);
+    json['edges']!.forEach((element) {
+      var fromNodeId = element['from'];
+      var toNodeId = element['to'];
+      newgGraph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
+    });
+    graph = newgGraph;
+    notifyListeners();
+  }
+
   void updateGraph(newJson) {
     json = newJson;
     var edges = json['edges']!;
@@ -123,6 +153,7 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   // 選択されたnodeを削除
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
+
   void deleteNode() async {
     var edges = json['edges'];
     List<int> nodeIdArray = <int>[selectedNode.value];
@@ -133,17 +164,16 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-
-    notifyListeners();
-    graph.removeNode(Node.Id(nodeIdArray[0]));
-    nodeIdArray.forEach((int element) async {
+    // ノードとエッジの削除を管理する
+    for (int element in nodeIdArray) {
+      // ノード削除
       await NodeData.deleteNode(titleID, element);
       json['nodes'].removeWhere((node) => node['id'] == element);
-
+      // エッジ削除
       await EdgeData.deleteEdge(titleID, element);
       json['edges'].removeWhere(
-          (node) => node['from'] == element || node['to'] == element);
-    });
-    print("delete node");
+          (edge) => edge['from'] == element || edge['to'] == element);
+    }
+    saigen();
   }
 }

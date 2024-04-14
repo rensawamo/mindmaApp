@@ -48,9 +48,9 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(13), // 内側から paddingをかけられる
+      padding: const EdgeInsets.all(10),
       width: context.mediaQueryWidth * .56,
-      height: context.mediaQueryHeight * .1,
+      height: context.mediaQueryHeight * .11,
       decoration: BoxDecoration(
           color: AppColors.rootColor.withAlpha(200),
           borderRadius: BorderRadius.circular(10),
@@ -80,7 +80,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
                 },
                 focusNode: widget.myFocusNode,
                 onTap: () {
-                  ref.read(viewModel).setSelectedNode(widget.nodeId!);
+                  widget.setSelectedNode(widget.nodeId);
                   setState(() {});
                 },
                 maxLines: null,

@@ -8,6 +8,7 @@ import 'package:mindmapapp/view/login/email_verification_page.dart';
 import 'package:mindmapapp/view/login/reset_password_page.dart';
 
 
+// アプリ 遷移
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {

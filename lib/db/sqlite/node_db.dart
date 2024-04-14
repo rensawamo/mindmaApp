@@ -2,7 +2,6 @@ import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 
-
 Future<Database> _getNodeDatabase() async {
   final String dbPath = await sql.getDatabasesPath();
   final sql.Database db = await sql.openDatabase(
@@ -18,11 +17,12 @@ Future<Database> _getNodeDatabase() async {
 }
 
 class NodeData {
-  // 画面描写でデータ取得 
+  // 画面描写でデータ取得
   static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
     List<Map<String, dynamic>>? json = <Map<String, dynamic>>[];
     final sql.Database db = await _getNodeDatabase();
-    final List<Map<String, Object?>> datas = await db.query('node', where: 'titleID = ?', whereArgs: <Object?>[titleID], orderBy: 'id ASC');
+    final List<Map<String, Object?>> datas = await db.query('node',
+        where: 'titleID = ?', whereArgs: <Object?>[titleID], orderBy: 'id ASC');
     if (datas.isNotEmpty) {
       for (Map<String, Object?> data in datas) {
         json.add({"id": data["id"], "label": data["label"]});
@@ -37,7 +37,7 @@ class NodeData {
     List<Map<String, Object?>> existingNode = await db.query(
       'node',
       where: 'id = ? AND titleID = ?',
-      whereArgs: <Object?>[id,titleID],
+      whereArgs: <Object?>[id, titleID],
     );
     // 最初にデフォルトのノードを登録する
     if (existingNode.isNotEmpty) {
@@ -63,9 +63,22 @@ class NodeData {
     );
   }
 
-  //  Node削除
-  static Future deleteNode(int titleID, int nodeId) async {
+  // Node削除
+  // error か nullかで errorの場合は jsonの更新を止める
+  static Future<String?> deleteNode(int titleID, int nodeId) async {
+    String? error;
     final sql.Database db = await _getNodeDatabase();
-    db.delete('node', where: 'id = ? AND titleID = ?', whereArgs: <Object?>[nodeId, titleID]);
+    try {
+      await db.delete(
+        'node',
+        where: 'id = ? AND titleID = ?',
+        whereArgs: [nodeId, titleID],
+      );
+      return null;
+    } catch (e) {
+      return 'Error deleting node: $e';
+    } finally {
+      await db.close();
+    }
   }
 }

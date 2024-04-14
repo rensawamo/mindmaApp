@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:mindmapapp/core/routes/routes_name.dart';
 import 'package:mindmapapp/db/session/session.dart';
 import 'package:mindmapapp/view_model/login/login_view_model.dart';
-import 'package:mindmapapp/view/Home/phylogenetic/widgets/buttons/login_button.dart';
+import 'package:mindmapapp/view/login/widgets/certification_button.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/exception/firebase_auth_exception.dart';
 import 'package:mindmapapp/core/utils/firebase_auth_error.dart';
@@ -29,11 +29,11 @@ class _LoginButtonWidget extends State<LoginButtonWidget> {
         children: <Widget>[
           // エラーメッセージ
           Text(ref.errorMessage ?? "", style: AppTexts.error),
-          
+
           SizedBox(
             height: context.mediaQueryHeight * .003,
           ),
-          LoginButton(
+          CertificationButtonWidget(
             title: ref.isLogin ? 'Login' : 'SignUp',
             loading: ref.loginLoading ? true : false,
             onPress: () async {

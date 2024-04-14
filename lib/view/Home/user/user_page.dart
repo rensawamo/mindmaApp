@@ -9,6 +9,7 @@ import 'package:mindmapapp/db/session/session.dart';
 import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/login/login_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -21,6 +22,14 @@ class _UserViewState extends State<UserPage> {
   late LocalStorage sharedPreferenceClass;
   late String user = "";
   late bool isLoading = true;
+
+  Future<void> launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,63 +86,64 @@ class _UserViewState extends State<UserPage> {
                       height: context.mediaQueryHeight * .7,
                       width: context.mediaQueryWidth * .9,
                       child: Container(
-                        padding: const EdgeInsets.all(20) ,
+                          padding: const EdgeInsets.all(20),
                           child: Column(
-                        children: <Widget>[
-                          // ユーザのメールアドレス
-                          GestureDetector(
-                            child: UserCellWidget(
-                              icon: Icons.person,
-                              title: user,
-                            ),
-                          ),
-                          const Divider(),
-                          GestureDetector(
-                            onTap: () async {
-                              ShowDeleteDialog(context, "ログアウトしますか？")
-                                  .then((bool? result) async {
-                                if (result != null) {
-                                  // firebase のログアウト
-                                  await FirebaseAuth.instance.signOut();
-                                  // session を破壊
-                                  await SessionController().sessionClear();
-                                  // login 画面に戻す stackの削除
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            const LoginPage()),
-                                    (Route<dynamic> route) => false,
-                                  );
-                                }
-                              });
-                            },
-                            child: const UserCellWidget(
-                                icon: Icons.logout, title: 'Log Out'),
-                          ),
-                          const Divider(),
-                          GestureDetector(
-                            onTap: () => print("Notifications tapped."),
-                            child: const UserCellWidget(
-                                icon: Icons.notifications,
-                                title: 'Notifications'),
-                          ),
-                          const Divider(),
-                          GestureDetector(
-                            onTap: () => print("FAQs tapped."),
-                            child: const UserCellWidget(
-                                icon: Icons.chat, title: 'FAQs'),
-                          ),
-                          const Divider(),
-                          GestureDetector(
-                            onTap: () => print("Share tapped."),
-                            child: const UserCellWidget(
-                                icon: Icons.share, title: 'Share'),
-                          ),
-                          const Divider(),
-
-                        ],
-                      )),
+                            children: <Widget>[
+                              // ユーザのメールアドレス
+                              GestureDetector(
+                                child: UserCellWidget(
+                                  icon: Icons.person,
+                                  title: user,
+                                ),
+                              ),
+                              const Divider(),
+                              GestureDetector(
+                                onTap: () async {
+                                  ShowDeleteDialog(context, "ログアウトしますか？")
+                                      .then((bool? result) async {
+                                    if (result != null) {
+                                      // firebase のログアウト
+                                      await FirebaseAuth.instance.signOut();
+                                      // session を破壊
+                                      await SessionController().sessionClear();
+                                      // login 画面に戻す stackの削除
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                const LoginPage()),
+                                        (Route<dynamic> route) => false,
+                                      );
+                                    }
+                                  });
+                                },
+                                child: const UserCellWidget(
+                                    icon: Icons.logout, title: 'Log Out'),
+                              ),
+                              const Divider(),
+                              GestureDetector(
+                                onTap: () => launchURL(
+                                    'https://rensawamo.github.io/myapp-web-ja/lifemind/'),
+                                child: const UserCellWidget(
+                                    icon: Icons.web, title: 'website'),
+                              ),
+                              const Divider(),
+                              // GestureDetector(
+                              //   onTap: () => print("FAQs tapped."),
+                              //   child: const UserCellWidget(
+                              //       icon: Icons.chat, title: 'FAQs'),
+                              // ),
+                              // const Divider(),
+                              GestureDetector(
+                                onTap: () => launchURL(
+                                    'https://rensawamo.github.io/Privacy-Policy-ja/'),
+                                child: const UserCellWidget(
+                                    icon: Icons.question_answer_rounded,
+                                    title: 'プライバシーポリシー'),
+                              ),
+                              const Divider(),
+                            ],
+                          )),
                     ),
                   ],
                 ),

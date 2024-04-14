@@ -22,7 +22,8 @@ class TitleListData {
     // マインドマップのタイトル
     List<String> titles = <String>[];
     final sql.Database db = await _getTitleListDatabase();
-    final List<Map<String, Object?>> datas = await db.query('titleList', orderBy: 'sortId ASC');
+    final List<Map<String, Object?>> datas =
+        await db.query('titleList', orderBy: 'sortId ASC');
     if (datas.isNotEmpty) {
       for (Map<String, Object?> data in datas) {
         titles.add(data["title"] as String);
@@ -44,14 +45,16 @@ class TitleListData {
 
   static Future<int> selectedTitleId(String title) async {
     final sql.Database db = await _getTitleListDatabase();
-    final List<Map<String, Object?>> data = await db.query('titleList', where: 'title = ?', whereArgs: <Object?>[title]);
+    final List<Map<String, Object?>> data = await db
+        .query('titleList', where: 'title = ?', whereArgs: <Object?>[title]);
     return data[0]['id'] as int;
   }
 
   // タップされたリストの titleを取得 (系統樹の最初)
   static Future<String> getStartTitle(int id) async {
     final sql.Database db = await _getTitleListDatabase();
-    final List<Map<String, Object?>> data = await db.query('titleList', where: 'id = ?', whereArgs: <Object?>[id]);
+    final List<Map<String, Object?>> data =
+        await db.query('titleList', where: 'id = ?', whereArgs: <Object?>[id]);
     return data[0]['title'] as String;
   }
 
@@ -66,9 +69,8 @@ class TitleListData {
     );
   }
 
-
   // DB追加処理
-  static Future<void> addTitle(String title,int sortId) async {
+  static Future<void> addTitle(String title, int sortId) async {
     final sql.Database db = await _getTitleListDatabase();
     List<Map<String, Object?>> existingNode = await db.query(
       'titleList',
@@ -80,7 +82,7 @@ class TitleListData {
       print('ID $sortId is already in the database.');
       return;
     }
-    db.insert('titleList', <String, Object?>{
+    await db.insert('titleList', <String, Object?>{
       'title': title,
       'sortId': sortId,
     });
@@ -90,7 +92,8 @@ class TitleListData {
   static Future<void> sortChange(List<int> sortIndexes) async {
     final sql.Database db = await _getTitleListDatabase();
     // 既存のレコードを sortId の昇順で取得
-    final List<Map<String, Object?>> datas = await db.query('titleList', orderBy: 'sortId ASC');
+    final List<Map<String, Object?>> datas =
+        await db.query('titleList', orderBy: 'sortId ASC');
 
     // トランザクションを開始
     await db.transaction((sql.Transaction txn) async {

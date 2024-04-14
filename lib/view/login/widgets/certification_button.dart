@@ -3,11 +3,11 @@ import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 
-class LoginButton extends StatelessWidget {
+class CertificationButtonWidget extends StatelessWidget {
   final String title;
   final bool loading;
   final VoidCallback onPress;
-  const LoginButton({
+  const CertificationButtonWidget({
     required this.title, required this.onPress, Key? key,
     this.loading = false,
   }) : super(key: key);
