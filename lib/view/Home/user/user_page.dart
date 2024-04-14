@@ -125,8 +125,7 @@ class _UserViewState extends State<UserPage> {
                                 onTap: () => launchURL(
                                     'https://rensawamo.github.io/myapp-web-ja/lifemind/'),
                                 child: const UserCellWidget(
-                                    icon: Icons.notifications,
-                                    title: 'Notifications'),
+                                    icon: Icons.web, title: 'website'),
                               ),
                               const Divider(),
                               GestureDetector(
@@ -136,9 +135,11 @@ class _UserViewState extends State<UserPage> {
                               ),
                               const Divider(),
                               GestureDetector(
-                                onTap: () => print("Share tapped."),
+                                onTap: () => launchURL(
+                                    'https://rensawamo.github.io/Privacy-Policy-ja/'),
                                 child: const UserCellWidget(
-                                    icon: Icons.share, title: 'Share'),
+                                    icon: Icons.question_answer_rounded,
+                                    title: 'プライバシーポリシー'),
                               ),
                               const Divider(),
                             ],
