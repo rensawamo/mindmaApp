@@ -48,7 +48,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10), 
+      padding: const EdgeInsets.all(10),
       width: context.mediaQueryWidth * .56,
       height: context.mediaQueryHeight * .11,
       decoration: BoxDecoration(

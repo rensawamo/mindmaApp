@@ -42,7 +42,7 @@ class EdgeData {
       where: 'fromId = ? AND titleID = ? AND toId = ?',
       whereArgs: [fromId, titleID, toId],
     );
-
+    // 一番最初用 第一データ
     if (existingEdges.isEmpty) {
       await db.insert('edge', {
         'fromId': fromId,
@@ -63,7 +63,7 @@ class EdgeData {
       await db.delete(
         'edge',
         where: 'titleID = ? AND (toId = ? OR fromId = ?)',
-        whereArgs: [titleID, element,element],
+        whereArgs: [titleID, element, element],
       );
       return null;
     } catch (e) {

@@ -50,6 +50,8 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                       ..color = AppColors.treeColor // 枝の色
                       ..strokeWidth = 2 // 枝の太さ
                       ..style = PaintingStyle.stroke,
+                    // この builder は requireで必須で 新しい viewmodelの jsonのid更新かからないため、deleteのidが前のidと被りsqlが破壊される
+                    // 描写させるために listにもどすことにした(2024/4/14)
                     builder: (Node node) {
                       int? a = node.key!.value as int?;
                       var nodes = ref.watch(viewModel).json['nodes']!;
