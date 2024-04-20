@@ -12,12 +12,11 @@ class DeleteNodeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        ShowDeleteDialog(context, "削除しますか？\nグラフを再構築するため一度リストに戻ります。")
+        ShowDeleteDialog(context, "削除しますか？")
             .then((bool? result) async {
           if (result != null) {
             myFocusNode.unfocus();
             deleteNode();
-            Navigator.of(context).pop();
           }
         });
       },

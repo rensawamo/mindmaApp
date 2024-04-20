@@ -97,29 +97,29 @@ class _UserViewState extends State<UserPage> {
                                 ),
                               ),
                               const Divider(),
-                              GestureDetector(
-                                onTap: () async {
-                                  ShowDeleteDialog(context, "ログアウトしますか？")
-                                      .then((bool? result) async {
-                                    if (result != null) {
-                                      // firebase のログアウト
-                                      await FirebaseAuth.instance.signOut();
-                                      // session を破壊
-                                      await SessionController().sessionClear();
-                                      // login 画面に戻す stackの削除
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const LoginPage()),
-                                        (Route<dynamic> route) => false,
-                                      );
-                                    }
-                                  });
-                                },
-                                child: const UserCellWidget(
-                                    icon: Icons.logout, title: 'Log Out'),
-                              ),
+                              // GestureDetector(
+                              //   onTap: () async {
+                              //     ShowDeleteDialog(context, "ログアウトしますか？")
+                              //         .then((bool? result) async {
+                              //       if (result != null) {
+                              //         // firebase のログアウト
+                              //         await FirebaseAuth.instance.signOut();
+                              //         // session を破壊
+                              //         await SessionController().sessionClear();
+                              //         // login 画面に戻す stackの削除
+                              //         Navigator.pushAndRemoveUntil(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (BuildContext context) =>
+                              //                   const LoginPage()),
+                              //           (Route<dynamic> route) => false,
+                              //         );
+                              //       }
+                              //     });
+                              //   },
+                              //   child: const UserCellWidget(
+                              //       icon: Icons.logout, title: 'Log Out'),
+                              // ),
                               const Divider(),
                               GestureDetector(
                                 onTap: () => launchURL(

@@ -53,8 +53,7 @@ class NodeData {
       'id': id,
       'titleID': titleID,
       'label': label,
-    });
-    print('Node with ID $id added.');
+    }); 
   }
 
   // Nodeのlabelを更新
@@ -86,6 +85,18 @@ class NodeData {
       await db.close();
     }
   }
+
+  // Nodeの最大IDを取得
+  static Future<int> getMaxId(int titleId) async {
+  final sql.Database db = await _getNodeDatabase();
+  final List<Map<String, Object?>> datas = await db.query('node',
+      where: 'titleID = ?', whereArgs: <Object?>[titleId], orderBy: 'id DESC', limit: 1);
+  if (datas.isNotEmpty) {
+    return datas.first['id'] as int; // 最初の要素のidを返す
+  }
+  print('No node found in the database.');
+  return 1; // node 初期値
+}
 
   static Future<void> updateNodeId() async {
     final sql.Database db = await _getNodeDatabase();

@@ -48,7 +48,6 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
 
   @override
   void dispose() {
-    _titleController.dispose();
     super.dispose();
   }
 
@@ -79,9 +78,6 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
           Expanded(
             flex: 5,
             child: TextFormField(
-                onFieldSubmitted: (value) {
-                  FocusScope.of(context).unfocus();
-                },
                 controller: _titleController,
                 onChanged: (String value) {
                   NodeData.updateNodeText(
