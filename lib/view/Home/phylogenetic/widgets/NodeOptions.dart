@@ -8,7 +8,7 @@ import 'buttons/delete_node_button.dart';
 class NodeOptions extends StatelessWidget {
   final void Function() createSon; // 子 Node を生成する関数
   final void Function() createBro; // 兄弟 Node を生成する関数
-  final void Function() deleteNode; // Node を削除する関数
+  final Future<bool> Function() deleteNode; // Node を削除する関数
   final FocusNode myFocusNode;
 
   final bool isFirst; // 一番最初の Node かどうか
@@ -41,7 +41,7 @@ class NodeOptions extends StatelessWidget {
                   SizedBox(
                     width: context.mediaQueryWidth * .05,
                   ),
-                  DeleteNodeButton(deleteNode, myFocusNode)
+                  DeleteNodeButton(deleteNode)
                 ],
               ));
   }

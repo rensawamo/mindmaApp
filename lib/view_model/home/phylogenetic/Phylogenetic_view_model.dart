@@ -10,7 +10,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   List<int> deleteIds = <int>[];
   bool showLoading = true;
   var json; // phylogenetic graphのデータ jsonで管理
-  int titleID = -1;  // initで前のページのtiteleIdを取得
+  int titleID = -1; // initで前のページのtiteleIdを取得
   String title = ""; // start nodeのタイトル
   int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する idダブってstackoverflowを防ぐため
   // phylogenetic graphの生成部品
@@ -148,14 +148,15 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   // 選択されたnodeを削除
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
-  void deleteNode() async {
+  Future<bool> deleteNode() async {
+    showLoading = true; // loading画面を表示
+    bool isback = false;
     if (deleteIds.contains(selectedNode.value)) {
       print("これは消せません");
-      return;
-    }
-    ;
+      return isback;
+    };
     deleteIds.add(selectedNode.value);
-    showLoading = true;
+
     var edges = json['edges'];
     List<int> nodeIdArray = <int>[selectedNode.value];
     for (int i = 0; i < edges.length; i++) {
@@ -177,7 +178,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     }
     graph.removeNode(Node.Id(nodeIdArray[0]));
     maxId = await NodeData.getMaxId(titleID);
-    showLoading = false;
-    notifyListeners();
+    return isback;
   }
 }
