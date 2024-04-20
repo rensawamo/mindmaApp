@@ -78,7 +78,7 @@ class TitleListData {
       whereArgs: <Object?>[title],
     );
     // 最初にデフォルトのノードを登録する
-    if (existingNode.isNotEmpty) {
+    if (existingNode.isNotEmpty && sortId  == 1) {
       print('ID $sortId is already in the database.');
       return;
     }

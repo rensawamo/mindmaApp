@@ -16,19 +16,30 @@ Future<Database> _getNodeDatabase() async {
   return db;
 }
 
+class NodeResult {
+  final List<Map<String, dynamic>> nodes;
+  final int maxValue;
+
+  NodeResult(this.nodes, this.maxValue);
+}
+
 class NodeData {
   // 画面描写でデータ取得
-  static Future<List<Map<String, dynamic>>?> loadNodes(int titleID) async {
-    List<Map<String, dynamic>>? json = <Map<String, dynamic>>[];
+  static  Future<NodeResult> loadNodes(int titleID) async {
+    List<Map<String, dynamic>> json = <Map<String, dynamic>>[];
     final sql.Database db = await _getNodeDatabase();
     final List<Map<String, Object?>> datas = await db.query('node',
         where: 'titleID = ?', whereArgs: <Object?>[titleID], orderBy: 'id ASC');
+    int maxValue = 1;
     if (datas.isNotEmpty) {
       for (Map<String, Object?> data in datas) {
         json.add({"id": data["id"], "label": data["label"]});
+        if (data["id"] as int > maxValue) {
+          maxValue = data["id"] as int;
+        }
       }
     }
-    return json;
+    return NodeResult(json, maxValue);
   }
 
   // node追加処理
@@ -40,7 +51,7 @@ class NodeData {
       whereArgs: <Object?>[id, titleID],
     );
     // 最初にデフォルトのノードを登録する
-    if (existingNode.isNotEmpty) {
+    if (existingNode.isNotEmpty && id == 1) {
       print('ID $id is already in the database.');
       return;
     }
@@ -81,4 +92,17 @@ class NodeData {
       await db.close();
     }
   }
+
+  static Future<void> updateNodeId() async {
+    final sql.Database db = await _getNodeDatabase();
+    List<Map<String, Object?>> nodes = await db.query('node');
+    for (Map<String, Object?> node in nodes) {
+      await db.update(
+        'node',
+        <String, Object?>{'id': nodes.indexOf(node) + 1},
+        where: 'id = ?',
+        whereArgs: [node['id']],
+      );
+    }
+  } 
 }

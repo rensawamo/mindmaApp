@@ -11,7 +11,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   var json; // phylogenetic graphのデータ jsonで管理
   int titleID = -1; // list tiletの id この-1 というマジックナンバーは初期値(isloading の true)
   String title = ""; // start nodeのタイトル
-
+  int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する ダブルとstackoverflowを防ぐため
   // phylogenetic graphの生成部品
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
@@ -71,7 +71,11 @@ class PhylogeneticViewModel with ChangeNotifier {
   // グラフに dbから取得したデータを追加
   Future<void> initializeGraph(String title) async {
     titleID = await TitleListData.selectedTitleId(title);
-    nodes = await NodeData.loadNodes(titleID);
+    NodeResult resultssdfdf = await NodeData.loadNodes(titleID);
+    nodes = resultssdfdf.nodes;
+    print("これは");
+    print(resultssdfdf.maxValue);
+    maxId = resultssdfdf.maxValue;
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph(<String, List<Map<String, dynamic>>?>{
@@ -81,33 +85,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     }
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
-    notifyListeners();
-  }
-
-  Future<void> saigen() async {
-    Graph newgGraph = Graph()..isTree = true;
-    newgGraph.addNode(Node.Id(1));
-    builder
-      ..siblingSeparation = (10)
-      ..levelSeparation = (35)
-      ..subtreeSeparation = (35)
-      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
-    nodes = await NodeData.loadNodes(titleID);
-    edges = await EdgeData.loadEdgeds(titleID);
-    json = <String, List<Map<String, dynamic>>?>{
-      "nodes": nodes,
-      "edges": edges
-    };
-
-    notifyListeners();
-
-    print(json);
-    json['edges']!.forEach((element) {
-      var fromNodeId = element['from'];
-      var toNodeId = element['to'];
-      newgGraph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
-    });
-    graph = newgGraph;
     notifyListeners();
   }
 
@@ -123,7 +100,8 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   int addNode() {
-    int newId = json["nodes"].length + 1;
+    int newId = maxId + 1;
+    maxId = newId;
     json['nodes'].add(<String, Object>{"id": newId, "label": title});
     NodeData.addNode(newId, titleID, title);
     return newId;
@@ -153,7 +131,6 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   // 選択されたnodeを削除
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
-
   void deleteNode() async {
     var edges = json['edges'];
     List<int> nodeIdArray = <int>[selectedNode.value];
@@ -164,6 +141,7 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
+    notifyListeners();
     // ノードとエッジの削除を管理する
     for (int element in nodeIdArray) {
       // ノード削除
@@ -174,6 +152,5 @@ class PhylogeneticViewModel with ChangeNotifier {
       json['edges'].removeWhere(
           (edge) => edge['from'] == element || edge['to'] == element);
     }
-    saigen();
   }
 }

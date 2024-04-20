@@ -46,6 +46,12 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),

@@ -72,4 +72,5 @@ class EdgeData {
       await db.close();
     }
   }
+
 }
