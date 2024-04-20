@@ -36,6 +36,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
           (ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
   final TextEditingController _titleController = TextEditingController();
 
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +48,6 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
 
   @override
   void dispose() {
-    _titleController.dispose();
     super.dispose();
   }
 

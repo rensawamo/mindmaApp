@@ -23,7 +23,9 @@ class LaunchViewModel {
         Timer(
           const Duration(seconds: 2),
           () => Navigator.pushNamedAndRemoveUntil(
-              context, RoutesName.login, (Route route) => false),
+              // context, RoutesName.login, (Route route) => false),
+              context, RoutesName.home, (Route route) => false), //firestoreができたらloginに戻す
+
         );
       }
     }).onError((Object? error, StackTrace stackTrace) {

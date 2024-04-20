@@ -47,7 +47,6 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
 
   @override
   void dispose() {
-    _titleController.dispose();
     super.dispose();
   }
 

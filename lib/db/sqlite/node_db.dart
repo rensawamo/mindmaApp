@@ -1,3 +1,4 @@
+import 'package:mindmapapp/model/Home/phylogenetic/node_result_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -16,16 +17,9 @@ Future<Database> _getNodeDatabase() async {
   return db;
 }
 
-class NodeResult {
-  final List<Map<String, dynamic>> nodes;
-  final int maxValue;
-
-  NodeResult(this.nodes, this.maxValue);
-}
-
 class NodeData {
   // 画面描写でデータ取得
-  static  Future<NodeResult> loadNodes(int titleID) async {
+  static Future<NodeResult> loadNodes(int titleID) async {
     List<Map<String, dynamic>> json = <Map<String, dynamic>>[];
     final sql.Database db = await _getNodeDatabase();
     final List<Map<String, Object?>> datas = await db.query('node',
@@ -59,8 +53,7 @@ class NodeData {
       'id': id,
       'titleID': titleID,
       'label': label,
-    });
-    print('Node with ID $id added.');
+    }); 
   }
 
   // Nodeのlabelを更新
@@ -93,6 +86,18 @@ class NodeData {
     }
   }
 
+  // Nodeの最大IDを取得
+  static Future<int> getMaxId(int titleId) async {
+  final sql.Database db = await _getNodeDatabase();
+  final List<Map<String, Object?>> datas = await db.query('node',
+      where: 'titleID = ?', whereArgs: <Object?>[titleId], orderBy: 'id DESC', limit: 1);
+  if (datas.isNotEmpty) {
+    return datas.first['id'] as int; // 最初の要素のidを返す
+  }
+  print('No node found in the database.');
+  return 1; // node 初期値
+}
+
   static Future<void> updateNodeId() async {
     final sql.Database db = await _getNodeDatabase();
     List<Map<String, Object?>> nodes = await db.query('node');
@@ -104,5 +109,5 @@ class NodeData {
         whereArgs: [node['id']],
       );
     }
-  } 
+  }
 }

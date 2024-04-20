@@ -1,17 +1,18 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:mindmapapp/model/Home/phylogenetic/node_result_model.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
 import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
 class PhylogeneticViewModel with ChangeNotifier {
+  List<int> deleteIds = <int>[];
+  bool showLoading = true;
   var json; // phylogenetic graphのデータ jsonで管理
-  int titleID = -1; // list tiletの id この-1 というマジックナンバーは初期値(isloading の true)
+  int titleID = -1;  // initで前のページのtiteleIdを取得
   String title = ""; // start nodeのタイトル
-  int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する ダブルとstackoverflowを防ぐため
+  int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する idダブってstackoverflowを防ぐため
   // phylogenetic graphの生成部品
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
@@ -39,8 +40,14 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   void addEdge(int from, int to) {
-    graph.addEdge(Node.Id(from), Node.Id(to));
-    notifyListeners();
+    try {
+      graph.addEdge(Node.Id(from), Node.Id(to));
+      print('Edge added successfully from $from to $to');
+    } catch (e) {
+      print('Failed to add edge from $from to $to: ${e.toString()}');
+    } finally {
+      print("addEdge");
+    }
   }
 
   void resetZoom() {
@@ -71,11 +78,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   // グラフに dbから取得したデータを追加
   Future<void> initializeGraph(String title) async {
     titleID = await TitleListData.selectedTitleId(title);
-    NodeResult resultssdfdf = await NodeData.loadNodes(titleID);
-    nodes = resultssdfdf.nodes;
-    print("これは");
-    print(resultssdfdf.maxValue);
-    maxId = resultssdfdf.maxValue;
+    NodeResult result = await NodeData.loadNodes(titleID);
+    nodes = result.nodes;
+    maxId = result.maxValue; // addNnodeの一意性の担保
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph(<String, List<Map<String, dynamic>>?>{
@@ -85,6 +90,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     }
     // 最初にデフォルトの Nodeを登録する
     NodeData.addNode(1, titleID, title);
+    showLoading = false;
     notifyListeners();
   }
 
@@ -100,6 +106,11 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   int addNode() {
+    if (deleteIds.contains(selectedNode.value)) {
+      print("これは消せません");
+      return -1;
+    }
+    ;
     int newId = maxId + 1;
     maxId = newId;
     json['nodes'].add(<String, Object>{"id": newId, "label": title});
@@ -110,6 +121,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 子供のnodeを追加する
   void createSon() {
     int newId = addNode();
+    if (deleteIds.contains(selectedNode.value)) {
+      return;
+    }
     json['edges'].add(<String, int>{"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
     notifyListeners();
@@ -119,6 +133,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 兄弟のnodeを追加する
   void createBro() {
     int newId = addNode();
+    if (newId == -1) {
+      return;
+    }
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
     int previousConnection = previousNode['from'];
@@ -132,6 +149,13 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 選択されたnodeを削除
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
   void deleteNode() async {
+    if (deleteIds.contains(selectedNode.value)) {
+      print("これは消せません");
+      return;
+    }
+    ;
+    deleteIds.add(selectedNode.value);
+    showLoading = true;
     var edges = json['edges'];
     List<int> nodeIdArray = <int>[selectedNode.value];
     for (int i = 0; i < edges.length; i++) {
@@ -141,7 +165,6 @@ class PhylogeneticViewModel with ChangeNotifier {
         }
       }
     }
-    notifyListeners();
     // ノードとエッジの削除を管理する
     for (int element in nodeIdArray) {
       // ノード削除
@@ -152,5 +175,9 @@ class PhylogeneticViewModel with ChangeNotifier {
       json['edges'].removeWhere(
           (edge) => edge['from'] == element || edge['to'] == element);
     }
+    graph.removeNode(Node.Id(nodeIdArray[0]));
+    maxId = await NodeData.getMaxId(titleID);
+    showLoading = false;
+    notifyListeners();
   }
 }
