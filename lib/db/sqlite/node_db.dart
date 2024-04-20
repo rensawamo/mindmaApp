@@ -19,7 +19,7 @@ Future<Database> _getNodeDatabase() async {
 
 class NodeData {
   // 画面描写でデータ取得
-  static Future<NodeResultModel> loadNodes(int titleID) async {
+  static Future<NodeResult> loadNodes(int titleID) async {
     List<Map<String, dynamic>> json = <Map<String, dynamic>>[];
     final sql.Database db = await _getNodeDatabase();
     final List<Map<String, Object?>> datas = await db.query('node',
@@ -33,7 +33,7 @@ class NodeData {
         }
       }
     }
-    return NodeResultModel(nodes: json, maxValue: maxValue);
+    return NodeResult(json, maxValue);
   }
 
   // node追加処理

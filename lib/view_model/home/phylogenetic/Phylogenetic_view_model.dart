@@ -72,7 +72,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   // グラフに dbから取得したデータを追加
   Future<void> initializeGraph(String title) async {
     titleID = await TitleListData.selectedTitleId(title);
-    NodeResultModel result = await NodeData.loadNodes(titleID);
+    NodeResult result = await NodeData.loadNodes(titleID);
     nodes = result.nodes;
     maxId = result.maxValue; // addNnodeの一意性の担保
     edges = await EdgeData.loadEdgeds(titleID);
