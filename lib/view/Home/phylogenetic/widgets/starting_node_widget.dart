@@ -76,6 +76,9 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
           Expanded(
             flex: 5,
             child: TextFormField(
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).unfocus();
+                },
                 controller: _titleController,
                 onChanged: (String value) {
                   // listの titleを更新する

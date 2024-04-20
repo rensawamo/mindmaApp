@@ -1,3 +1,4 @@
+import 'package:mindmapapp/model/Home/phylogenetic/node_result_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -16,16 +17,9 @@ Future<Database> _getNodeDatabase() async {
   return db;
 }
 
-class NodeResult {
-  final List<Map<String, dynamic>> nodes;
-  final int maxValue;
-
-  NodeResult(this.nodes, this.maxValue);
-}
-
 class NodeData {
   // 画面描写でデータ取得
-  static  Future<NodeResult> loadNodes(int titleID) async {
+  static Future<NodeResultModel> loadNodes(int titleID) async {
     List<Map<String, dynamic>> json = <Map<String, dynamic>>[];
     final sql.Database db = await _getNodeDatabase();
     final List<Map<String, Object?>> datas = await db.query('node',
@@ -39,7 +33,7 @@ class NodeData {
         }
       }
     }
-    return NodeResult(json, maxValue);
+    return NodeResultModel(nodes: json, maxValue: maxValue);
   }
 
   // node追加処理
@@ -104,5 +98,5 @@ class NodeData {
         whereArgs: [node['id']],
       );
     }
-  } 
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:mindmapapp/model/Home/phylogenetic/node_result_model.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/Nodulo_widget.dart';
 import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
@@ -71,11 +72,9 @@ class PhylogeneticViewModel with ChangeNotifier {
   // グラフに dbから取得したデータを追加
   Future<void> initializeGraph(String title) async {
     titleID = await TitleListData.selectedTitleId(title);
-    NodeResult resultssdfdf = await NodeData.loadNodes(titleID);
-    nodes = resultssdfdf.nodes;
-    print("これは");
-    print(resultssdfdf.maxValue);
-    maxId = resultssdfdf.maxValue;
+    NodeResultModel result = await NodeData.loadNodes(titleID);
+    nodes = result.nodes;
+    maxId = result.maxValue; // addNnodeの一意性の担保
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph(<String, List<Map<String, dynamic>>?>{
