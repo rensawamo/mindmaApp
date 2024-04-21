@@ -20,7 +20,8 @@ class Routes {
         // ver  0.0.0では local strageのみとする
         // ver upで firestoreと 認証を合わしていく
         return MaterialPageRoute(
-            builder: (BuildContext context) => const LoginPage());
+            // builder: (BuildContext context) => const LoginPage());
+            builder: (BuildContext context) => const HomeView());  // ver -.0.0.0
       // return MaterialPageRoute(builder: (BuildContext context) => HomeView());
 
       //    launch screen

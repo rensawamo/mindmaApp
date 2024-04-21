@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 
 class DeleteNodeButton extends StatefulWidget {
@@ -17,7 +18,8 @@ class _DeleteNodeButtonState extends State<DeleteNodeButton> {
       onTap: () async {
         // キーボードが出たままでnavigationするとエラーが出るため、キーボードを閉じる
         FocusManager.instance.primaryFocus?.unfocus();
-        bool? result = await ShowDeleteDialog(context, "削除しますか？ \nグラフ再描写のため一度元の画面に戻ります。");
+        bool? result =
+            await ShowDeleteDialog(context, "削除しますか？ \nグラフ再描写のため一度元の画面に戻ります。");
         if (result == true) {
           try {
             await widget.deleteNode();
@@ -25,13 +27,13 @@ class _DeleteNodeButtonState extends State<DeleteNodeButton> {
               Navigator.of(context).pop();
             }
           } catch (e) {
-            print(e); // ローディングでliteへbackして再描写を促す
+            print(e); // ローディングでliteへbackして再描写を促す isloadingより
           }
         }
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.red, // 仮の色指定
+          color: AppColors.nodeIconColor,
           borderRadius: BorderRadius.circular(8),
         ),
         padding: EdgeInsets.all(8),

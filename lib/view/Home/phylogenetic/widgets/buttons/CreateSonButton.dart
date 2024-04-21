@@ -14,9 +14,8 @@ class CreateSonButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(50),
-            bottomRight: Radius.circular(50)
-          ),
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50)),
           color: isFirst ? AppColors.rootColor : AppColors.nodeIconColor,
         ),
         padding: const EdgeInsets.all(5),
