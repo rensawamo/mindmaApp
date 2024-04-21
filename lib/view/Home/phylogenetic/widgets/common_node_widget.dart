@@ -36,7 +36,6 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
           (ChangeNotifierProviderRef<Object?> ref) => PhylogeneticViewModel());
   final TextEditingController _titleController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -53,6 +52,7 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       padding: const EdgeInsets.all(10),
       width: context.mediaQueryWidth * .5,

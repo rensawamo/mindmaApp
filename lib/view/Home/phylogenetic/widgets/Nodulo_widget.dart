@@ -11,7 +11,7 @@ class NoduloWidget extends StatefulWidget {
   final Function setSelectedNode; // 選択された Node をセットする関数
   final void Function() createSon; // 子 Node を生成する関数
   final void Function() createBro; // 兄弟 Node を生成する関数
-  final void Function() deleteNode; // Node を削除する関数
+  final Future<void> Function() deleteNode; // Node を削除する関数
   final controller; // transform controller
 
   const NoduloWidget(
@@ -39,7 +39,7 @@ class _NoduloState extends State<NoduloWidget> {
   Function setSelectedNode;
   void Function() createSon;
   void Function() createBro;
-  void Function() deleteNode;
+  Future<void>  Function() deleteNode;
   final controller;
 
   bool isSelected = false;
@@ -68,7 +68,6 @@ class _NoduloState extends State<NoduloWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // 選択されているnodeを更新
         setSelectedNode(nodeId);
       },
       onLongPress: () {

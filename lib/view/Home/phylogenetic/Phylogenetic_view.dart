@@ -30,9 +30,20 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
             ),
             // init処理で viewModelに前のlistで選択された titleIdが設定されるまでローディング画面を表示
             body: ref.watch(viewModel).showLoading
-                ? const LoadingWidget()
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // これにより Column の中身が垂直方向の中心に配置されます
+                      children: <Widget>[
+                        Text('一時的なエラーです。前の画面に戻ってください'),
+                        SizedBox(height: 20), // テキストとローディングウィジェットの間にスペースを追加
+                        CircularProgressIndicator(), // 仮のローディングウィジェット
+                      ],
+                    ),
+                  )
                 : GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                    behavior: HitTestBehavior.opaque,
                     child: InteractiveViewer(
                       transformationController: ref.watch(viewModel).controller,
                       constrained: false,
@@ -55,11 +66,11 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                         // 描写させるために listにもどすことにした(2024/4/14)
                         builder: (Node node) {
                           int? a = node.key!.value as int?;
-                          var nodes = ref.watch(viewModel).json['nodes']!;
+                          var nodes = ref.read(viewModel).json['nodes']!;
                           var nodeValue =
                               nodes.firstWhere((element) => element['id'] == a);
                           //  各nodeを生成
-                          return ref.watch(viewModel).rectangleWidget(
+                          return ref.read(viewModel).rectangleWidget(
                               nodeValue['id'], nodeValue['label']);
                         },
                       ),
@@ -71,7 +82,9 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
   void initState() {
     // dbからデータを取得してグラフを作成 titleidがセットされるまでローディング画面を表示
     ref.read(viewModel).init(widget.title);
-    ref.read(viewModel).initializeGraph(widget.title);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(viewModel).initializeGraph(widget.title);
+    });
   }
 
   @override

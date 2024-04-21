@@ -43,6 +43,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Container(
         color: AppColors.paleGreen,
@@ -119,9 +120,16 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      myTiles = await TitleListData.loadTitles();
-      setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.microtask(() async {
+        myTiles = await TitleListData.loadTitles();
+        setState(() {});
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
