@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-import 'package:mindmapapp/core/componets/loading_widget.dart';
 import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 

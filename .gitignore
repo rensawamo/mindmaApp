@@ -82,6 +82,7 @@ DartDefine.xcconfig
 **/android/app/src/main/res/mipmap-*/ic_launcher.png
 #  firebase ファイル
 ios/GoogleService-Info.plist
+ios/GoogleService-Info.pem
 ios/Firebase/devGoogleService-Info.plist
 ios/Firebase/sthGoogleService-Info.plist
 ios/Firebase/prdGoogleService-Info.plist
@@ -176,3 +177,7 @@ pubspec_overrides.yaml
 
 # FVM Version Cache
 .fvm/
+
+# cicd 
+ExportOptions.plist
+ExportOptions.pem

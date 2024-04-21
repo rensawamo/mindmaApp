@@ -1,0 +1,76 @@
+name: firebase_ios_destribution
+
+on:
+    pull_request:
+        branches: [main]
+        types: [closed]
+
+jobs:
+    build_iOS:
+        name: firebase_ios_destribution
+        runs-on: macos-latest
+        steps:
+            - name: Checks-out my repository
+              uses: actions/checkout@v2
+            - name: Install Flutter
+              run: git clone https://github.com/flutter/flutter.git
+
+            - name: Add path
+              run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+
+            - name: Download Flutter packages
+              run: flutter pub get
+
+            - name: Add GoogleService-Info.plist
+              run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/Runner/GoogleService-Info.plist
+
+            - name: Add firebase_options.dart
+              run: echo "${{ secrets.FIREBASE_OPTION_BASE64 }}" | base64 -d > lib/firebase_options.dart
+
+            - name: Add ExportOptions.plist
+              run: echo "${{ secrets.EXPORTOPTIONS_BASE64 }}" | base64 -d > ExportOptions.plist
+
+            - name: Import Provisioning Profile
+              run: |
+                  mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+                  echo -n ${{ secrets.PROVISIONING_PROFILE_BASE64 }} | base64 -d > ~/Library/MobileDevice/Provisioning\ Profiles/distribution.mobileprovision
+            - name: Import Code-Signing Certificates
+              uses: Apple-Actions/import-codesign-certs@v1
+              with:
+                  p12-file-base64: ${{ secrets.CERTIFICATES_P12_BASE64 }}
+                  p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
+
+            - name: Create ipa file
+              run: flutter build ipa --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
+
+            - name: Upload to AppStoreConnect
+              run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/flutter_ios_destribution.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
+
+            - name: collect ipa artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                  name: release-ipa
+                  path: build/ios/ipa/*.ipa
+
+    #        if: ${{ always() }}
+
+    #  contanier error対策　で firebase destributionにデプロイする時は切り替える
+    release:
+        name: Release ipa to Firebase
+        needs: [build_iOS]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Get release-ipa from artifacts
+              uses: actions/download-artifact@v2
+              with:
+                  name: release-ipa
+            - name: Print working directory
+              run: pwd
+            - name: Upload artifact to Firebase App Distribution
+              uses: wzieba/Firebase-Distribution-Github-Action@v1
+              with:
+                  appId: ${{secrets.IOS_APP_ID}}
+                  serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+                  groups: testers
+                  file: flutter_ios_destribution.ipa

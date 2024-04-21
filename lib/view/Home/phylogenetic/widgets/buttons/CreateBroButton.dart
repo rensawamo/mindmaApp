@@ -21,7 +21,7 @@ class CreateBroButton extends StatelessWidget {
         ),
         child: Transform.rotate(
           angle: pi / 2,
-          child: const Icon(Icons.alt_route_rounded,color: Colors.white),
+          child: const Icon(Icons.alt_route_rounded, color: Colors.white),
         ),
       ),
     );

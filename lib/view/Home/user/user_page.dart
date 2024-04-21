@@ -30,10 +30,11 @@ class _UserViewState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    // lacal strqe からの取得の関係で useremailが取得している間はローディングを表示
-    return isLoading
-        ? const LoadingWidget()
-        : Container(
+    // lacal strqe からの取得の関係で useremailが取得している間はローディングを表示 ver0.0.0はなし
+    // isLoading
+    //     ? const LoadingWidget()
+    //     :
+    return  Container(
             color: AppColors.paleGreen,
             child: Scaffold(
               backgroundColor: AppColors.transparent,
@@ -87,12 +88,12 @@ class _UserViewState extends State<UserPage> {
                           child: Column(
                             children: <Widget>[
                               // ユーザのメールアドレス
-                              GestureDetector(
-                                child: UserCellWidget(
-                                  icon: Icons.person,
-                                  title: user,
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   child: UserCellWidget(
+                              //     icon: Icons.person,
+                              //     title: user,
+                              //   ),
+                              // ),
                               // const Divider(),
                               // GestureDetector(
                               //   onTap: () async {
@@ -171,12 +172,12 @@ class _UserViewState extends State<UserPage> {
   // local data より userの emailを取得する
   void initState() {
     super.initState();
-    sharedPreferenceClass = LocalStorage();
-    Future.microtask(() async {
-      var userData = await sharedPreferenceClass.readValue('email');
-      user = userData;
-      isLoading = false;
-      setState(() {});
-    });
+    // sharedPreferenceClass = LocalStorage();
+    // Future.microtask(() async {
+    //   var userData = await sharedPreferenceClass.readValue('email');
+    //   user = userData;
+    //   isLoading = false;
+    //   setState(() {});
+    // });
   }
 }
