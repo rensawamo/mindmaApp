@@ -30,6 +30,10 @@ jobs:
             - name: Add ExportOptions.plist
               run: echo "${{ secrets.EXPORTOPTIONS_BASE64 }}" | base64 -d > ExportOptions.plist
 
+            # パッケージのダウンロード
+            - name: Download Flutter packages
+              run: flutter pub get
+              
             - name: Import Provisioning Profile
               run: |
                   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
