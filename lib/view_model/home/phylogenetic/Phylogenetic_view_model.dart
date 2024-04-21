@@ -6,6 +6,7 @@ import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
+
 class PhylogeneticViewModel with ChangeNotifier {
   List<int> deleteIds = <int>[];
   bool showLoading = true;
@@ -40,14 +41,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   void addEdge(int from, int to) {
-    try {
-      graph.addEdge(Node.Id(from), Node.Id(to));
-      print('Edge added successfully from $from to $to');
-    } catch (e) {
-      print('Failed to add edge from $from to $to: ${e.toString()}');
-    } finally {
-      print("addEdge");
-    }
+    graph.addEdge(Node.Id(from), Node.Id(to));
   }
 
   void resetZoom() {
@@ -148,13 +142,13 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   // 選択されたnodeを削除
   // 削除された nodeに関連するedgeとその他子どもnodeを削除
-  Future<bool> deleteNode() async {
+  Future<void> deleteNode() async {
     showLoading = true; // loading画面を表示
-    bool isback = false;
     if (deleteIds.contains(selectedNode.value)) {
       print("これは消せません");
-      return isback;
-    };
+      return;
+    }
+    ;
     deleteIds.add(selectedNode.value);
 
     var edges = json['edges'];
@@ -170,14 +164,10 @@ class PhylogeneticViewModel with ChangeNotifier {
     for (int element in nodeIdArray) {
       // ノード削除
       await NodeData.deleteNode(titleID, element);
-      json['nodes'].removeWhere((node) => node['id'] == element);
-      // エッジ削除
       await EdgeData.deleteEdge(titleID, element);
-      json['edges'].removeWhere(
-          (edge) => edge['from'] == element || edge['to'] == element);
     }
     graph.removeNode(Node.Id(nodeIdArray[0]));
     maxId = await NodeData.getMaxId(titleID);
-    return isback;
+    return;
   }
 }

@@ -43,6 +43,7 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Container(
         color: AppColors.paleGreen,
@@ -82,12 +83,11 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
                             builder: (BuildContext context) =>
                                 PhylogeneticTreeView(title: tile),
                           ),
-                        );
-                        // .then((result) => Future.microtask(() async {
-                        //       // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
-                        //       myTiles = await TitleListData.loadTitles();
-                        //       setState(() {});
-                        //     })
+                        ).then((result) => Future.microtask(() async {
+                              // phylogenetic viewで タイトルが更新されたときの対策として myTiles を更新する
+                              myTiles = await TitleListData.loadTitles();
+                              setState(() {});
+                            }));
                       },
                     ),
                   ),
@@ -120,20 +120,16 @@ class _TitleListViewState extends ConsumerState<TitleListView> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      myTiles = await TitleListData.loadTitles();
-      setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.microtask(() async {
+        myTiles = await TitleListData.loadTitles();
+        setState(() {});
+      });
     });
   }
 
   @override
   void dispose() {
-    print('B:dispose');
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 }

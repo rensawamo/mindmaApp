@@ -93,7 +93,7 @@ class _UserViewState extends State<UserPage> {
                                   title: user,
                                 ),
                               ),
-                              const Divider(),
+                              // const Divider(),
                               // GestureDetector(
                               //   onTap: () async {
                               //     ShowDeleteDialog(context, "ログアウトしますか？")
