@@ -48,7 +48,7 @@ jobs:
               run: chmod 755 ios/scripts/dart_define.sh 
 
             - name: Run custom script
-              run: sh "$GITHUB_WORKSPACE/scripts/dart_define.sh"
+              run: sh ios/scripts/dart_define.sh
 
             - name: Create ipa file
               run: flutter build ipa --dart-define-from-file=dart_defines/prd.json --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
