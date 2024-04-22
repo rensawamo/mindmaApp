@@ -44,13 +44,8 @@ jobs:
                   p12-file-base64: ${{ secrets.CERTIFICATES_P12_BASE64 }}
                   p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
 
-
-            - name: Include prd.xcconfig
-              run: |
-                  echo '#include "prd.xcconfig"' >> ios/Flutter/DartDefine.xcconfig
-
             - name: Create ipa file
-              run: flutter build ipa --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
+              run: flutter build ipa --dart-define-from-file=dart_defines/prd.json --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
 
             - name: Upload to AppStoreConnect
               run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/flutter_ios_destribution.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
