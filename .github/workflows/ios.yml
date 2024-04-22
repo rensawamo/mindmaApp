@@ -48,10 +48,10 @@ jobs:
                     touch $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
                     echo '#include "prd.xcconfig"' >> $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
             - name: chmod
-              run: chmod 755 ios/scripts/dart_define.sh 
+              run: chmod 755 ios/scripts/action.sh 
 
             - name: Run custom script
-              run: sh ios/scripts/dart_define.sh
+              run: sh ios/scripts/action.sh
 
             - name: Create ipa file
               run: flutter build ipa --dart-define-from-file=dart_defines/prd.json --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
