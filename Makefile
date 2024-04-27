@@ -3,6 +3,8 @@
 clean-get:
 	flutter clean && flutter pub get && cd ios/ && pod install 
 
+
+
 .PHONY: build-ios-prd
 build-ios-prd:
 	cd ios/ && pod install && cd ..

@@ -21,7 +21,7 @@ jobs:
               run: flutter pub get
 
             - name: Add GoogleService-Info.plist
-              run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/Runner/GoogleService-Info.plist
+              run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/GoogleService-Info.plist
 
             - name: Add firebase_options.dart
               run: echo "${{ secrets.FIREBASE_OPTION_BASE64 }}" | base64 -d > lib/firebase_options.dart
