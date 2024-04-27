@@ -1,9 +1,8 @@
 name: firebase_ios_destribution
 
 on:
-    pull_request:
-        branches: [main]
-        types: [closed]
+    push:
+        branches: [cicd]
 
 jobs:
     build_iOS:
@@ -33,7 +32,7 @@ jobs:
             # パッケージのダウンロード
             - name: Download Flutter packages
               run: flutter pub get
-              
+
             - name: Import Provisioning Profile
               run: |
                   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
@@ -45,10 +44,10 @@ jobs:
                   p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
             - name: Prepare environment
               run: |
-                    touch $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
-                    echo '#include "prd.xcconfig"' >> $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
+                  touch $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
+                  echo '#include "prd.xcconfig"' >> $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
             - name: chmod
-              run: chmod 755 ios/scripts/action.sh 
+              run: chmod 755 ios/scripts/action.sh
 
             - name: Run custom script
               run: sh ios/scripts/action.sh
