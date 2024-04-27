@@ -181,3 +181,10 @@ pubspec_overrides.yaml
 # cicd 
 ExportOptions.plist
 ExportOptions.pem
+
+*.env
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/**/*.png
+**/fastlane/test_output
+ios/AuthKey_NY3GZGU3NM.p8
