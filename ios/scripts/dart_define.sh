@@ -5,5 +5,5 @@ do
   echo $flavor
 done | (
   read flavor
-  echo "#include \"$flavor.xcconfig\"" > $SRCROOT/Flutter/DartDefine.xcconfig
+  echo "#include \"prd.xcconfig\"" > $SRCROOT/Flutter/DartDefine.xcconfig
 )
