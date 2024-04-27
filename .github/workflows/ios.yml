@@ -55,7 +55,7 @@ jobs:
               run: flutter build ipa --dart-define-from-file=dart_defines/prd.json --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
 
             - name: Upload to AppStoreConnect
-              run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/mindmapapp.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
+              run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/mindmap.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
 
             - name: collect ipa artifacts
               uses: actions/upload-artifact@v2
@@ -84,4 +84,4 @@ jobs:
                   appId: ${{secrets.IOS_APP_ID}}
                   serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
                   groups: testers
-                  file: mindmapapp.ipa
+                  file: mindmap.ipa
