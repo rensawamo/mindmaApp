@@ -23,9 +23,6 @@ jobs:
             - name: Add GoogleService-Info.plist
               run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/GoogleService-Info.plist
 
-            - name: Add firebase_options.dart
-              run: echo "${{ secrets.FIREBASE_OPTION_BASE64 }}" | base64 -d > lib/firebase_options.dart
-
             - name: Add ExportOptions.plist
               run: echo "${{ secrets.EXPORTOPTIONS_BASE64 }}" | base64 -d > ExportOptions.plist
 
