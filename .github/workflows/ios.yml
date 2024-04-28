@@ -62,7 +62,7 @@ jobs:
 
     #        if: ${{ always() }}
 
-    #  contanier error対策　で firebase destributionにデプロイする時は切り替える
+    #  contanier error対策　で firebase destributionにデプロイする時は切り替える 
     release:
         name: Release ipa to Firebase
         needs: [build_iOS]
