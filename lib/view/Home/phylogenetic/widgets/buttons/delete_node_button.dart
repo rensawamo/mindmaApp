@@ -32,11 +32,14 @@ class _DeleteNodeButtonState extends State<DeleteNodeButton> {
         }
       },
       child: Container(
+        padding: const EdgeInsets.all(5),
+
         decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50)),
           color: AppColors.nodeIconColor,
-          borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.all(8),
         child: Icon(Icons.delete, color: Colors.white),
       ),
     );
