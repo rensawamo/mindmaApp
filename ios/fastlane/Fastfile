@@ -1,0 +1,74 @@
+default_platform(:ios)
+platform :ios do
+
+  desc "テストフライトへ"
+  lane :staging_upto_appstore do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["KEY_ID"],
+      issuer_id: ENV["ISSUER_ID"],
+      key_filepath: ENV["KEY_FILEPATH"],
+      duration: 1200,
+      in_house: false
+    )
+    match(
+      api_key: api_key,
+      type: "appstore",
+      app_identifier: ["com.rensawamo.fastlaneFlavor.staging"],
+      force_for_new_devices: true
+    )
+    # match を使用している場合でも証明書の更新は行わずに、リポジトリからの取得のみを行う
+    match(type: "appstore", readonly: true)
+    gym(
+      scheme: "staging",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.rensawamo.flavorFastlane.staging" => "match AppStore com.rensawamo.fastlaneFlavor.staging"
+        }
+      }
+    )
+    # ベータ版をappstoreへアップロード
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true, # ビルド処理の完了を待たない
+      skip_submission: true # ビルドのレビュー提出をスキップ
+    )
+  end
+
+  desc "本番環境へ"
+  lane :prod_upto_appstore do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["KEY_ID"],
+      issuer_id: ENV["ISSUER_ID"],
+      key_filepath: ENV["KEY_FILEPATH"],
+      duration: 1200,
+      in_house: false
+    )
+    match(
+      api_key: api_key,
+      type: "appstore",
+      app_identifier: ["com.rensawamo.mindmapapp"],
+      force_for_new_devices: true
+    )
+    # match を使用している場合でも証明書の更新は行わずに、リポジトリからの取得のみを行う
+    match(type: "appstore", readonly: true)
+
+    gym(
+      scheme: "production",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.rensawamo.mindmapapp" => "match AppStore com.rensawamo.mindmapapp"
+        }
+      }
+    )
+    # 本番製品をappstoreへアップロード
+    upload_to_app_store(
+      precheck_include_in_app_purchases: false,
+      api_key: api_key,
+      skip_metadata: true,
+      skip_screenshots: true,
+      skip_binary_upload: false
+    )
+  end
+end

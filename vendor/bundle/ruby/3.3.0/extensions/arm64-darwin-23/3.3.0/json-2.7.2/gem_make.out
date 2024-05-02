@@ -1,0 +1,16 @@
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/json-2.7.2/ext/json
+/Users/rensawamo/.rbenv/versions/3.3.0/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/json-2.7.2/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-no4yrk sitelibdir\=./.gem.20240428-16571-no4yrk clean
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/json-2.7.2/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-no4yrk sitelibdir\=./.gem.20240428-16571-no4yrk
+make: Nothing to be done for `all'.
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/json-2.7.2/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-no4yrk sitelibdir\=./.gem.20240428-16571-no4yrk install
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/json-2.7.2/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-no4yrk sitelibdir\=./.gem.20240428-16571-no4yrk clean

@@ -1,9 +1,8 @@
 name: firebase_ios_destribution
 
 on:
-    pull_request:
-        branches: [main]
-        types: [closed]
+    push:
+        branches: [cicd]
 
 jobs:
     build_iOS:
@@ -22,18 +21,15 @@ jobs:
               run: flutter pub get
 
             - name: Add GoogleService-Info.plist
-              run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/Runner/GoogleService-Info.plist
-
-            - name: Add firebase_options.dart
-              run: echo "${{ secrets.FIREBASE_OPTION_BASE64 }}" | base64 -d > lib/firebase_options.dart
+              run: echo "${{ secrets.GOOGLE_SERVICES_INFO_BASE64 }}" | base64 -d > ios/GoogleService-Info.plist
 
             - name: Add ExportOptions.plist
               run: echo "${{ secrets.EXPORTOPTIONS_BASE64 }}" | base64 -d > ExportOptions.plist
 
-            # パッケージのダウンロード
+            # パッケージのダウンロード 
             - name: Download Flutter packages
               run: flutter pub get
-              
+
             - name: Import Provisioning Profile
               run: |
                   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
@@ -43,21 +39,20 @@ jobs:
               with:
                   p12-file-base64: ${{ secrets.CERTIFICATES_P12_BASE64 }}
                   p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
-            - name: Prepare environment
-              run: |
-                    touch $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
-                    echo '#include "prd.xcconfig"' >> $GITHUB_WORKSPACE/ios/Flutter/DartDefine.xcconfig
-            - name: chmod
-              run: chmod 755 ios/scripts/action.sh 
-
-            - name: Run custom script
-              run: sh ios/scripts/action.sh
+            # - name: Prepare environment
+            #   run: |
+            #       touch ios/Flutter/DartDefine.xcconfig
+            #       echo '#include "prd.xcconfig"' >> ios/Flutter/DartDefine.xcconfig
+            
+            
+            - name: Install CocoaPods
+              run: sudo gem install cocoapods
 
             - name: Create ipa file
               run: flutter build ipa --dart-define-from-file=dart_defines/prd.json --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
 
             - name: Upload to AppStoreConnect
-              run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/flutter_ios_destribution.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
+              run: xcrun altool --upload-app -t ios -f "./build/ios/ipa/mindmap.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASSWORD }}"
 
             - name: collect ipa artifacts
               uses: actions/upload-artifact@v2
@@ -67,7 +62,7 @@ jobs:
 
     #        if: ${{ always() }}
 
-    #  contanier error対策　で firebase destributionにデプロイする時は切り替える
+    #  contanier error対策　で firebase destributionにデプロイする時は切り替える 
     release:
         name: Release ipa to Firebase
         needs: [build_iOS]
@@ -83,7 +78,7 @@ jobs:
             - name: Upload artifact to Firebase App Distribution
               uses: wzieba/Firebase-Distribution-Github-Action@v1
               with:
-                  appId: ${{secrets.IOS_APP_ID}}
-                  serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+                  appId: ${{secrets.IOS_APP_ID}} 
+                  serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT}}
                   groups: testers
-                  file: flutter_ios_destribution.ipa
+                  file: mindmap.ipa

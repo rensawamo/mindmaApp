@@ -78,7 +78,7 @@ unlinked_spec.ds
 /android/app/src/prd/google-services.json
 **/android/app/src/dev/google-services.json
 ## 追加
-DartDefine.xcconfig
+# DartDefine.xcconfig
 **/android/app/src/main/res/mipmap-*/ic_launcher.png
 #  firebase ファイル
 ios/GoogleService-Info.plist
@@ -181,3 +181,10 @@ pubspec_overrides.yaml
 # cicd 
 ExportOptions.plist
 ExportOptions.pem
+
+*.env
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/**/*.png
+**/fastlane/test_output
+ios/AuthKey_NY3GZGU3NM.p8

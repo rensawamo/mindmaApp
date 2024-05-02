@@ -1,0 +1,18 @@
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+/Users/rensawamo/.rbenv/versions/3.3.0/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-j14czc sitelibdir\=./.gem.20240428-16571-j14czc clean
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-j14czc sitelibdir\=./.gem.20240428-16571-j14czc
+compiling nkf.c
+linking shared-object nkf.bundle
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-j14czc sitelibdir\=./.gem.20240428-16571-j14czc install
+/usr/bin/install -c -m 0755 nkf.bundle ./.gem.20240428-16571-j14czc
+
+current directory: /Users/rensawamo/Downloads/mindmaApp/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20240428-16571-j14czc sitelibdir\=./.gem.20240428-16571-j14czc clean
