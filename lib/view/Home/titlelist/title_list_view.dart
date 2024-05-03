@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mindmapapp/core/widget/comfirm_dialog.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 import 'package:mindmapapp/core/componets/snackbar.dart';
-import 'package:mindmapapp/core/widget/alert_widget.dart';
 import 'package:mindmapapp/core/widget/delete_dialog_widget.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/Phylogenetic_view.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';

@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/ios.dart';
 import 'common_node_widget.dart';
 import 'NodeOptions.dart';
 import 'starting_node_widget.dart';
@@ -13,6 +18,7 @@ class NoduloWidget extends StatefulWidget {
   final void Function() createBro; // 兄弟 Node を生成する関数
   final Future<void> Function() deleteNode; // Node を削除する関数
   final controller; // transform controller
+  final Uint8List? image;
 
   const NoduloWidget(
       this.nodeId,
@@ -24,11 +30,21 @@ class NoduloWidget extends StatefulWidget {
       this.controller,
       this.deleteNode,
       this.titleId,
+      this.image,
       {super.key});
 
   @override
-  State<NoduloWidget> createState() => _NoduloState(nodeId, title, selectedNode,
-      setSelectedNode, createSon, createBro, controller, deleteNode, titleId);
+  State<NoduloWidget> createState() => _NoduloState(
+      nodeId,
+      title,
+      selectedNode,
+      setSelectedNode,
+      createSon,
+      createBro,
+      controller,
+      deleteNode,
+      titleId,
+      image);
 }
 
 class _NoduloState extends State<NoduloWidget> {
@@ -39,12 +55,13 @@ class _NoduloState extends State<NoduloWidget> {
   Function setSelectedNode;
   void Function() createSon;
   void Function() createBro;
-  Future<void>  Function() deleteNode;
+  Future<void> Function() deleteNode;
   final controller;
 
   bool isSelected = false;
   bool isFirst = false;
   late FocusNode myFocusNode = FocusNode(); // どのnodeにfocus入っているか textcontroller
+  Uint8List? image;
 
   void handleFocus(int value) {
     if (value == nodeId! && isSelected == false) {
@@ -55,15 +72,17 @@ class _NoduloState extends State<NoduloWidget> {
   }
 
   _NoduloState(
-      this.nodeId,
-      this.title,
-      this.selectedNode,
-      this.setSelectedNode,
-      this.createSon,
-      this.createBro,
-      this.controller,
-      this.deleteNode,
-      this.titleId);
+    this.nodeId,
+    this.title,
+    this.selectedNode,
+    this.setSelectedNode,
+    this.createSon,
+    this.createBro,
+    this.controller,
+    this.deleteNode,
+    this.titleId,
+    this.image,
+  );
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,8 +101,16 @@ class _NoduloState extends State<NoduloWidget> {
             isFirst
                 ? StartingNodeWidget(titleId, title, isSelected, selectedNode,
                     setSelectedNode, nodeId, myFocusNode)
-                : CommonNodeWidget(isSelected, selectedNode, setSelectedNode,
-                    nodeId, myFocusNode, titleId, title),
+                : CommonNodeWidget(
+                    isSelected,
+                    isFirst,
+                    selectedNode,
+                    setSelectedNode,
+                    nodeId,
+                    myFocusNode,
+                    titleId,
+                    title,
+                    image),
             isSelected
                 ? isFirst
                     ? NodeOptions(

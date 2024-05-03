@@ -1,4 +1,3 @@
-
 class AppValidator {
   //  mailアドレスの形式で入力されているかのチェック
   static bool emailValidator(String email) {

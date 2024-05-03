@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
@@ -28,45 +30,50 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
               title: Text(widget.title),
             ),
             // init処理で viewModelに前のlistで選択された titleIdが設定されるまでローディング画面を表示
-            body: ref.watch(viewModel).showLoading
-                ? Center(
-                    child: const CircularProgressIndicator(),
-                  )
-                : GestureDetector(
-                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                    behavior: HitTestBehavior.opaque,
-                    child: InteractiveViewer(
-                      transformationController: ref.watch(viewModel).controller,
-                      constrained: false,
-                      boundaryMargin: const EdgeInsets.all(1000),
-                      // 画面の拡大縮小の最小値と最大値を設定
-                      minScale: 0.01,
-                      maxScale: 2,
-                      // グラフの描画
-                      child: GraphView(
-                        graph: ref.watch(viewModel).graph,
-                        algorithm: BuchheimWalkerAlgorithm(
-                          ref.watch(viewModel).builder,
-                          TreeEdgeRenderer(ref.watch(viewModel).builder),
+            body: SafeArea(
+                child: ref.watch(viewModel).showLoading
+                    ? Center(
+                        child: const CircularProgressIndicator(),
+                      )
+                    : GestureDetector(
+                        onTap: () =>
+                            FocusManager.instance.primaryFocus?.unfocus(),
+                        behavior: HitTestBehavior.opaque,
+                        child: InteractiveViewer(
+                          transformationController:
+                              ref.watch(viewModel).controller,
+                          constrained: false,
+                          boundaryMargin: const EdgeInsets.all(1000),
+                          // 画面の拡大縮小の最小値と最大値を設定
+                          minScale: 0.01,
+                          maxScale: 2,
+                          // グラフの描画
+                          child: GraphView(
+                            graph: ref.watch(viewModel).graph,
+                            algorithm: BuchheimWalkerAlgorithm(
+                              ref.watch(viewModel).builder,
+                              TreeEdgeRenderer(ref.watch(viewModel).builder),
+                            ),
+                            paint: Paint()
+                              ..color = AppColors.treeColor // 枝の色
+                              ..strokeWidth = 2 // 枝の太さ
+                              ..style = PaintingStyle.stroke,
+                            // この builder は requireで必須で 新しい viewmodelの jsonのid更新かからないため、deleteのidが前のidと被りsqlが破壊される
+                            // 描写させるために listにもどすことにした(2024/4/14)
+                            builder: (Node node) {
+                              int? a = node.key!.value as int?;
+                              var nodes = ref.read(viewModel).json['nodes']!;
+                              var nodeValue = nodes
+                                  .firstWhere((element) => element['id'] == a);
+                              //  各nodeを生成
+                              return ref.read(viewModel).rectangleWidget(
+                                  nodeValue['id'],
+                                  nodeValue['label'],
+                                  nodeValue['image']);
+                            },
+                          ),
                         ),
-                        paint: Paint()
-                          ..color = AppColors.treeColor // 枝の色
-                          ..strokeWidth = 2 // 枝の太さ
-                          ..style = PaintingStyle.stroke,
-                        // この builder は requireで必須で 新しい viewmodelの jsonのid更新かからないため、deleteのidが前のidと被りsqlが破壊される
-                        // 描写させるために listにもどすことにした(2024/4/14)
-                        builder: (Node node) {
-                          int? a = node.key!.value as int?;
-                          var nodes = ref.read(viewModel).json['nodes']!;
-                          var nodeValue =
-                              nodes.firstWhere((element) => element['id'] == a);
-                          //  各nodeを生成
-                          return ref.read(viewModel).rectangleWidget(
-                              nodeValue['id'], nodeValue['label']);
-                        },
-                      ),
-                    ),
-                  )));
+                      ))));
   }
 
   @override

@@ -67,10 +67,14 @@ class _GenericDropdownButtonState<T> extends State<GenericDropdownButton<T>> {
             items: widget.items.map<DropdownMenuItem<T>>((T value) {
               return DropdownMenuItem<T>(
                 value: value,
-                child: Text(widget.getLabel(value),
+                child: Center(
+                  child: Text(
+                    widget.getLabel(value),
                     style: TextStyle(
                       color: getColorFromChoice(value.toString()),
-                    )),
+                    ),
+                  ),
+                ),
               );
             }).toList(),
             onChanged: (T? value) {

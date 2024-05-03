@@ -53,11 +53,11 @@ class _MyAppState extends State<HomeView> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_tree),
-                label: 'Mind Map', // Correct property is 'label', not 'itle'
+                label: 'Mind Map',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_rounded),
-                label: 'User', // Use 'label' instead of 'title'
+                label: 'User',
               ),
             ],
             onTap: (int index) => <void>{
