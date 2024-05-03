@@ -101,7 +101,6 @@ class PhylogeneticViewModel with ChangeNotifier {
 
   int addNode() {
     if (deleteIds.contains(selectedNode.value)) {
-      print("これは消せません");
       return -1;
     }
     ;
@@ -145,7 +144,6 @@ class PhylogeneticViewModel with ChangeNotifier {
   Future<void> deleteNode() async {
     showLoading = true; // loading画面を表示
     if (deleteIds.contains(selectedNode.value)) {
-      print("これは消せません");
       return;
     }
     ;

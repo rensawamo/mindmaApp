@@ -53,7 +53,7 @@ class NodeData {
       'id': id,
       'titleID': titleID,
       'label': label,
-    }); 
+    });
   }
 
   // Nodeのlabelを更新

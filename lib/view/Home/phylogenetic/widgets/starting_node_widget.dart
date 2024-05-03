@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
+import 'package:mindmapapp/view_model/home/phylogenetic/Phylogenetic_view_model.dart';
 
 class StartingNodeWidget extends ConsumerStatefulWidget {
   final int titleId;
@@ -47,6 +47,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
 
   @override
   void dispose() {
+    _titleController.dispose();
     super.dispose();
   }
 

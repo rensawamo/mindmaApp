@@ -1,6 +1,8 @@
 ビルド
 ```sh
 $ flutter run --dart-define=FLAVOR=prd  
+or 
+$ flutter run --dart-define-from-file=dart_defines/$(FLAVOR).json
 ```
 
 google 申請用の App Bundleの aab ビルド

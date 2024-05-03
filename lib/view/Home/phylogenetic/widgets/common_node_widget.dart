@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/view_model/home/phylogenetic/Phylogenetic_view_model.dart';
 
 // 各nodeの共通部分
 class CommonNodeWidget extends ConsumerStatefulWidget {
@@ -41,21 +41,23 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
     super.initState();
     Future(() async {
       final String nodeText = widget.title;
-      _titleController.text = nodeText;
+      setState(() {
+        _titleController.text = nodeText;
+      });
     });
   }
 
   @override
   void dispose() {
+    _titleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       padding: const EdgeInsets.all(10),
-      width: context.mediaQueryWidth * .5,
+      width: _titleController.text.length < 10 ? context.mediaQueryWidth * .54 : context.mediaQueryWidth * .67,
       height: context.mediaQueryHeight * .11,
       decoration: BoxDecoration(
           color: AppColors.leafColor.withOpacity(0.7),
@@ -82,6 +84,9 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
                 onChanged: (String value) {
                   NodeData.updateNodeText(
                       widget.nodeId!, widget.titleId, value);
+                  setState(() {
+                    _titleController.text = value;
+                  });
                 },
                 focusNode: widget.myFocusNode,
                 onTap: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/widgets/buttons/edit_button.dart';
 
 import 'buttons/CreateBroButton.dart';
 import 'buttons/CreateSonButton.dart';
@@ -35,13 +36,18 @@ class NodeOptions extends StatelessWidget {
                 children: <Widget>[
                   CreateSonButton(createSon, isFirst),
                   SizedBox(
-                    width: context.mediaQueryWidth * .05,
+                    width: context.mediaQueryWidth * .03,
                   ),
                   CreateBroButton(createBro),
                   SizedBox(
-                    width: context.mediaQueryWidth * .05,
+                    width: context.mediaQueryWidth * .03,
                   ),
-                  DeleteNodeButton(deleteNode)
+                  DeleteNodeButton(deleteNode),
+                   SizedBox(
+                    width: context.mediaQueryWidth * .03,
+                  ),
+                  EditButton(createSon, isFirst),
+
                 ],
               ));
   }

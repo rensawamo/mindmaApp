@@ -5,17 +5,16 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-def dartEnvironmentVariables = project
-            .property('dart-defines')
-            .split(',')
-            .collectEntries {
-                new String(it.decodeBase64(), 'UTF-8')
-                    .split(',')
-                    .collectEntries {
-                        def pair = it.split('=')
-                        [(pair.first()): pair.last()]
-                    }
-            }
+def dartEnvironmentVariables = [:];
+if (project.hasProperty('dart-defines')) {
+    // カンマ区切りかつBase64でエンコードされている dart-defines をデコードして変数に格納します。
+    dartEnvironmentVariables = dartEnvironmentVariables + project.property('dart-defines')
+        .split(',')
+        .collectEntries { entry ->
+            def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+            [(pair.first()): pair.last()]
+        }
+}
 task copyIcons(type: Copy) {
     from "src/${dartEnvironmentVariables.flavor}/res"
     into 'src/main/res'
@@ -132,5 +131,5 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.1.2' 
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.1.2'
 }

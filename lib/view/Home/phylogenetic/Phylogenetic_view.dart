@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-import 'package:mindmapapp/view_model/Home/phylogenetic/Phylogenetic_view_model.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/view_model/home/phylogenetic/Phylogenetic_view_model.dart';
 
 class PhylogeneticTreeView extends ConsumerStatefulWidget {
   final String title; // リストのタップされた要素
@@ -30,15 +30,7 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
             // init処理で viewModelに前のlistで選択された titleIdが設定されるまでローディング画面を表示
             body: ref.watch(viewModel).showLoading
                 ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment
-                          .center, // これにより Column の中身が垂直方向の中心に配置されます
-                      children: <Widget>[
-                        Text('一時的なエラーです。前の画面に戻ってください'),
-                        SizedBox(height: 20), // テキストとローディングウィジェットの間にスペースを追加
-                        CircularProgressIndicator(), // 仮のローディングウィジェット
-                      ],
-                    ),
+                    child: const CircularProgressIndicator(),
                   )
                 : GestureDetector(
                     onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
