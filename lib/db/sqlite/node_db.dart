@@ -11,7 +11,7 @@ Future<Database> _getNodeDatabase() async {
     path.join(dbPath, 'node.db'),
     onCreate: (sql.Database db, int version) {
       return db.execute(
-        'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT, image BLOB)',
+        'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT, image BLOB, isBold BOOLEAN, isItalic BOOLEAN, isStripe BOOLEAN, color String)',
       );
     },
     version: 1,
@@ -36,7 +36,11 @@ class NodeData {
           "label": data["label"],
           "image": data["image"] != null && data["image"].length > 0
               ? data["image"]
-              : null
+              : null,
+          "isBold": false,
+          "isItalic": false,
+          "isStripe": false,
+          "color": "黒",
         });
         if (data["id"] as int > maxValue) {
           maxValue = data["id"] as int;
@@ -68,6 +72,23 @@ class NodeData {
     });
   }
 
+  // Nodeの 文字のデザインの更新
+  static updateNodeDesign(int nodeId, int titleId, bool isBold, bool isItalic,
+      bool isStripe, String color) async {
+    final sql.Database db = await _getNodeDatabase();
+    await db.update(
+      'node',
+      <String, dynamic?>{
+        'isBold': isBold,
+        'isItalic': isItalic,
+        'isStripe': isStripe,
+        'color': color
+      },
+      where: 'id = ? AND titleID = ?',
+      whereArgs: <dynamic?>[nodeId, titleId],
+    );
+  }
+
   // Nodeのlabelを更新
   // image のpathを削除して labelに文字を送り込む
   static updateNodeText(int nodeId, int titleId, String text) async {
@@ -75,6 +96,16 @@ class NodeData {
     await db.update(
       'node',
       <String, dynamic?>{'label': text},
+      where: 'id = ? AND titleID = ?',
+      whereArgs: <dynamic?>[nodeId, titleId],
+    );
+  }
+
+  static updateNodeImage(int nodeId, int titleId, Uint8List? image) async {
+    final sql.Database db = await _getNodeDatabase();
+    await db.update(
+      'node',
+      <String, dynamic?>{'image': image!},
       where: 'id = ? AND titleID = ?',
       whereArgs: <dynamic?>[nodeId, titleId],
     );

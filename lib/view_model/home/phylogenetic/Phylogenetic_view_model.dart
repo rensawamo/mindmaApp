@@ -59,7 +59,15 @@ class PhylogeneticViewModel with ChangeNotifier {
     title = title;
     json = <String, dynamic>{
       "nodes": <Map<String, dynamic>>[
-        <String, dynamic>{"id": 1, "label": title, "image": null}
+        <String, dynamic>{
+          "id": 1,
+          "label": title,
+          "image": null,
+          "isBold": false,
+          "isItalic": false,
+          "isStripe": false,
+          "color": "黒",
+        },
       ],
       "edges": []
     };

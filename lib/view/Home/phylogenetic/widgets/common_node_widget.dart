@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list.dart';
 import 'package:popover/popover.dart';
 
@@ -37,9 +39,28 @@ class CommonNodeWidget extends StatefulWidget {
 class _StartingNodeState extends State<CommonNodeWidget> {
   final TextEditingController _titleController = TextEditingController();
   Uint8List? image;
+  // Bold isItalic isUnderline
+  List<String> selectedDesigns = <String>['', '', ''];
+  String selectColor = '黒';
   void updateImage(Uint8List? newImage) {
     setState(() {
       image = newImage;
+    });
+  }
+
+  void updateNodeDesign(List<String> _selectedDesigns) async {
+    /// selectedDesigns[0] = bold
+    /// selectedDesigns[1] = italic
+    /// selectedDesigns[2] = underline
+    // NodeData.updateNodeDesign(
+    //     widget.nodeId!,
+    //     widget.titleId,
+    //     selectedDesigns[0],
+    //     SelectedDesigns[1],
+    //     SelectedDesigns[2],
+    //     selectColor);
+    setState(() {
+      selectedDesigns = _selectedDesigns;
     });
   }
 
@@ -98,6 +119,47 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                       spreadRadius: 5,
                     )
                   ]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: TextFormField(
+                        controller: _titleController,
+                        onChanged: (String value) {
+                          NodeData.updateNodeText(
+                              widget.nodeId!, widget.titleId, value);
+                          setState(() {
+                            _titleController.text = value;
+                          });
+                        },
+                        focusNode: widget.myFocusNode,
+                        onTap: () {
+                          widget.setSelectedNode(widget.nodeId);
+                        },
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                            // bold
+                            fontWeight: (selectedDesigns.contains("B")
+                                ? FontWeight.bold
+                                : FontWeight.normal),
+                            // italic
+                            fontStyle: (selectedDesigns.contains("I")
+                                ? FontStyle.italic
+                                : FontStyle.normal),
+                            // 取り消し線
+                            decoration: selectedDesigns.contains("T")
+                                ? TextDecoration.lineThrough
+                                : null,
+                            fontSize: 16),
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
             ),
 
       // タイトルnode か 子供nodeか
@@ -108,9 +170,11 @@ class _StartingNodeState extends State<CommonNodeWidget> {
               child: GestureDetector(
                 onTap: () {
                   // テキストをカスタマイズするpopupを表示
+                  // 画像と textのきりかえ
                   showPopover(
                     context: context,
-                    bodyBuilder: (context) => MyDropdownScreen(updateImage),
+                    bodyBuilder: (context) => MyDropdownScreen(updateImage,
+                        updateNodeDesign, widget.nodeId!, widget.titleId),
                     direction: PopoverDirection.bottom,
                     width: 200,
                     height: 400,

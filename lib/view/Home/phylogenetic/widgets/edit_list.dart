@@ -1,20 +1,21 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mindmapapp/core/componets/dropdown.dart';
 import 'package:mindmapapp/core/componets/select_box.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/widget/camera_widget.dart';
-import 'package:mindmapapp/view_model/home/phylogenetic/Phylogenetic_view_model.dart';
+import 'package:mindmapapp/db/sqlite/node_db.dart';
 
 // Noneの Editボタンをおしたときに popover で表示される画面
 class MyDropdownScreen extends StatefulWidget {
   Function updateImage; // 写真
-
-  MyDropdownScreen(this.updateImage, {Key? key}) : super(key: key);
+  Function updateDesign; // デザイン
+  final int? nodeId;
+  final int titleId;
+  MyDropdownScreen(
+      this.updateImage, this.updateDesign, this.nodeId, this.titleId,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MyDropdownScreen> createState() => _MyDropdownScreenState();
@@ -43,7 +44,8 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
             displayItem: (item) => item,
             onSelectionChanged: (List<String> selected) {
               setState(() {
-                selectedDay = selected.first;
+
+                widget.updateDesign(selected);
               });
             },
           ),
@@ -81,11 +83,12 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    ShowCameraDialog(context).then((value) {
+                    ShowCameraDialog(context).then((value) async {
                       if (value != null) {
-                        Navigator.pop(context, value);
+                        await NodeData.updateNodeImage(
+                            widget.nodeId!, widget.titleId, value);
                         widget.updateImage(value);
-                        print(value);
+                        Navigator.pop(context);
                       }
                     });
                   },
