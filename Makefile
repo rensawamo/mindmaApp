@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+
 
 .PHONY: clean-get
 clean-get:
-	flutter clean && flutter pub get && cd ios/ && pod install 
+	flutter clean && flutter pub get && cd ios/ && pod install
 
 
 
@@ -14,7 +14,6 @@ build-ios-prd:
 
 .PHONY: upload-ios-prd
 cd ios && fastlane ios prod_upto_appstore
-=======
 .DEFAULT_GOAL := help
 
 .PHONY: help
@@ -25,4 +24,4 @@ help:
 .PHONY: dev
 dev:
     flutter run --dart-define-from-file=dart_defines/prd.json
->>>>>>> 0779044 (([package]) feat: Edit page)
+
