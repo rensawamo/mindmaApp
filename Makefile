@@ -1,5 +1,3 @@
-
-
 .PHONY: clean-get
 clean-get:
 	flutter clean && flutter pub get && cd ios/ && pod install

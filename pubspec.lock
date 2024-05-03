@@ -775,11 +775,7 @@ packages:
       sha256: ea1432d167339ea9b5bb153f0571d0039607a873d6e04e0117af043f14a1fd4b
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "6.8.0"
-=======
-    version: "6.7.1"
->>>>>>> 0779044 (([package]) feat: Edit page)
   leak_tracker:
     dependency: transitive
     description:

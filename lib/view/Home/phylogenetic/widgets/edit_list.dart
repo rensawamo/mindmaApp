@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/componets/dropdown.dart';
-
+import 'package:mindmapapp/core/componets/select_box.dart';
 
 // Noneの Editボタンをおしたときに popover で表示される画面
 class MyDropdownScreen extends StatefulWidget {
@@ -11,26 +11,53 @@ class MyDropdownScreen extends StatefulWidget {
 }
 
 class _MyDropdownScreenState extends State<MyDropdownScreen> {
-  String selectedDay = '月曜日';
+  String selectedDay = '黒';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Center(
-        child: GenericDropdownButton<String>(
-          selectedValue: selectedDay,
-          items: ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
-          getLabel: (item) => item,
-          onSelected: (String? value) {
-            if (value != null) {
+        body: Center(
+      // デザインの選択
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SelectBox<String>(
+            items: [
+              'B',
+              'I',
+              'T',
+            ],
+            initiallySelected: [''],
+            displayItem: (item) => item,
+            onSelectionChanged: (List<String> selected) {
               setState(() {
-                selectedDay = value;
+                selectedDay = selected.first;
               });
-            }
-          },
-        ),
+            },
+          ),
+          // 色の選択
+          GenericDropdownButton<String>(
+            selectedValue: selectedDay,
+            items: [
+              "黒",
+              '赤',
+              '青',
+              '黄色',
+              'オレンジ',
+              '緑',
+            ],
+            getLabel: (item) => item,
+            onSelected: (String? value) {
+              if (value != null) {
+                setState(() {
+                  selectedDay = value;
+                });
+              }
+            },
+          ),
+        ],
       ),
-    );
+    ));
   }
 }

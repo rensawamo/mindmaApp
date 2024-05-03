@@ -57,7 +57,9 @@ class _StartingNodeState extends ConsumerState<CommonNodeWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      width: _titleController.text.length < 10 ? context.mediaQueryWidth * .54 : context.mediaQueryWidth * .67,
+      width: _titleController.text.length < 10
+          ? context.mediaQueryWidth * .54
+          : context.mediaQueryWidth * .67,
       height: context.mediaQueryHeight * .11,
       decoration: BoxDecoration(
           color: AppColors.leafColor.withOpacity(0.7),

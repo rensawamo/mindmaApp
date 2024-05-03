@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindmapapp/core/componets/popover.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list.dart';
 import 'package:popover/popover.dart';
@@ -17,7 +16,6 @@ class EditButton extends StatelessWidget {
           showPopover(
             context: context,
             bodyBuilder: (context) => const MyDropdownScreen(),
-            onPop: () => print('Popover was popped!'),
             direction: PopoverDirection.bottom,
             width: 200,
             height: 400,

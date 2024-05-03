@@ -10,9 +10,8 @@ class PopoverExample extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('Popover Example')),
         body: Container(
-            width: 40,
-            height: 40,
-
+          width: 40,
+          height: 40,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -23,10 +22,8 @@ class PopoverExample extends StatelessWidget {
                     bodyBuilder: (context) => const MyDropdownScreen(),
                     onPop: () => print('Popover was popped!'),
                     direction: PopoverDirection.bottom,
-                    width: 200,  // ポップオーバーの幅を300に設定
-                    height: 200,  // ポップオーバーの高さを400に設定
-                    arrowHeight: 15,  // 矢印の高さ
-                    arrowWidth: 30,  // 矢印の幅
+                    arrowHeight: 15, // 矢印の高さ
+                    arrowWidth: 30, // 矢印の幅
                   );
                 },
                 child: const Text('Show Popover'),
