@@ -7,22 +7,35 @@ import 'package:mindmapapp/core/widget/camera_widget.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 
 // Noneの Editボタンをおしたときに popover で表示される画面
-class MyDropdownScreen extends StatefulWidget {
+class EditListWidget extends StatefulWidget {
   Function updateImage; // 写真
   Function updateDesign; // デザイン
+  Function updateColor; // 色
   final int? nodeId;
   final int titleId;
-  MyDropdownScreen(
-      this.updateImage, this.updateDesign, this.nodeId, this.titleId,
+  bool isBold;
+  bool isItalic;
+  bool isStripe;
+  String color;
+  EditListWidget(
+      this.updateImage,
+      this.updateDesign,
+      this.updateColor,
+      this.nodeId,
+      this.titleId,
+      this.isBold,
+      this.isItalic,
+      this.isStripe,
+      this.color,
       {Key? key})
       : super(key: key);
 
   @override
-  State<MyDropdownScreen> createState() => _MyDropdownScreenState();
+  State<EditListWidget> createState() => _EditListWidgetState();
 }
 
-class _MyDropdownScreenState extends State<MyDropdownScreen> {
-  String selectedDay = '黒';
+class _EditListWidgetState extends State<EditListWidget> {
+  String selectedColor = '黒';
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +56,15 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
             initiallySelected: [''],
             displayItem: (item) => item,
             onSelectionChanged: (List<String> selected) {
-              setState(() {
-
-                widget.updateDesign(selected);
-              });
+              // 選択されたデザインを更新
+              widget.updateDesign(selected);
+              // Nodeのデザインを DBに保存
+              NodeData.updateNodeDesign(
+                  widget.nodeId!,
+                  widget.titleId,
+                  selected.contains("B"),
+                  selected.contains("I"),
+                  selected.contains("T"));
             },
           ),
           SizedBox(height: context.mediaQueryHeight * .025),
@@ -55,7 +73,7 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
           Container(
             width: context.mediaQueryWidth * .4,
             child: GenericDropdownButton<String>(
-              selectedValue: selectedDay,
+              selectedValue: selectedColor,
               items: [
                 "黒",
                 '赤',
@@ -67,8 +85,14 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
               getLabel: (item) => item,
               onSelected: (String? value) {
                 if (value != null) {
+                  // 選択された色を更新
+                  widget.updateColor(value);
+                  // Nodeの色を DBに保存
+                  NodeData.updateNodeColor(
+                      widget.nodeId!, widget.titleId, value);
                   setState(() {
-                    selectedDay = value;
+                    // poper の select colorの更新
+                    selectedColor = value;
                   });
                 }
               },
@@ -88,7 +112,7 @@ class _MyDropdownScreenState extends State<MyDropdownScreen> {
                         await NodeData.updateNodeImage(
                             widget.nodeId!, widget.titleId, value);
                         widget.updateImage(value);
-                        Navigator.pop(context);
+                        Navigator.pop(context); // dialogを閉じる
                       }
                     });
                   },

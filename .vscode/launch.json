@@ -4,7 +4,7 @@
   // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    
+
       {
           "name": "dev-debug",
           "program": "lib/main_development.dart",
@@ -13,7 +13,7 @@
 
           "flutterMode": "debug",
           "args": [
-              "--dart-define-from-file=dart_defines/dev.env"
+              "--dart-define-from-file=dart_defines/dev.json"
           ]
       },
       {
@@ -23,17 +23,17 @@
           "type": "dart",
           "flutterMode": "debug",
           "args": [
-              "--dart-define-from-file=dart_defines/stg.env"
+              "--dart-define-from-file=dart_defines/stg.json"
           ]
       },
       {
-          "name": "prod-debug",
-          "program": "lib/main_production.dart",
+          "name": "prd-debug",
+          "program": "lib/main.dart",
           "request": "launch",
           "type": "dart",
           "flutterMode": "debug",
           "args": [
-              "--dart-define-from-file=dart_defines/prod.env"
+              "flutter run --dart-define=FLAVOR=prd"
           ]
       },
       {
@@ -47,7 +47,7 @@
           ]
       },
       {
-          "name": "prod Release",   
+          "name": "prod Release",
           "program": "lib/main.dart",
           "request": "launch",
           "type": "dart",

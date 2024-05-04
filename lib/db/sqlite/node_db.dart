@@ -11,7 +11,7 @@ Future<Database> _getNodeDatabase() async {
     path.join(dbPath, 'node.db'),
     onCreate: (sql.Database db, int version) {
       return db.execute(
-        'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT, image BLOB, isBold BOOLEAN, isItalic BOOLEAN, isStripe BOOLEAN, color String)',
+        'CREATE TABLE node(id INTEGER, titleID INTEGER, label TEXT, image BLOB, isBold INTEGER, isItalic INTEGER, isStripe INTEGER, color String)',
       );
     },
     version: 1,
@@ -37,10 +37,10 @@ class NodeData {
           "image": data["image"] != null && data["image"].length > 0
               ? data["image"]
               : null,
-          "isBold": false,
-          "isItalic": false,
-          "isStripe": false,
-          "color": "黒",
+          "isBold": data["isBold"],
+          "isItalic": data["isItalic"],
+          "isStripe": data["isStripe"],
+          "color": data["color"],
         });
         if (data["id"] as int > maxValue) {
           maxValue = data["id"] as int;
@@ -51,8 +51,7 @@ class NodeData {
   }
 
   // node追加処理
-  static Future<void> addNode(
-      int id, int titleID, String label, Uint8List? image) async {
+  static Future<void> addNode(int id, int titleID, String label) async {
     final sql.Database db = await _getNodeDatabase();
     List<Map<String, dynamic?>> existingNode = await db.query(
       'node',
@@ -68,13 +67,17 @@ class NodeData {
       'id': id,
       'titleID': titleID,
       'label': label,
-      'image': image ?? Uint8List(0),
+      'image': Uint8List(0),
+      'isBold': 0,
+      'isItalic': 0,
+      'isStripe': 0,
+      'color': '黒',
     });
   }
 
   // Nodeの 文字のデザインの更新
   static updateNodeDesign(int nodeId, int titleId, bool isBold, bool isItalic,
-      bool isStripe, String color) async {
+      bool isStripe) async {
     final sql.Database db = await _getNodeDatabase();
     await db.update(
       'node',
@@ -82,8 +85,18 @@ class NodeData {
         'isBold': isBold,
         'isItalic': isItalic,
         'isStripe': isStripe,
-        'color': color
       },
+      where: 'id = ? AND titleID = ?',
+      whereArgs: <dynamic?>[nodeId, titleId],
+    );
+  }
+
+  // Nodeの色の更新
+  static updateNodeColor(int nodeId, int titleId, String color) async {
+    final sql.Database db = await _getNodeDatabase();
+    await db.update(
+      'node',
+      <String, dynamic?>{'color': color},
       where: 'id = ? AND titleID = ?',
       whereArgs: <dynamic?>[nodeId, titleId],
     );
@@ -143,18 +156,5 @@ class NodeData {
     }
     print('No node found in the database.');
     return 1; // node 初期値
-  }
-
-  static Future<void> updateNodeId() async {
-    final sql.Database db = await _getNodeDatabase();
-    List<Map<String, dynamic?>> nodes = await db.query('node');
-    for (Map<String, dynamic?> node in nodes) {
-      await db.update(
-        'node',
-        <String, dynamic?>{'id': nodes.indexOf(node) + 1},
-        where: 'id = ?',
-        whereArgs: [node['id']],
-      );
-    }
   }
 }

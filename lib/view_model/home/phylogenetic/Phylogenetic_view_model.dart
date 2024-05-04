@@ -1,5 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +16,7 @@ class PhylogeneticViewModel with ChangeNotifier {
   String title = ""; // start nodeのタイトル
   int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する idダブってstackoverflowを防ぐため
   Uint8List? image; // start nodeの画像
+
   // phylogenetic graphの生成部品
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
@@ -38,9 +37,24 @@ class PhylogeneticViewModel with ChangeNotifier {
   //  Nodeの最小単位
   // Node はすべてこれが生成されて表示される
   // どのnodeの子かで識別
-  Widget rectangleWidget(int id, String nodeTitle, Uint8List? image) {
-    return NoduloWidget(id, nodeTitle, selectedNode, setSelectedNode, createSon,
-        createBro, controller, deleteNode, titleID, image);
+  Widget rectangleWidget(int id, String nodeTitle, Uint8List? image,
+      bool isBold, bool isItalic, bool isStripe, String color) {
+    return NoduloWidget(
+      id,
+      nodeTitle,
+      isBold,
+      isItalic,
+      isStripe,
+      color,
+      selectedNode,
+      setSelectedNode,
+      createSon,
+      createBro,
+      controller,
+      deleteNode,
+      titleID,
+      image,
+    );
   }
 
   void addEdge(int from, int to) {
@@ -63,9 +77,9 @@ class PhylogeneticViewModel with ChangeNotifier {
           "id": 1,
           "label": title,
           "image": null,
-          "isBold": false,
-          "isItalic": false,
-          "isStripe": false,
+          "isBold": 0,
+          "isItalic": 0,
+          "isStripe": 0,
           "color": "黒",
         },
       ],
@@ -95,7 +109,7 @@ class PhylogeneticViewModel with ChangeNotifier {
       });
     }
     // 最初にデフォルトの Nodeを登録する
-    NodeData.addNode(1, titleID, title, null);
+    NodeData.addNode(1, titleID, title);
     showLoading = false;
     notifyListeners();
   }
@@ -112,18 +126,6 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // 画像が挿入されたときに画面に更新を入れる
-  void changeImageFromText(
-    Uint8List? newImage,
-  ) {
-    json['nodes'].forEach((element) {
-      if (element['id'] == selectedNode.value) {
-        element['image'] = newImage;
-      }
-    });
-    notifyListeners();
-  }
-
   // 新規nodeの追加
   int addNode() {
     if (deleteIds.contains(selectedNode.value)) {
@@ -132,9 +134,16 @@ class PhylogeneticViewModel with ChangeNotifier {
     ;
     int newId = maxId + 1;
     maxId = newId;
-    json['nodes']
-        .add(<String, dynamic>{"id": newId, "label": title, "image": null});
-    NodeData.addNode(newId, titleID, title, image);
+    json['nodes'].add(<String, dynamic>{
+      "id": newId,
+      "label": title,
+      "image": null,
+      "isBold": 0, // sqliteのboolは 0: false 1 true のダミー変数
+      "isItalic": 0,
+      "isStripe": 0,
+      "color": "黒"
+    });
+    NodeData.addNode(newId, titleID, title);
     return newId;
   }
 

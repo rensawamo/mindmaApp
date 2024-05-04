@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,9 +68,13 @@ class _TreeViewPageState extends ConsumerState<PhylogeneticTreeView> {
                                   .firstWhere((element) => element['id'] == a);
                               //  各nodeを生成
                               return ref.read(viewModel).rectangleWidget(
-                                  nodeValue['id'],
-                                  nodeValue['label'],
-                                  nodeValue['image']);
+                                  nodeValue['id'] as int,
+                                  nodeValue['label'] as String,
+                                  nodeValue['image'] as Uint8List?,
+                                  (nodeValue['isBold'] as int) == 1,
+                                  (nodeValue['isItalic'] as int) == 1,
+                                  (nodeValue['isStripe'] as int) == 1,
+                                  nodeValue['color'] as String);
                             },
                           ),
                         ),

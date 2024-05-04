@@ -5,12 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/ios.dart';
 import 'common_node_widget.dart';
-import 'NodeOptions.dart';
+import 'node_options_widget.dart';
 import 'starting_node_widget.dart';
 
 class NoduloWidget extends StatefulWidget {
   final int titleId; // startNodeの id
   final String title; // Node の title
+  final bool isBold;
+  final bool isItalic;
+  final bool isStripe;
+  final String color;
   final int? nodeId; // Node の id
   final ValueNotifier<int> selectedNode; // 選択されている Node の id
   final Function setSelectedNode; // 選択された Node をセットする関数
@@ -23,6 +27,10 @@ class NoduloWidget extends StatefulWidget {
   const NoduloWidget(
       this.nodeId,
       this.title,
+      this.isBold,
+      this.isItalic,
+      this.isStripe,
+      this.color,
       this.selectedNode,
       this.setSelectedNode,
       this.createSon,
@@ -37,6 +45,10 @@ class NoduloWidget extends StatefulWidget {
   State<NoduloWidget> createState() => _NoduloState(
       nodeId,
       title,
+      isBold,
+      isItalic,
+      isStripe,
+      color,
       selectedNode,
       setSelectedNode,
       createSon,
@@ -50,6 +62,10 @@ class NoduloWidget extends StatefulWidget {
 class _NoduloState extends State<NoduloWidget> {
   final int titleId; // startNodeの id
   final String title; // startNode の title
+  final bool isBold;
+  final bool isItalic;
+  final bool isStripe;
+  final String color;
   int? nodeId;
   ValueNotifier<int> selectedNode;
   Function setSelectedNode;
@@ -74,6 +90,10 @@ class _NoduloState extends State<NoduloWidget> {
   _NoduloState(
     this.nodeId,
     this.title,
+    this.isBold,
+    this.isItalic,
+    this.isStripe,
+    this.color,
     this.selectedNode,
     this.setSelectedNode,
     this.createSon,
@@ -110,12 +130,17 @@ class _NoduloState extends State<NoduloWidget> {
                     myFocusNode,
                     titleId,
                     title,
-                    image),
+                    image,
+                    isBold,
+                    isItalic,
+                    isStripe,
+                    color,
+                  ),
             isSelected
                 ? isFirst
-                    ? NodeOptions(
+                    ? NodeOptionsWidget(
                         createSon, createBro, deleteNode, myFocusNode, true)
-                    : NodeOptions(
+                    : NodeOptionsWidget(
                         createSon, createBro, deleteNode, myFocusNode, false)
                 : const Column(),
           ]);

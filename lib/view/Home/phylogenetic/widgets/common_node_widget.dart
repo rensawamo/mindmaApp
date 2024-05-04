@@ -3,8 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
+import 'package:mindmapapp/core/extension/color.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
-import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list_widget.dart';
 import 'package:popover/popover.dart';
 
 // 各nodeの共通部分
@@ -18,6 +19,11 @@ class CommonNodeWidget extends StatefulWidget {
   final String title; // 各nodeのtitle
   final FocusNode myFocusNode;
   final Uint8List? image; // 写真
+  final bool isBold;
+  final bool isItalic;
+  final bool isStripe;
+  final String color;
+
 
   const CommonNodeWidget(
       this.isSelected,
@@ -29,6 +35,11 @@ class CommonNodeWidget extends StatefulWidget {
       this.titleId,
       this.title,
       this.image,
+      this.isBold,
+      this.isItalic,
+      this.isStripe,
+      this.color,
+      
       {super.key});
 
   @override
@@ -41,26 +52,26 @@ class _StartingNodeState extends State<CommonNodeWidget> {
   Uint8List? image;
   // Bold isItalic isUnderline
   List<String> selectedDesigns = <String>['', '', ''];
-  String selectColor = '黒';
+  String selectColor = "黒";
+
+  // poperの イメージセレクトの callback関数でこちらのwidgetの imageを更新
   void updateImage(Uint8List? newImage) {
     setState(() {
       image = newImage;
     });
   }
 
-  void updateNodeDesign(List<String> _selectedDesigns) async {
-    /// selectedDesigns[0] = bold
-    /// selectedDesigns[1] = italic
-    /// selectedDesigns[2] = underline
-    // NodeData.updateNodeDesign(
-    //     widget.nodeId!,
-    //     widget.titleId,
-    //     selectedDesigns[0],
-    //     SelectedDesigns[1],
-    //     SelectedDesigns[2],
-    //     selectColor);
+  // poperの デザインセレクトの callback関数でこちらのwidgetの designを更新
+  void updateDesign(List<String> newDesigns) {
     setState(() {
-      selectedDesigns = _selectedDesigns;
+      selectedDesigns = newDesigns;
+    });
+  }
+
+  // poperの カラーセレクトの callback関数でこちらのwidgetの colorを更新
+  void updateColor(String newColor) {
+    setState(() {
+      selectColor = newColor;
     });
   }
 
@@ -72,6 +83,12 @@ class _StartingNodeState extends State<CommonNodeWidget> {
       setState(() {
         _titleController.text = nodeText;
         image = widget.image;
+        selectedDesigns = <String>[
+          widget.isBold ? "B" : "",
+          widget.isItalic ? "I" : "",
+          widget.isStripe ? "T" : ""
+        ];
+        selectColor = widget.color;
       });
     });
   }
@@ -89,12 +106,11 @@ class _StartingNodeState extends State<CommonNodeWidget> {
       // 画像 or 文字
       image != null
           ? Container(
-              // 最大幅と最大高さを設定
               width: 300,
               height: 300,
               child: Image.memory(
                 image!,
-                fit: BoxFit.contain, // 画像のアスペクト比を保持
+                fit: BoxFit.contain,
               ),
             )
           : Container(
@@ -143,6 +159,8 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                           border: InputBorder.none,
                         ),
                         style: TextStyle(
+                            color:
+                                ColorExtension.getColorFromChoice(selectColor),
                             // bold
                             fontWeight: (selectedDesigns.contains("B")
                                 ? FontWeight.bold
@@ -173,11 +191,19 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                   // 画像と textのきりかえ
                   showPopover(
                     context: context,
-                    bodyBuilder: (context) => MyDropdownScreen(updateImage,
-                        updateNodeDesign, widget.nodeId!, widget.titleId),
+                    bodyBuilder: (context) => EditListWidget(
+                        updateImage,
+                        updateDesign,
+                        updateColor,
+                        widget.nodeId!,
+                        widget.titleId,
+                        widget.isBold,
+                        widget.isItalic,
+                        widget.isStripe,
+                        widget.color),
                     direction: PopoverDirection.bottom,
                     width: 200,
-                    height: 400,
+                    height: 300,
                     arrowHeight: 15,
                     arrowWidth: 30,
                   );

@@ -33,7 +33,6 @@ class _DeleteNodeButtonState extends State<DeleteNodeButton> {
       },
       child: Container(
         padding: const EdgeInsets.all(5),
-
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(50),

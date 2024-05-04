@@ -5,7 +5,7 @@ import 'buttons/CreateBroButton.dart';
 import 'buttons/CreateSonButton.dart';
 import 'buttons/delete_node_button.dart';
 
-class NodeOptions extends StatelessWidget {
+class NodeOptionsWidget extends StatelessWidget {
   final void Function() createSon; // 子 Node を生成する関数
   final void Function() createBro; // 兄弟 Node を生成する関数
   final Future<void> Function() deleteNode; // Node を削除する関数
@@ -13,7 +13,7 @@ class NodeOptions extends StatelessWidget {
 
   final bool isFirst; // 一番最初の Node かどうか
 
-  const NodeOptions(this.createSon, this.createBro, this.deleteNode,
+  const NodeOptionsWidget(this.createSon, this.createBro, this.deleteNode,
       this.myFocusNode, this.isFirst,
       {super.key});
 
