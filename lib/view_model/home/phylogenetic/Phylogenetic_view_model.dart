@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:mindmapapp/model/Home/phylogenetic/node_result_model.dart';
@@ -6,7 +8,6 @@ import 'package:mindmapapp/db/sqlite/edge_db.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/db/sqlite/title_list_db.dart';
 
-
 class PhylogeneticViewModel with ChangeNotifier {
   List<int> deleteIds = <int>[];
   bool showLoading = true;
@@ -14,6 +15,8 @@ class PhylogeneticViewModel with ChangeNotifier {
   int titleID = -1; // initで前のページのtiteleIdを取得
   String title = ""; // start nodeのタイトル
   int maxId = 0; // nodeの最大id これを使って新しいnodeのidを生成する idダブってstackoverflowを防ぐため
+  Uint8List? image; // start nodeの画像
+
   // phylogenetic graphの生成部品
   Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
@@ -23,7 +26,6 @@ class PhylogeneticViewModel with ChangeNotifier {
   // 選択しているNodeの更新
   void setSelectedNode(int newNodeId) {
     selectedNode.value = newNodeId;
-    print(selectedNode.value);
     notifyListeners();
   }
 
@@ -35,9 +37,24 @@ class PhylogeneticViewModel with ChangeNotifier {
   //  Nodeの最小単位
   // Node はすべてこれが生成されて表示される
   // どのnodeの子かで識別
-  Widget rectangleWidget(int id, String nodeTitle) {
-    return NoduloWidget(id, nodeTitle, selectedNode, setSelectedNode, createSon,
-        createBro, controller, deleteNode, titleID);
+  Widget rectangleWidget(int id, String nodeTitle, Uint8List? image,
+      bool isBold, bool isItalic, bool isStripe, String color) {
+    return NoduloWidget(
+      id,
+      nodeTitle,
+      isBold,
+      isItalic,
+      isStripe,
+      color,
+      selectedNode,
+      setSelectedNode,
+      createSon,
+      createBro,
+      controller,
+      deleteNode,
+      titleID,
+      image,
+    );
   }
 
   void addEdge(int from, int to) {
@@ -50,12 +67,21 @@ class PhylogeneticViewModel with ChangeNotifier {
   }
 
   // グラフの初期値の形を形成
+  // titleは 前の画面のlistで選択された値
   void init(String title) {
     titleID = -1;
     title = title;
-    json = <String, List>{
-      "nodes": <Map<String, Object>>[
-        <String, Object>{"id": 1, "label": title}
+    json = <String, dynamic>{
+      "nodes": <Map<String, dynamic>>[
+        <String, dynamic>{
+          "id": 1,
+          "label": title,
+          "image": null,
+          "isBold": 0,
+          "isItalic": 0,
+          "isStripe": 0,
+          "color": "黒",
+        },
       ],
       "edges": []
     };
@@ -74,7 +100,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     titleID = await TitleListData.selectedTitleId(title);
     NodeResult result = await NodeData.loadNodes(titleID);
     nodes = result.nodes;
-    maxId = result.maxValue; // addNnodeの一意性の担保
+    maxId = result.maxValue; // addNnodeの一意性の担保  のため maxIdを更新
     edges = await EdgeData.loadEdgeds(titleID);
     if (edges!.isNotEmpty && nodes!.isNotEmpty) {
       updateGraph(<String, List<Map<String, dynamic>>?>{
@@ -88,6 +114,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // graph の更新
   void updateGraph(newJson) {
     json = newJson;
     var edges = json['edges']!;
@@ -99,6 +126,7 @@ class PhylogeneticViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // 新規nodeの追加
   int addNode() {
     if (deleteIds.contains(selectedNode.value)) {
       return -1;
@@ -106,7 +134,15 @@ class PhylogeneticViewModel with ChangeNotifier {
     ;
     int newId = maxId + 1;
     maxId = newId;
-    json['nodes'].add(<String, Object>{"id": newId, "label": title});
+    json['nodes'].add(<String, dynamic>{
+      "id": newId,
+      "label": title,
+      "image": null,
+      "isBold": 0, // sqliteのboolは 0: false 1 true のダミー変数
+      "isItalic": 0,
+      "isStripe": 0,
+      "color": "黒"
+    });
     NodeData.addNode(newId, titleID, title);
     return newId;
   }

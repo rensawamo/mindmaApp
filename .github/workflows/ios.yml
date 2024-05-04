@@ -1,8 +1,9 @@
 name: firebase_ios_destribution
 
 on:
-    push:
-        branches: [cicd]
+    pull_request:
+        branches:
+            - main
 
 jobs:
     build_iOS:
@@ -26,7 +27,7 @@ jobs:
             - name: Add ExportOptions.plist
               run: echo "${{ secrets.EXPORTOPTIONS_BASE64 }}" | base64 -d > ExportOptions.plist
 
-            # パッケージのダウンロード 
+            # パッケージのダウンロード
             - name: Download Flutter packages
               run: flutter pub get
 
@@ -43,8 +44,7 @@ jobs:
             #   run: |
             #       touch ios/Flutter/DartDefine.xcconfig
             #       echo '#include "prd.xcconfig"' >> ios/Flutter/DartDefine.xcconfig
-            
-            
+
             - name: Install CocoaPods
               run: sudo gem install cocoapods
 
@@ -62,7 +62,7 @@ jobs:
 
     #        if: ${{ always() }}
 
-    #  contanier error対策　で firebase destributionにデプロイする時は切り替える 
+    #  contanier error対策　で firebase destributionにデプロイする時は切り替える
     release:
         name: Release ipa to Firebase
         needs: [build_iOS]
@@ -78,7 +78,7 @@ jobs:
             - name: Upload artifact to Firebase App Distribution
               uses: wzieba/Firebase-Distribution-Github-Action@v1
               with:
-                  appId: ${{secrets.IOS_APP_ID}} 
+                  appId: ${{secrets.IOS_APP_ID}}
                   serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT}}
                   groups: testers
                   file: mindmap.ipa
