@@ -10,9 +10,11 @@ build-ios-prd:
 	flutter build ios --release --no-codesign  --dart-define=FLAVOR=prd --target lib/main.dart
 
 
-.PHONY: upload-ios-prd
-cd ios && fastlane ios prod_upto_appstore
-.DEFAULT_GOAL := help
+# .PHONY: upload-ios-prd
+# upload-ios-prd:
+#     cd ios && fastlane ios prod_upto_appstore
+#     .DEFAULT_GOAL := help
+
 
 .PHONY: help
 help:
@@ -22,4 +24,3 @@ help:
 .PHONY: dev
 dev:
     flutter run --dart-define-from-file=dart_defines/prd.json
-
