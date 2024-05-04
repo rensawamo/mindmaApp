@@ -60,11 +60,12 @@ class _EditListWidgetState extends State<EditListWidget> {
               widget.updateDesign(selected);
               // Nodeのデザインを DBに保存
               NodeData.updateNodeDesign(
-                  widget.nodeId!,
-                  widget.titleId,
-                  selected.contains("B"),
-                  selected.contains("I"),
-                  selected.contains("T"));
+                widget.nodeId!,
+                widget.titleId,
+                selected.contains("B") ? 1 : 0,
+                selected.contains("I") ? 1 : 0,
+                selected.contains("T") ? 1 : 0,
+              );
             },
           ),
           SizedBox(height: context.mediaQueryHeight * .025),

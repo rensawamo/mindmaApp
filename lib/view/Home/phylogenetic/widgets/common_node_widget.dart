@@ -5,6 +5,7 @@ import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/extension/color.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
+import 'package:mindmapapp/view/Home/phylogenetic/expand_image_page.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list_widget.dart';
 import 'package:popover/popover.dart';
 
@@ -24,7 +25,6 @@ class CommonNodeWidget extends StatefulWidget {
   final bool isStripe;
   final String color;
 
-
   const CommonNodeWidget(
       this.isSelected,
       this.isFirst,
@@ -39,7 +39,6 @@ class CommonNodeWidget extends StatefulWidget {
       this.isItalic,
       this.isStripe,
       this.color,
-      
       {super.key});
 
   @override
@@ -105,12 +104,24 @@ class _StartingNodeState extends State<CommonNodeWidget> {
         child: Stack(children: <Widget>[
       // 画像 or 文字
       image != null
-          ? Container(
-              width: 300,
-              height: 300,
-              child: Image.memory(
-                image!,
-                fit: BoxFit.contain,
+          ? GestureDetector(
+              onLongPress: () {
+                // 画像を拡大
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ExpandImagePage(image: image!),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              child: Container(
+                width: 300,
+                height: 300,
+                child: Image.memory(
+                  image!,
+                  fit: BoxFit.contain,
+                ),
               ),
             )
           : Container(

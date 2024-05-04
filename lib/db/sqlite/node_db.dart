@@ -76,8 +76,8 @@ class NodeData {
   }
 
   // Nodeの 文字のデザインの更新
-  static updateNodeDesign(int nodeId, int titleId, bool isBold, bool isItalic,
-      bool isStripe) async {
+  static updateNodeDesign(int nodeId, int titleId, int isBold, int isItalic,
+      int isStripe) async {
     final sql.Database db = await _getNodeDatabase();
     await db.update(
       'node',
