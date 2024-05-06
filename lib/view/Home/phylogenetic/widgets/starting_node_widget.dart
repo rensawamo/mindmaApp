@@ -76,6 +76,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
           Expanded(
             flex: 5,
             child: TextFormField(
+                 textInputAction: TextInputAction.next,
                 controller: _titleController,
                 onChanged: (String value) {
                   // listの titleを更新する
@@ -87,7 +88,6 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
                 focusNode: widget.myFocusNode,
                 onTap: () {
                   widget.setSelectedNode(widget.nodeId);
-                  setState(() {});
                 },
                 maxLines: null,
                 decoration: const InputDecoration(
