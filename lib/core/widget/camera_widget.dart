@@ -62,18 +62,18 @@ class _CameraWidgetState extends State<CameraDialogWidget> {
                     pickImage();
                   },
                 ),
-                MaterialButton(
-                  minWidth: context.mediaQueryWidth * .4,
-                  color: AppColors.darkGreen,
-                  child: const Text(
-                    "カメラで撮影",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    pickImageC();
-                  },
-                ),
+                // MaterialButton(
+                //   minWidth: context.mediaQueryWidth * .4,
+                //   color: AppColors.darkGreen,
+                //   child: const Text(
+                //     "カメラで撮影",
+                //     style: TextStyle(
+                //         color: Colors.white, fontWeight: FontWeight.bold),
+                //   ),
+                //   onPressed: () {
+                //     pickImageC();
+                //   },
+                // ),
               ],
             )));
   }

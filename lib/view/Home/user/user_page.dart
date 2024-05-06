@@ -68,7 +68,7 @@ class _UserViewState extends State<UserPage> {
                                   style: AppTexts.title3,
                                 ),
                                 Text(
-                                  'ver: 0.0.0',
+                                  'ver: 0.0.1',
                                   style: AppTexts.caption2,
                                 ),
                               ],

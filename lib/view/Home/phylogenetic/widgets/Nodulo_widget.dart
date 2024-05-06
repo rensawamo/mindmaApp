@@ -108,6 +108,8 @@ class _NoduloState extends State<NoduloWidget> {
     return GestureDetector(
       onTap: () {
         setSelectedNode(nodeId);
+        // textfieldのfocusを外す
+        FocusManager.instance.primaryFocus?.unfocus();
       },
       onLongPress: () {
         setSelectedNode(nodeId);

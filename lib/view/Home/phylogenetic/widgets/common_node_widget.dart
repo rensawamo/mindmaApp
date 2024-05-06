@@ -116,8 +116,8 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                 );
               },
               child: Container(
-                width: 300,
-                height: 300,
+                width: 150,
+                height: 150,
                 child: Image.memory(
                   image!,
                   fit: BoxFit.contain,
@@ -126,9 +126,7 @@ class _StartingNodeState extends State<CommonNodeWidget> {
             )
           : Container(
               padding: const EdgeInsets.all(10),
-              width: _titleController.text.length < 10
-                  ? context.mediaQueryWidth * .54
-                  : context.mediaQueryWidth * .67,
+              width: context.mediaQueryWidth * .54,
               height: context.mediaQueryHeight * .11,
               decoration: BoxDecoration(
                   color: AppColors.leafColor.withOpacity(0.7),
@@ -156,9 +154,6 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                         onChanged: (String value) {
                           NodeData.updateNodeText(
                               widget.nodeId!, widget.titleId, value);
-                          setState(() {
-                            _titleController.text = value;
-                          });
                         },
                         focusNode: widget.myFocusNode,
                         onTap: () {
@@ -184,7 +179,7 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                             decoration: selectedDesigns.contains("T")
                                 ? TextDecoration.lineThrough
                                 : null,
-                            fontSize: 16),
+                            fontSize: 22),
                         textAlign: TextAlign.center),
                   ),
                 ],
@@ -213,8 +208,8 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                         widget.isStripe,
                         widget.color),
                     direction: PopoverDirection.bottom,
-                    width: 200,
-                    height: 300,
+                    width: context.mediaQueryWidth * .55,
+                    height: context.mediaQueryHeight * .4,
                     arrowHeight: 15,
                     arrowWidth: 30,
                   );
