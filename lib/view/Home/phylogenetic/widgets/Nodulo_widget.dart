@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/ios.dart';
 import 'common_node_widget.dart';
 import 'node_options_widget.dart';
 import 'starting_node_widget.dart';
@@ -61,7 +59,7 @@ class NoduloWidget extends StatefulWidget {
 
 class _NoduloState extends State<NoduloWidget> {
   final int titleId; // startNodeの id
-  final String title; // startNode の title
+  String title; // startNode の title
   final bool isBold;
   final bool isItalic;
   final bool isStripe;
@@ -86,6 +84,7 @@ class _NoduloState extends State<NoduloWidget> {
       isSelected = false;
     }
   }
+
 
   _NoduloState(
     this.nodeId,
@@ -132,6 +131,7 @@ class _NoduloState extends State<NoduloWidget> {
                     myFocusNode,
                     titleId,
                     title,
+                    
                     image,
                     isBold,
                     isItalic,

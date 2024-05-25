@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/widget/pinch_zoom_widget.dart';
 

@@ -108,7 +108,7 @@ class NodeData {
     final sql.Database db = await _getNodeDatabase();
     await db.update(
       'node',
-      <String, dynamic?>{'label': text},
+      <String, dynamic?>{'label': text , 'image': null},
       where: 'id = ? AND titleID = ?',
       whereArgs: <dynamic?>[nodeId, titleId],
     );
@@ -118,7 +118,7 @@ class NodeData {
     final sql.Database db = await _getNodeDatabase();
     await db.update(
       'node',
-      <String, dynamic?>{'image': image!},
+      <String, dynamic?>{'image': image!, 'label': ''},
       where: 'id = ? AND titleID = ?',
       whereArgs: <dynamic?>[nodeId, titleId],
     );

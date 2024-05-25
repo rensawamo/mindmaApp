@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
@@ -7,6 +6,7 @@ import 'package:mindmapapp/core/extension/color.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/expand_image_page.dart';
 import 'package:mindmapapp/view/Home/phylogenetic/widgets/edit_list_widget.dart';
+
 import 'package:popover/popover.dart';
 
 // 各nodeの共通部分
@@ -49,9 +49,14 @@ class CommonNodeWidget extends StatefulWidget {
 class _StartingNodeState extends State<CommonNodeWidget> {
   final TextEditingController _titleController = TextEditingController();
   Uint8List? image;
+  late String title;
+  late bool isBold;
+  late bool isItalic;
+  late bool isStripe;
+  late String selectColor;
+
   // Bold isItalic isUnderline
   List<String> selectedDesigns = <String>['', '', ''];
-  String selectColor = "黒";
 
   // poperの イメージセレクトの callback関数でこちらのwidgetの imageを更新
   void updateImage(Uint8List? newImage) {
@@ -60,10 +65,22 @@ class _StartingNodeState extends State<CommonNodeWidget> {
     });
   }
 
-  // poperの デザインセレクトの callback関数でこちらのwidgetの designを更新
+  // 写真からテキストに変換する時に titleを更新する関数
+  void updateTitle(String newTitle) {
+    setState(() {
+      print("newTitle: $newTitle");
+      image = null;
+      _titleController.text = newTitle;
+    });
+  }
+
+  // poperの デザインセレクトの callback関数でこちらのwidgetの textを更新
   void updateDesign(List<String> newDesigns) {
     setState(() {
       selectedDesigns = newDesigns;
+      isBold = selectedDesigns.contains("B");
+      isItalic = selectedDesigns.contains("I");
+      isStripe = selectedDesigns.contains("T");
     });
   }
 
@@ -77,19 +94,13 @@ class _StartingNodeState extends State<CommonNodeWidget> {
   @override
   void initState() {
     super.initState();
-    Future(() async {
-      final String nodeText = widget.title;
-      setState(() {
-        _titleController.text = nodeText;
-        image = widget.image;
-        selectedDesigns = <String>[
-          widget.isBold ? "B" : "",
-          widget.isItalic ? "I" : "",
-          widget.isStripe ? "T" : ""
-        ];
-        selectColor = widget.color;
-      });
-    });
+    title = widget.title;
+    _titleController.text = title;
+    image = widget.image;
+    isBold = widget.isBold;
+    isItalic = widget.isItalic;
+    isStripe = widget.isStripe;
+    selectColor = widget.color;
   }
 
   @override
@@ -126,8 +137,8 @@ class _StartingNodeState extends State<CommonNodeWidget> {
             )
           : Container(
               padding: const EdgeInsets.all(10),
-              width: context.mediaQueryWidth * .54,
-              height: context.mediaQueryHeight * .11,
+              width: context.mediaQueryWidth * .43,
+              height: context.mediaQueryHeight * .1,
               decoration: BoxDecoration(
                   color: AppColors.leafColor.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(10),
@@ -179,7 +190,7 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                             decoration: selectedDesigns.contains("T")
                                 ? TextDecoration.lineThrough
                                 : null,
-                            fontSize: 22),
+                            fontSize: 16),
                         textAlign: TextAlign.center),
                   ),
                 ],
@@ -198,18 +209,19 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                   showPopover(
                     context: context,
                     bodyBuilder: (context) => EditListWidget(
+                        image != null,
+                        updateTitle,
                         updateImage,
                         updateDesign,
                         updateColor,
                         widget.nodeId!,
                         widget.titleId,
-                        widget.isBold,
-                        widget.isItalic,
-                        widget.isStripe,
-                        widget.color),
-                    direction: PopoverDirection.bottom,
+                        isBold,
+                        isItalic,
+                        isStripe,
+                        selectColor),
                     width: context.mediaQueryWidth * .55,
-                    height: context.mediaQueryHeight * .4,
+                    height: context.mediaQueryHeight * .415,
                     arrowHeight: 15,
                     arrowWidth: 30,
                   );

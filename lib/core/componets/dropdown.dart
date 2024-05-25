@@ -6,6 +6,7 @@ import 'package:mindmapapp/core/extension/color.dart';
 // Generic Dropdown Button Widget
 class GenericDropdownButton<T> extends StatefulWidget {
   final T selectedValue;
+
   final String Function(T) getLabel;
   final void Function(T?) onSelected;
   final List<T> items;
