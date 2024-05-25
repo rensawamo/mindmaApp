@@ -58,6 +58,7 @@ class _EditListWidgetState extends State<EditListWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          
           SelectBox<String>(
             items: [
               'B',
@@ -151,6 +152,9 @@ class _EditListWidgetState extends State<EditListWidget> {
                     ),
                     child: Center(
                       child: Icon(
+                        widget.isShowingImage
+                            ? Icons.edit
+                            :
                         Icons.camera_alt,
                         color: Colors.white,
                         size: 24,
