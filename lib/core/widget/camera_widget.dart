@@ -1,11 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
+import 'package:mindmapapp/core/widget/comfirm_dialog.dart';
 
 class CameraDialogWidget extends StatefulWidget {
+  const CameraDialogWidget({Key? key}) : super(key: key);
+
   @override
   State<CameraDialogWidget> createState() => _CameraWidgetState();
 }
@@ -45,14 +47,17 @@ class _CameraWidgetState extends State<CameraDialogWidget> {
   Widget build(BuildContext context) {
     return AlertDialog(
         content: Container(
-            height: context.mediaQueryHeight * .2,
-            width: context.mediaQueryWidth * .5,
+            height: context.mediaQueryHeight * .1,
+            width: context.mediaQueryWidth * .3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 MaterialButton(
                   minWidth: context.mediaQueryWidth * .4,
                   color: AppColors.darkGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: const Text(
                     "ギャラリーから選択",
                     style: TextStyle(

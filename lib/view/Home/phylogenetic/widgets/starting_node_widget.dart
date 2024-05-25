@@ -76,7 +76,7 @@ class _StartingNodeState extends ConsumerState<StartingNodeWidget> {
           Expanded(
             flex: 5,
             child: TextFormField(
-                 textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.next,
                 controller: _titleController,
                 onChanged: (String value) {
                   // listの titleを更新する

@@ -4,10 +4,13 @@ import 'package:mindmapapp/core/componets/select_box.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
 import 'package:mindmapapp/core/widget/camera_widget.dart';
+import 'package:mindmapapp/core/widget/comfirm_dialog.dart';
 import 'package:mindmapapp/db/sqlite/node_db.dart';
 
 // Noneの Editボタンをおしたときに popover で表示される画面
 class EditListWidget extends StatefulWidget {
+  bool isShowingImage;
+  Function updateTitle; // タイトル
   Function updateImage; // 写真
   Function updateDesign; // デザイン
   Function updateColor; // 色
@@ -18,6 +21,8 @@ class EditListWidget extends StatefulWidget {
   bool isStripe;
   String color;
   EditListWidget(
+      this.isShowingImage,
+      this.updateTitle,
       this.updateImage,
       this.updateDesign,
       this.updateColor,
@@ -38,6 +43,12 @@ class _EditListWidgetState extends State<EditListWidget> {
   String selectedColor = '黒';
 
   @override
+  void initState() {
+    super.initState();
+    selectedColor = widget.color;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
@@ -53,7 +64,11 @@ class _EditListWidgetState extends State<EditListWidget> {
               'I',
               'T',
             ],
-            initiallySelected: [''],
+            initiallySelected: [
+              widget.isBold ? 'B' : '',
+              widget.isItalic ? 'I' : '',
+              widget.isStripe ? 'T' : '',
+            ],
             displayItem: (item) => item,
             onSelectionChanged: (List<String> selected) {
               // 選択されたデザインを更新
@@ -108,14 +123,24 @@ class _EditListWidgetState extends State<EditListWidget> {
               children: [
                 InkWell(
                   onTap: () {
-                    ShowCameraDialog(context).then((value) async {
-                      if (value != null) {
-                        await NodeData.updateNodeImage(
-                            widget.nodeId!, widget.titleId, value);
-                        widget.updateImage(value);
-                        Navigator.pop(context); // dialogを閉じる
-                      }
-                    });
+                    widget.isShowingImage
+                        ? ShowConfirmDialog(context, "テキストに変更")
+                            .then((String? result) async {
+                            if (result != null) {
+                              await NodeData.updateNodeText(
+                                  widget.nodeId!, widget.titleId, result);
+                              widget.updateTitle(result);
+                              Navigator.of(context).pop(result);
+                            }
+                          })
+                        : ShowCameraDialog(context).then((value) async {
+                            if (value != null) {
+                              await NodeData.updateNodeImage(
+                                  widget.nodeId!, widget.titleId, value);
+                              widget.updateImage(value);
+                              Navigator.pop(context); // dialogを閉じる
+                            }
+                          });
                   },
                   child: Container(
                     width: 60,
