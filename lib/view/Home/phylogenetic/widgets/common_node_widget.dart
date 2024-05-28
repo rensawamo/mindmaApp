@@ -179,15 +179,15 @@ class _StartingNodeState extends State<CommonNodeWidget> {
                             color:
                                 ColorExtension.getColorFromChoice(selectColor),
                             // bold
-                            fontWeight: (selectedDesigns.contains("B")
+                            fontWeight: ( isBold
                                 ? FontWeight.bold
                                 : FontWeight.normal),
                             // italic
-                            fontStyle: (selectedDesigns.contains("I")
+                            fontStyle: ( isItalic
                                 ? FontStyle.italic
                                 : FontStyle.normal),
                             // 取り消し線
-                            decoration: selectedDesigns.contains("T")
+                            decoration: isStripe
                                 ? TextDecoration.lineThrough
                                 : null,
                             fontSize: 16),
