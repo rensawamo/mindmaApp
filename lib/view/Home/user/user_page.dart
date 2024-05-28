@@ -68,7 +68,7 @@ class _UserViewState extends State<UserPage> {
                                   style: AppTexts.title3,
                                 ),
                                 Text(
-                                  'ver: 0.0.1',
+                                  'ver: 0.0.3',
                                   style: AppTexts.caption2,
                                 ),
                               ],
@@ -121,7 +121,7 @@ class _UserViewState extends State<UserPage> {
                               const Divider(),
                               GestureDetector(
                                 onTap: () => launchURL(
-                                    'https://rensawamo.github.io/myapp-web-ja/lifemind/'),
+                                    'https://wonderful-flower-033138b00.5.azurestaticapps.net/'),
                                 child: const UserCellWidget(
                                     icon: Icons.web, title: 'website'),
                               ),
@@ -134,7 +134,7 @@ class _UserViewState extends State<UserPage> {
                               // const Divider(),
                               GestureDetector(
                                 onTap: () => launchURL(
-                                    'https://rensawamo.github.io/Privacy-Policy-ja/'),
+                                    'https://wonderful-flower-033138b00.5.azurestaticapps.net/privacypolicy'),
                                 child: const UserCellWidget(
                                     icon: Icons.question_answer_rounded,
                                     title: 'プライバシーポリシー'),
