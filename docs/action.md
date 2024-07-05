@@ -5,4 +5,5 @@
 - /Users/runner/work/mindmaApp/mindmaApp/ios/Flutter/DartDefine.xcconfig:0:0
 多分 shがうまく動いてない
 
-- apple developerの契約の同意が追加でやってきて　action止まることあり
+- apple developerの契約の同意が追加でやってきて　action止まることあり.
+
