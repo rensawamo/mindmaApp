@@ -85,7 +85,6 @@ class _NoduloState extends State<NoduloWidget> {
     }
   }
 
-
   _NoduloState(
     this.nodeId,
     this.title,
@@ -131,7 +130,6 @@ class _NoduloState extends State<NoduloWidget> {
                     myFocusNode,
                     titleId,
                     title,
-                    
                     image,
                     isBold,
                     isItalic,

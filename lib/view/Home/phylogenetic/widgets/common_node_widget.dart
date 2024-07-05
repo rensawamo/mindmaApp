@@ -138,7 +138,6 @@ class _StartingNodeState extends State<CommonNodeWidget> {
           : Container(
               padding: const EdgeInsets.all(10),
               width: context.mediaQueryWidth * .43,
-              height: context.mediaQueryHeight * .1,
               decoration: BoxDecoration(
                   color: AppColors.leafColor.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(10),
