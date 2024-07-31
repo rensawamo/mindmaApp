@@ -1,19 +1,10 @@
-ビルド
-```sh
-$ flutter run --dart-define=FLAVOR=prd  
-or 
-$ flutter run --dart-define-from-file=dart_defines/$(FLAVOR).json
-```
 
-google 申請用の App Bundleの aab ビルド
-```sh
-$ flutter build  appbundle --dart-define=FLAVOR=prd --release
+# 愛用マインドマップ
 
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 3208 bytes (99.8% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Running Gradle task 'bundleRelease'...                             91.2s
-√ Built build\app\outputs\bundle\release\app-release.aab (23.3MB).
-```
+⭐️  かわいい 写真貼り放題 通勤中スクショメモをマインドマップで整理しよう！
+
+### iosダウンロードは[こちら](https://apps.apple.com/jp/app/life-mind/id6496865571) )
 
 
-### ver 0.0.2
+![image](https://github.com/user-attachments/assets/dc277bb2-1e71-4c6b-8989-11a737920eab)
 
