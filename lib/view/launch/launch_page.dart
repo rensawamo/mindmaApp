@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/view_model/launch/launch_view_model.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
@@ -12,10 +13,11 @@ class LaunchView extends StatefulWidget {
 
 class _SplashViewState extends State<LaunchView> {
   LaunchViewModel splashServices = LaunchViewModel();
-
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
     super.initState();
+    analytics.logAppOpen();
     splashServices.checkAuthentication(context);
   }
 
