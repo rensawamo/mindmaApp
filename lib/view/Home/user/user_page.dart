@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:mindmapapp/core/design/app_colors.dart';
 import 'package:mindmapapp/core/design/app_texts.dart';
 import 'package:mindmapapp/core/design/view+extention.dart';
+import 'package:mindmapapp/core/utils/app_review.dart';
 import 'package:mindmapapp/view/Home/user/widget/usercell_widget.dart';
 import 'package:mindmapapp/db/strage/local_storage.dart';
 import 'package:mindmapapp/core/componets/loading_widget.dart';
@@ -34,119 +34,128 @@ class _UserViewState extends State<UserPage> {
     // isLoading
     //     ? const LoadingWidget()
     //     :
-    return  Container(
-            color: AppColors.paleGreen,
-            child: Scaffold(
-              backgroundColor: AppColors.transparent,
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
+    return Container(
+        color: AppColors.paleGreen,
+        child: Scaffold(
+          backgroundColor: AppColors.transparent,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // アプリアイコン情報
+                    children: <Widget>[
+                      SizedBox(
+                        height: context.mediaQueryHeight * .015,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        width: context.mediaQueryHeight * .15,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Image.asset('assets/images/Group.png'),
+                      ),
+                      SizedBox(
+                        width: context.mediaQueryWidth * .35,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Life Mind',
+                              style: AppTexts.title3,
+                            ),
+                            Text(
+                              'ver: 0.0.3',
+                              style: AppTexts.caption2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: context.mediaQueryHeight * .035,
+                ),
+                SizedBox(
+                  height: context.mediaQueryHeight * .7,
+                  width: context.mediaQueryWidth * .9,
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        // アプリアイコン情報
                         children: <Widget>[
-                          SizedBox(
-                            height: context.mediaQueryHeight * .015,
+                          // ユーザのメールアドレス
+                          // GestureDetector(
+                          //   child: UserCellWidget(
+                          //     icon: Icons.person,
+                          //     title: user,
+                          //   ),
+                          // ),
+                          // const Divider(),
+                          // GestureDetector(
+                          //   onTap: () async {
+                          //     ShowDeleteDialog(context, "ログアウトしますか？")
+                          //         .then((bool? result) async {
+                          //       if (result != null) {
+                          //         // firebase のログアウト
+                          //         await FirebaseAuth.instance.signOut();
+                          //         // session を破壊
+                          //         await SessionController().sessionClear();
+                          //         // login 画面に戻す stackの削除
+                          //         Navigator.pushAndRemoveUntil(
+                          //           context,
+                          //           MaterialPageRoute(
+                          //               builder: (BuildContext context) =>
+                          //                   const LoginPage()),
+                          //           (Route<dynamic> route) => false,
+                          //         );
+                          //       }
+                          //     });
+                          //   },
+                          //   child: const UserCellWidget(
+                          //       icon: Icons.logout, title: 'Log Out'),
+                          // ),
+                          const Divider(),
+                          GestureDetector(
+                            onTap: () => launchURL(
+                                'https://wonderful-flower-033138b00.5.azurestaticapps.net/'),
+                            child: const UserCellWidget(
+                                icon: Icons.web, title: 'website'),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            width: context.mediaQueryHeight * .15,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Image.asset('assets/images/Group.png'),
+                          const Divider(),
+                          // GestureDetector(
+                          //   onTap: () => print("FAQs tapped."),
+                          //   child: const UserCellWidget(
+                          //       icon: Icons.chat, title: 'FAQs'),
+                          // ),
+                          // const Divider(),
+                          GestureDetector(
+                            onTap: () => launchURL(
+                                'https://wonderful-flower-033138b00.5.azurestaticapps.net/privacypolicy'),
+                            child: const UserCellWidget(
+                                icon: Icons.question_answer_rounded,
+                                title: 'プライバシーポリシー'),
                           ),
-                          SizedBox(
-                            width: context.mediaQueryWidth * .35,
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Life Mind',
-                                  style: AppTexts.title3,
-                                ),
-                                Text(
-                                  'ver: 0.0.3',
-                                  style: AppTexts.caption2,
-                                ),
-                              ],
-                            ),
+                          const Divider(),
+                          GestureDetector(
+                            onTap: () => {
+                              DrawerHelper.launchStoreReview(
+                                context,
+                              )
+                            },
+                            child: const UserCellWidget(
+                                icon: Icons.star, title: 'レビューを書く'),
                           ),
                         ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: context.mediaQueryHeight * .035,
-                    ),
-                    SizedBox(
-                      height: context.mediaQueryHeight * .7,
-                      width: context.mediaQueryWidth * .9,
-                      child: Container(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            children: <Widget>[
-                              // ユーザのメールアドレス
-                              // GestureDetector(
-                              //   child: UserCellWidget(
-                              //     icon: Icons.person,
-                              //     title: user,
-                              //   ),
-                              // ),
-                              // const Divider(),
-                              // GestureDetector(
-                              //   onTap: () async {
-                              //     ShowDeleteDialog(context, "ログアウトしますか？")
-                              //         .then((bool? result) async {
-                              //       if (result != null) {
-                              //         // firebase のログアウト
-                              //         await FirebaseAuth.instance.signOut();
-                              //         // session を破壊
-                              //         await SessionController().sessionClear();
-                              //         // login 画面に戻す stackの削除
-                              //         Navigator.pushAndRemoveUntil(
-                              //           context,
-                              //           MaterialPageRoute(
-                              //               builder: (BuildContext context) =>
-                              //                   const LoginPage()),
-                              //           (Route<dynamic> route) => false,
-                              //         );
-                              //       }
-                              //     });
-                              //   },
-                              //   child: const UserCellWidget(
-                              //       icon: Icons.logout, title: 'Log Out'),
-                              // ),
-                              const Divider(),
-                              GestureDetector(
-                                onTap: () => launchURL(
-                                    'https://wonderful-flower-033138b00.5.azurestaticapps.net/'),
-                                child: const UserCellWidget(
-                                    icon: Icons.web, title: 'website'),
-                              ),
-                              const Divider(),
-                              // GestureDetector(
-                              //   onTap: () => print("FAQs tapped."),
-                              //   child: const UserCellWidget(
-                              //       icon: Icons.chat, title: 'FAQs'),
-                              // ),
-                              // const Divider(),
-                              GestureDetector(
-                                onTap: () => launchURL(
-                                    'https://wonderful-flower-033138b00.5.azurestaticapps.net/privacypolicy'),
-                                child: const UserCellWidget(
-                                    icon: Icons.question_answer_rounded,
-                                    title: 'プライバシーポリシー'),
-                              ),
-                              const Divider(),
-                            ],
-                          )),
-                    ),
-                  ],
+                      )),
                 ),
-              ),
-            ));
+              ],
+            ),
+          ),
+        ));
   }
 
   // void openMailApp() async {
